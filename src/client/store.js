@@ -5,11 +5,15 @@ import thunk from 'redux-thunk';
 var createStoreWithMiddleware = applyMiddleware(thunk)(createStore)
 
 // App Reducers
-import GeneralReducer from 'reducers/generalReducer';
+import ShowReducer from 'reducers/show';
+import EmployeeReducer from 'reducers/employee';
+import CalendarReducer from 'reducers/calendarReducer';
 
 // Combine Reducers
 var reducers = combineReducers({
-	generalReducer: GeneralReducer
+	showReducer: ShowReducer,
+	employeeReducer: EmployeeReducer,
+	calendarReducer: CalendarReducer
   // more...
 });
 

@@ -1,0 +1,255 @@
+$gradientfrom: #fff;
+$gradientto: #8a8a8a; 
+$gradientfrom2: #00d2ff;
+$gradientto2: #928DAB; 
+$textshadow: #e7e7e7;
+$darkgrey: #605c5b;
+$bordercolor: #3a3a3a;
+$bluetheme: #336eb5;
+$purpletheme: #0A4081;
+$sidepanel: #292E35;
+$selected: #b2b2b2;
+
+
+
+.scheduleBg {
+	background: url('../images/bluebg.jpg') no-repeat center center fixed;
+	background-size: cover;
+	height: 100%;
+	width: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+.sidePortal {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 12%;
+	height: 100%;
+	background-color: $sidepanel;
+}
+.calenderFlex {
+	display: flex;
+	flex-wrap: nowrap;
+	width: 80%;
+	margin: 15px 15%;  
+	// border: 1px solid blue;
+	// margin-top: 5%;
+	// margin-left: 25%;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    -moz-box-shadow:0px 3px 3px rgba(0, 0, 0, 0.25); 
+    -webkit-box-shadow:0px 3px 3px rgba(0, 0, 0, 0.25); 
+    -webkit-border-top-left-radius: 5px; 
+    -webkit-border-top-right-radius: 5px; 
+    -moz-border-radius-topleft: 5px; 
+    -moz-border-radius-topright: 5px; 
+    border-top-left-radius: 5px; 
+    border-top-right-radius: 5px; 
+    font-weight:bold; 
+    text-shadow:0px -1px 0 $textshadow;
+    background: #e0e0e0;
+
+}
+.cal {
+	display: flex;
+	flex-direction: column;
+	width: 70%;
+	border: 1px solid $darkgrey;
+}
+.header, .days {
+	display: flex;
+	flex-wrap: nowrap;
+	width: 100%;
+	// border: 1px solid pink;
+	text-align: center;
+}
+
+.month-year, .headerDay {
+	text-transform: uppercase;
+}
+.header {
+	height: 60px;
+	line-height: 60px;
+	font-size: 22px;
+	font-weight: bold;
+	background: $gradientto; 
+    background: -moz-linear-gradient(top, $gradientfrom, $gradientto); 
+    background: -webkit-gradient(linear, left top, left bottom, from($gradientfrom), to($gradientto));
+    justify-content: space-between;
+    -webkit-border-top-left-radius: 5px; 
+    // -webkit-border-top-right-radius: 5px; 
+    -moz-border-radius-topleft: 5px; 
+    // -moz-border-radius-topright: 5px; 
+    border-top-left-radius: 5px; 
+    // border-top-right-radius: 5px; 
+    font-weight:bold; 
+    text-shadow:0px -1px 0 $textshadow;
+}
+.previous, .next {
+	// border: 1px solid red;
+	width: 12%;
+}
+.previous:hover, .next:hover {
+	background: $darkgrey; 
+    background: -moz-linear-gradient(top, $gradientfrom, $darkgrey); 
+    background: -webkit-gradient(linear, left top, left bottom, from($gradientfrom), to($darkgrey));
+    -webkit-border-top-left-radius: 5px; 
+    // -webkit-border-top-right-radius: 5px; 
+    -moz-border-radius-topleft: 5px; 
+    // -moz-border-radius-topright: 5px; 
+    border-top-left-radius: 5px; 
+    // border-top-right-radius: 5px; 
+}
+.days {
+	height: 40px;
+	line-height: 40px;
+	justify-content: space-around;
+}
+.days > * {
+	// border-right: 1px solid black;
+	width: 14.3%;
+	text-align: center;
+}
+.date {
+	width: 100%;
+	min-height: 200px;
+	// border: 3px solid red;
+	display: flex;
+	flex-wrap: wrap;
+}
+.day {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	width: 30%;
+	// border: 1px solid green;
+}
+.headerDay {
+	// border: 1px solid pink;
+	height: 60px;
+	line-height: 60px;
+	text-align: center;
+	background: $darkgrey; 
+    background: -moz-linear-gradient(top, $gradientfrom, $darkgrey); 
+    background: -webkit-gradient(linear, left top, left bottom, from($gradientfrom2), to($gradientto2));
+    justify-content: space-between;
+    color: white;
+}
+.currentDay {
+	height: 180px;
+	
+	// border: 1px solid orange;
+	
+	text-align: center;
+	
+}
+.currentDay p {
+	font-size: 64px;
+	color: #336eb5;
+	height: 70px;
+	line-height: 70px;
+	padding-top: 40px;
+}
+.currentDay p:nth-child(2) {
+	font-size: 34px;
+	color: #336eb5;
+	height: 40px;
+	line-height: 40px;
+}
+.currentDay p:nth-child(3) {
+	margin: 5px 0 0 0;
+	font-size: 16px;
+	height: 20px;
+	line-height: 20px;
+	color: $darkgrey;
+	
+}
+.dayOptions {
+	height: 160px;
+	// text-align: center;
+	// border: 1px solid black;
+	padding-left: 55px;
+}
+.dayOptions > * {
+	text-decoration: none;
+	display: block;
+	margin-top: 15px;
+	color: $bluetheme;
+}
+.dayOptions > *:hover {
+	
+	color: $purpletheme;
+}
+.dayOptions > *:before {
+	
+	content: "> ";
+}
+.box {
+	width: 14.285%;
+	height: 80px;
+	border-right: 1px solid $darkgrey;
+	border-top: 1px solid $darkgrey;
+	color: $bluetheme;
+	padding: 5px;
+}
+.box p:nth-child(2) {
+	color: $darkgrey;
+	font-size: 12px;
+	margin: 5px 0 0 20px;
+}
+.divider {
+	width: 80%;
+	border: 1px solid $gradientto;
+	margin: auto;
+}
+.status {
+	height: 80px;
+	// border: 1px solid red;
+}
+.fa-home {
+	color: $textshadow;
+}
+.portalOptions {
+	width: 100px;
+	height: 400px;
+	margin: 120px auto;
+	display: flex;
+	justify-content: center;
+}
+.fa-home:hover {
+	color: $bluetheme;
+}
+.profile {
+	position: absolute;
+	top: 0;
+	left: 10px;
+	width: 280px;
+	height: 80px;
+	background: $sidepanel;
+	z-index: 1;
+	border-top-right-radius: 5px;
+	border-bottom-right-radius: 5px;
+}
+.pic {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 80px;
+	height: 80px;
+	border-radius: 80px;
+	z-index: 2;
+	background: $bluetheme;
+}
+.highlight {
+	background: $selected;
+	background: $darkgrey; 
+    background: -moz-linear-gradient(top, $gradientfrom, $darkgrey); 
+    background: -webkit-gradient(linear, left top, left bottom, from($gradientfrom2), to($gradientto2));
+    color: black;
+}
+.inactiveMonth {
+	background: rgb(195, 195, 195);
+	color: #fff;
+	text-shadow:0px -1px 0 #000;
+}

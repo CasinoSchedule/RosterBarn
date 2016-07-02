@@ -1,0 +1,26 @@
+.shade {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+
+	background: rgba(21, 21, 21, .5);
+}
+
+.callInBox, .error {
+	width: 600px;
+	height: 400px;
+
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	left: 0;
+
+	margin: auto;
+
+	border: 1px solid red;
+	background: blue;
+	opacity: .5;
+}

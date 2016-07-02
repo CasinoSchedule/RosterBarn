@@ -9,7 +9,8 @@ import App from 'layouts/app';
 
 // import Homepage from 'ui/home';
 import Home from 'ui/home';
-import Calender from 'ui/calender';
+import Calendar from 'ui/calendar';
+import Scheduler from 'ui/scheduler';
 import UnderConstruction from 'ui/underConstruction';
 
 
@@ -19,7 +20,8 @@ export default (
     <Router history={browserHistory}>
       <Route component={App}>
       	<Route path='/' component={UnderConstruction} />
-      	<Route path='/calender' component={Calender} />
+      	<Route path='/calendar' component={Calendar} />
+      	<Route path='/scheduler' component={Scheduler} />
       	<Route path='/home' component={Home} />      	
       </Route>
     </Router>

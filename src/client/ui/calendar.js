@@ -1,0 +1,178 @@
+import React from 'react';
+import store from 'store';
+import CallIn from 'ui/callIn';
+import {Link, browserHistory} from 'react-router';
+import { getEmployeeSchedule, calendar } from 'api/data';
+
+require("assets/styles/calendar.scss");
+var image = require("assets/images/ariawhite.png");
+require('font-awesome-webpack');
+var $ = require('jquery');
+
+
+var month = new Date().getMonth(), 
+	year = new Date().getFullYear(), 
+	days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"], 
+	months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"], 
+	daysInMonths = [31, (((year%4==0)&&(year%100!=0))||(year%400==0)) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31], 
+	date = new Date().getDate(), 
+	day = days[new Date().getDay()];
+
+export default React.createClass({
+	getInitialState: function(){
+		return ({
+			showCallIn: false,
+			employeeMonthlySchedule: [],
+			month: months[new Date().getMonth()],
+			year: year,
+			calendarDays: [],
+			selectedDay: date,
+			day: day,
+			fullDate: months[new Date().getMonth()] + " " + date + ", " + year,
+			collection: []
+		})
+	},
+	updateState: function(){
+		this.unsubscribe = store.subscribe(function(){
+			var currentStore = store.getState();
+			this.setState({
+				showCallIn: currentStore.showReducer.showCallIn,
+				employeeMonthlySchedule: currentStore.employeeReducer.employeeMonthlySchedule,
+				month: currentStore.calendarReducer.month,
+				year: currentStore.calendarReducer.year,
+				calendarDays: currentStore.calendarReducer.calendarDays,
+				collection: currentStore.calendarReducer.collection
+			})
+		}.bind(this));
+	},
+	componentWillMount: function(){
+		calendar(months[month], year, month+1);
+	},
+	componentDidMount: function(){
+		this.updateState();
+	},
+	callIn: function(e){
+		e.preventDefault();
+			store.dispatch({
+				type: 'CHANGE_SHOWCALLIN',
+				showCallIn: true
+		})
+	},
+	backToHome: function(){
+		browserHistory.push('/home');
+	},
+	createCalendar: function(){
+		setTimeout(function(){
+			var x = $('.month-year').text().trim().split(" ");
+			var shootmonth = months.indexOf(x[0]) + 1;
+			calendar(x[0], x[1], shootmonth);
+		}, 50);
+	},
+	nextMonth: function(e){
+		e.preventDefault();
+		$('.box').removeClass('highlight');
+		if(e.target.id === "previous") {
+			
+			store.dispatch({
+				type: 'GET_CALENDAR',
+				month: ((this.state.month === 0) ? this.state.month + 11 : this.state.month - 1),
+				year: ((this.state.month === 0) ? this.state.year - 1 : this.state.year)
+			})
+			this.createCalendar()
+			
+		} else {
+			store.dispatch({
+				type: 'GET_CALENDAR',
+				year: ((this.state.month === 11) ? this.state.year + 1 : this.state.year),
+				month: ((this.state.month === 11) ? this.state.month = 0 : this.state.month + 1)
+			})
+			this.createCalendar();
+		}
+	},
+	selectDay: function(item, index, e){
+		e.preventDefault();
+		var y = months.indexOf(item.month);
+		var z = new Date(item.year, y, item.day).getDay();
+		
+		$('.box').removeClass('highlight');
+		var great = $('#box' + index).addClass('highlight');
+		console.log(great);
+		// console.log('Day selected', item)
+		this.setState({
+			selectedDay: item.day,
+			day: days[z],
+			fullDate: item.month + " " + item.day + ", " + item.year
+		})
+
+	},
+
+	render: function(){
+		return (
+			<div className="scheduleBg">
+				{/* <div className="profile"></div>
+				<div className="pic"></div> */}
+				<div className="sidePortal">
+					<div className="portalOptions">
+						<div>
+						<i className="fa fa-home fa-2x" aria-hidden="true" onClick={this.backToHome}></i> 
+						</div>
+					</div>
+				</div>
+				<div id="imageContainer">
+					<img src={image}/>
+				</div>
+				<div className="calenderFlex">
+
+					<div className="cal">
+						<div className="header">
+							<div className="previous" id="previous" onClick={this.nextMonth}>&lang;</div>
+							<div className="month-year">{months[this.state.month]} {this.state.year}</div>
+							<div className="next" id="next" onClick={this.nextMonth}>&rang;</div>
+						</div>
+						<div className="days">
+							<div>SUN</div>
+							<div>MON</div>
+							<div>TUE</div>
+							<div>WED</div>
+							<div>THUR</div>
+							<div>FRI</div>
+							<div>SAT</div>
+						</div>
+						<div className="date">
+							{this.state.collection.map(function(item, i){
+								return (
+									<div key ={i} className={"box " + item.currentClass} id={"box" + i} onClick={this.selectDay.bind(this, item, i)}>
+										<p>{item.day}</p>
+										<p>{item.starting_time}</p>
+									</div>
+								)
+							}.bind(this))} 	
+								
+						</div>
+							
+					</div>
+
+					<div className="day">
+						<div className="headerDay">{(this.state.selectedDay === new Date().getDate() ? "Today" : "Selected Day")}</div>
+						<div className="currentDay">
+							<p>{this.state.selectedDay}</p>
+							<p>{this.state.day}</p>
+							<p>{this.state.fullDate}</p>
+						</div>
+						<div className="divider"></div>
+						<div className="status"></div>
+						<div className="divider"></div>
+						<div className="dayOptions">
+							<a href="" onClick={this.callIn} >Call In</a>
+							<a href="">Early Out</a>
+							<a href="">Switch Shift</a>
+							<a href="">Shift Giveaway</a>
+						</div>
+					</div>
+				</div>
+
+				{this.state.showCallIn ? <CallIn /> : ""}
+			</div>
+		)
+	}
+})

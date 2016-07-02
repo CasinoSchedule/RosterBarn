@@ -1,13 +1,13 @@
 import React from 'react';
 
-require("assets/styles/calender.scss");
-var image = require("assets/images/ariawhite.png");
+require("assets/styles/scheduler.scss");
 
 export default React.createClass({
 	render: function(){
 		return (
-			<div>
-				Hello
+			<div className="adminBg">
+				<div className="sidePortal">
+				</div>
 			</div>
 		)
 	}
