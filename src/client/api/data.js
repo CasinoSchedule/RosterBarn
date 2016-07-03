@@ -111,7 +111,7 @@ export function calendar(month, year, monthdate){
 				function checkSchedule(check){
 					for(var i = 0; i < resp.data.length; i++){
 						if(resp.data[i].calendar_date === check) {
-							return resp.data[i].starting_time.slice(0, 5)
+							return ((resp.data[i].starting_time) ? resp.data[i].starting_time.slice(0, 5) : "")
 						}
 					}
 					return ""

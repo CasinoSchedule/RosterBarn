@@ -29,7 +29,9 @@ export default React.createClass({
 			selectedDay: date,
 			day: day,
 			fullDate: months[new Date().getMonth()] + " " + date + ", " + year,
-			collection: []
+			collection: [],
+			collapse: "",
+			openClose: "fa fa-minus-circle fa-2x"
 		})
 	},
 	updateState: function(){
@@ -105,19 +107,30 @@ export default React.createClass({
 		})
 
 	},
-
+	collapseSidePanel: function(){
+		this.setState({
+			collapse: ((this.state.collapse === "") ? "collapse" : ""),
+			openClose: ((this.state.openClose === "fa fa-plus-circle fa-2x") ? "fa fa-minus-circle fa-2x" : "fa fa-plus-circle fa-2x")
+		})
+	},
 	render: function(){
 		return (
 			<div className="scheduleBg">
 				{/* <div className="profile"></div>
 				<div className="pic"></div> */}
-				<div className="sidePortal">
+
+				<div className={"sidePortal " + this.state.collapse}>
+					<div className="collapseButton">
+						<i className={this.state.openClose} aria-hidden="true" onClick={this.collapseSidePanel}></i>
+					</div>
 					<div className="portalOptions">
-						<div>
-						<i className="fa fa-home fa-2x" aria-hidden="true" onClick={this.backToHome}></i> 
-						</div>
+					{/*	<div className="homeButton">
+							<i className="fa fa-home fa-2x" aria-hidden="true" onClick={this.backToHome}></i> 
+						</div> */}
 					</div>
 				</div>
+
+
 				<div id="imageContainer">
 					<img src={image}/>
 				</div>
@@ -160,13 +173,15 @@ export default React.createClass({
 							<p>{this.state.fullDate}</p>
 						</div>
 						<div className="divider"></div>
-						<div className="status"></div>
+						<div className="status">
+
+						</div>
 						<div className="divider"></div>
 						<div className="dayOptions">
 							<a href="" onClick={this.callIn} >Call In</a>
-							<a href="">Early Out</a>
-							<a href="">Switch Shift</a>
-							<a href="">Shift Giveaway</a>
+							<a href="" onClick={this.callIn}>Early Out</a>
+							<a href="" onClick={this.callIn}>Switch Shift</a>
+							<a href="" onClick={this.callIn}>Shift Giveaway</a>
 						</div>
 					</div>
 				</div>
