@@ -8,12 +8,14 @@ var createStoreWithMiddleware = applyMiddleware(thunk)(createStore)
 import ShowReducer from 'reducers/show';
 import EmployeeReducer from 'reducers/employee';
 import CalendarReducer from 'reducers/calendarReducer';
+import AdminReducer from 'reducers/admin';
 
 // Combine Reducers
 var reducers = combineReducers({
 	showReducer: ShowReducer,
 	employeeReducer: EmployeeReducer,
-	calendarReducer: CalendarReducer
+	calendarReducer: CalendarReducer,
+	adminReducer: AdminReducer
   // more...
 });
 

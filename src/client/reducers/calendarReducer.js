@@ -1,14 +1,10 @@
-const 	year = new Date().getFullYear(),
-		month = new Date().getMonth() + 1,
-		months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-		daysInMonths = [31, (((year%4==0)&&(year%100!=0))||(year%400==0)) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-		
-
 const calendarInitialState = {
 	year: new Date().getFullYear(),
 	month: new Date().getMonth(),
 	calendarDays: [],
-	collection: []
+	collection: [],
+	weeklyCalendar: [],
+	flexbox_size: ""
 }
 
 export default function(state = calendarInitialState, action){
@@ -20,7 +16,9 @@ export default function(state = calendarInitialState, action){
 				year: action.year,
 				month: action.month,
 				calendarDays: state.calendarDays,
-				collection: state.collection
+				collection: state.collection,
+				weeklyCalendar: state.weeklyCalendar,
+				flexbox_size: state.flexbox_size
 			}
 
 		case 'GET_CALENDARDAYS':
@@ -28,7 +26,9 @@ export default function(state = calendarInitialState, action){
 				year: state.year,
 				month: state.month,
 				calendarDays: action.calendarDays,
-				collection: state.collection
+				collection: state.collection,
+				weeklyCalendar: state.weeklyCalendar,
+				flexbox_size: state.flexbox_size
 			}
 
 		case 'GET_DATEOBJECTS':
@@ -36,7 +36,30 @@ export default function(state = calendarInitialState, action){
 				year: state.year,
 				month: state.month,
 				calendarDays: state.calendarDays,
-				collection: action.collection
+				collection: action.collection,
+				weeklyCalendar: state.weeklyCalendar,
+				flexbox_size: state.flexbox_size
+			}
+
+		case 'GET_WEEKLYCALENDAR':
+		// console.log('Gets to reducer');
+			return {
+				year: state.year,
+				month: state.month,
+				calendarDays: state.calendarDays,
+				collection: state.collection,
+				weeklyCalendar: action.weeklyCalendar,
+				flexbox_size: state.flexbox_size
+			}
+
+		case 'ALTER_FLEXBOXSIZE':
+			return {
+				year: state.year,
+				month: state.month,
+				calendarDays: state.calendarDays,
+				collection: state.collection,
+				weeklyCalendar: state.weeklyCalendar,
+				flexbox_size: action.flexbox_size
 			}
 
 	default:

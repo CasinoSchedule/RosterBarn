@@ -1,0 +1,68 @@
+$gradientfrom: #fff;
+$gradientto: #8a8a8a; 
+$gradientfrom2: #00d2ff;
+$gradientto2: #928DAB; 
+$textshadow: #e7e7e7;
+$darkgrey: #605c5b;
+$bordercolor: #3a3a3a;
+$bluetheme: #336eb5;
+$purpletheme: #0A4081;
+$sidepanel: #292E35;
+$selected: #b2b2b2;
+
+
+.sidePortal {
+	position: absolute;
+	top: 30px;
+	left: 0;
+	width: 120px;
+	height: 100%;
+	background-color: $sidepanel;
+	display: flex;
+	flex-direction: column;
+}
+.collapseButton {
+	min-width: 40px;
+	max-width: 120px;
+	color: $darkgrey;
+	padding-top: 10px;
+	padding-left: 5px;
+}
+.collapse {
+	width: 40px;
+}
+.fa-home {
+	color: $textshadow;
+}
+.portalOptions {
+	width: 100px;
+	height: 400px;
+	margin: 120px auto;
+	display: flex;
+	justify-content: center;
+}
+
+.fa-home:hover, .fa-plus-circle:hover, .fa-minus-circle:hover {
+	color: $bluetheme;
+}
+.profile {
+	position: absolute;
+	top: 0;
+	left: 10px;
+	width: 280px;
+	height: 80px;
+	background: $sidepanel;
+	z-index: 1;
+	border-top-right-radius: 5px;
+	border-bottom-right-radius: 5px;
+}
+.pic {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 80px;
+	height: 80px;
+	border-radius: 80px;
+	z-index: 2;
+	background: $bluetheme;
+}

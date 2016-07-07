@@ -1,8 +1,10 @@
 import React from 'react';
 import store from 'store';
 import CallIn from 'ui/callIn';
+import SidePanel from 'ui/sidePanel';
 import {Link, browserHistory} from 'react-router';
 import { getEmployeeSchedule, calendar } from 'api/data';
+
 
 require("assets/styles/calendar.scss");
 var image = require("assets/images/ariawhite.png");
@@ -29,9 +31,7 @@ export default React.createClass({
 			selectedDay: date,
 			day: day,
 			fullDate: months[new Date().getMonth()] + " " + date + ", " + year,
-			collection: [],
-			collapse: "",
-			openClose: "fa fa-minus-circle fa-2x"
+			collection: []
 		})
 	},
 	updateState: function(){
@@ -48,10 +48,22 @@ export default React.createClass({
 		}.bind(this));
 	},
 	componentWillMount: function(){
-		calendar(months[month], year, month+1);
+		this.unsubscribe = store.subscribe(function(){
+			var currentStore = store.getState();
+			this.setState({
+				showCallIn: currentStore.showReducer.showCallIn,
+				employeeMonthlySchedule: currentStore.employeeReducer.employeeMonthlySchedule,
+				month: currentStore.calendarReducer.month,
+				year: currentStore.calendarReducer.year,
+				calendarDays: currentStore.calendarReducer.calendarDays,
+				collection: currentStore.calendarReducer.collection
+			})
+		}.bind(this));
+		
 	},
 	componentDidMount: function(){
-		this.updateState();
+		calendar(months[month], year, month+1, true);
+		// this.updateState();
 	},
 	callIn: function(e){
 		e.preventDefault();
@@ -67,7 +79,7 @@ export default React.createClass({
 		setTimeout(function(){
 			var x = $('.month-year').text().trim().split(" ");
 			var shootmonth = months.indexOf(x[0]) + 1;
-			calendar(x[0], x[1], shootmonth);
+			calendar(x[0], x[1], shootmonth, true);
 		}, 50);
 	},
 	nextMonth: function(e){
@@ -107,28 +119,14 @@ export default React.createClass({
 		})
 
 	},
-	collapseSidePanel: function(){
-		this.setState({
-			collapse: ((this.state.collapse === "") ? "collapse" : ""),
-			openClose: ((this.state.openClose === "fa fa-plus-circle fa-2x") ? "fa fa-minus-circle fa-2x" : "fa fa-plus-circle fa-2x")
-		})
+	componentWillUnmount: function () {
+		this.unsubscribe();
 	},
 	render: function(){
 		return (
 			<div className="scheduleBg">
-				{/* <div className="profile"></div>
-				<div className="pic"></div> */}
-
-				<div className={"sidePortal " + this.state.collapse}>
-					<div className="collapseButton">
-						<i className={this.state.openClose} aria-hidden="true" onClick={this.collapseSidePanel}></i>
-					</div>
-					<div className="portalOptions">
-					{/*	<div className="homeButton">
-							<i className="fa fa-home fa-2x" aria-hidden="true" onClick={this.backToHome}></i> 
-						</div> */}
-					</div>
-				</div>
+				
+				<SidePanel />
 
 
 				<div id="imageContainer">
