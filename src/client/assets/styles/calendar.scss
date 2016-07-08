@@ -40,7 +40,7 @@ $selected: #b2b2b2;
     border-top-left-radius: 5px; 
     border-top-right-radius: 5px; 
     font-weight:bold; 
- text-shadow:0px -1px 0 $textshadow;   
+ 	text-shadow:0px -1px 0 $textshadow;   
     background: #e0e0e0;
 
 }
@@ -84,6 +84,7 @@ $selected: #b2b2b2;
 	width: 12%;
 }
 .previous:hover, .next:hover {
+	cursor: pointer;
 	background: $darkgrey; 
     background: -moz-linear-gradient(top, $gradientfrom, $darkgrey); 
     background: -webkit-gradient(linear, left top, left bottom, from($gradientfrom), to($darkgrey));
@@ -212,5 +213,5 @@ $selected: #b2b2b2;
 	background: rgb(195, 195, 195);
 	color: #fff;
 	text-shadow:0px -1px 0 #000;
-	font-size: 12px;
+	font-size: 10px;
 }

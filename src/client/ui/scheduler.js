@@ -6,7 +6,7 @@ import EmployeeMonthlySchedule from 'ui/employeeMonthlySchedule';
 import { calendar, getWeekByWeek, getEmployeeSchedule, caltest } from 'api/data';
 
 require("assets/styles/scheduler.scss");
-var image = require("assets/images/logo.png");
+var image = require("assets/images/logo2.png");
 
 var month = new Date().getMonth(), 
 	year = new Date().getFullYear(),
@@ -62,15 +62,15 @@ export default React.createClass({
 
 				<SidePanel />
 
-				<div className="adminHeader">
-					<img src={image} />
-				</div>
+				{/* <div className="adminHeader">
+					<img src={image} /> 
+				</div> */ }
 
 				<div className="monthLabel">Week of <span className="weekLabel"> {this.state.weeklyCalendar[0].monthString} {this.state.weeklyCalendar[0].day}, {this.state.weeklyCalendar[0].year}</span> </div>	
 					<div className="nextButtons">
-						<div>
+						{/* <div>
 							<div className="publish"><button onClick={this.submitSchedule}>Publish Schedule</button></div>
-						</div>
+						</div> */}
 						<div className="backForward">
 							<div><button onClick={this.previousSchedule}>Previous week</button></div>
 							<div><button onClick={this.nextSchedule}>Next week</button></div>
@@ -109,7 +109,7 @@ export default React.createClass({
 						
 								{this.state.employeeWeeklySchedule.map(function(item, i){
 									return (
-										<EmployeeToSchedule sched={this.state.employeeWeeklySchedule} item={item} i={i}/>
+										<EmployeeToSchedule key={i} sched={this.state.employeeWeeklySchedule} item={item} i={i}/>
 									)
 								}.bind(this))}
 							

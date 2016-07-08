@@ -146,108 +146,6 @@ export function getWorkWeekSchedule(month, year){
 }
 
 
-export function calendar(month, year, monthdate, employee){
-	// console.log('Init', month, year);
-	
-	var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"], 
-		year = parseInt(year, 10), 
-		daysInMonths = [31, (((year%4==0)&&(year%100!=0))||(year%400==0)) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31], 
-		boxes =[], 
-		collection = [],
-		x = months.indexOf(month),
-		startDay = new Date(year, x, 1).getDay(),
-		totalCalendarDays = 42 - daysInMonths[x] - startDay, 
-		daysInPreviousMonth = 0,
-		format = "",
-		weeklyCalendar = [];
-		
-		if(x === 0){
-			daysInPreviousMonth = daysInMonths[11];
-		} else {
-			daysInPreviousMonth = daysInMonths[x - 1]
-		}
-	
-	((startDay === 0) ? createCal(daysInMonths[x], totalCalendarDays, null, year, x) : createCal(daysInMonths[x], totalCalendarDays, startDay, year, x));
-
-	function createCal(a, b, c, d, x){
-		var pythonMonth = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-
-		for(var i = 1, n = 0; i <= a; i++, n++){
-			format = d + "-" + pythonMonth[x] + "-" + i;
-			boxes.push(format);
-			collection[n] = {
-				year: d,
-				month: months[x],
-				day: i,
-				calendar_date: format,
-				currentClass: ""
-			}
-			boxes.push(collection[n].calendar_date)
-		}
-		for(var j = 1; j <= b; j++){
-			format = ((x === 11) ? d + 1 : d) + "-" + pythonMonth[x] + "-" + j;
-			boxes.push(format);
-			collection.push({
-				year: ((x === 11) ? d + 1 : d),
-				month: ((x === 11) ? months[0] : months[x + 1]),
-				day: j,
-				calendar_date: format,
-				currentClass: "inactiveMonth"
-			})
-		}
-		if(c){
-			for(var h = 0; h < c; h++){
-				format = ((x === 0) ? d - 1 : d) + "-" + pythonMonth[x] + "-" + daysInPreviousMonth
-				boxes.unshift(format);
-				collection.unshift({
-					year: ((x === 0) ? d - 1 : d),
-					month: ((x === 0) ? months[11] : months[x - 1]),
-					day: daysInPreviousMonth,
-					calendar_date: format,
-					currentClass: "inactiveMonth"
-				})
-				daysInPreviousMonth -= 1;
-			}
-		}
-
-
-		if(employee) {
-			return api.get('/schedules/employeemonth/?month=' + monthdate + '&year=' + year).then(function(resp){
-			
-				var scheduleInfo = collection.map(function(item, i){
-					return ({
-						year: item.year,
-						month: item.month,
-						day: item.day,
-						calendar_date: item.calendar_date,
-						currentClass: item.currentClass,
-						starting_time: checkSchedule(item.calendar_date)
-					})
-				})
-			
-				store.dispatch({
-					type: 'GET_DATEOBJECTS',
-					collection: scheduleInfo
-				})
-
-				function checkSchedule(check){
-					for(var i = 0; i < resp.data.length; i++){
-						if(resp.data[i].calendar_date === check) {
-							return ((resp.data[i].starting_time) ? resp.data[i].starting_time.slice(0, 5) : "")
-						}
-					}
-					return ""
-				}		
-			})
-		} else {
-			store.dispatch({
-				type: 'GET_DATEOBJECTS',
-				collection: collection
-			})
-		}
-	}
-}
-
 export function setNewSchedule(uniqueId, arr, newScheduleItem) {
 	console.log('Set New Schedule ', newScheduleItem);
 	var newArr = arr.map(function(indArr){
@@ -272,3 +170,201 @@ export function sendEmployeeShiftObj(obj){
 	return api.post('/schedules/shift/many', obj)
 }
 
+
+Date.prototype.addDays = function(days){
+    var dat = new Date(this.valueOf());
+    dat.setDate(dat.getDate() + days);
+    return dat;
+}
+
+Date.prototype.subtractDays = function(days){
+    var dat = new Date(this.valueOf());
+    dat.setDate(dat.getDate() - days);
+    return dat;
+}
+
+export function stringDate(date) {
+	return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+}
+
+export function calendar(month, year, monthdate, employee){
+	// console.log('Init', month, year, monthdate);
+	
+		var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+		var month = monthdate - 1;
+		var preceding_days = new Date(year, month, 1).getDay();
+		var	month_count = new Date(year, month+1, 0).getDate();
+		var	trailing_days = 42 - month_count - preceding_days;
+		var start_day = new Date(year, month, 1).subtractDays(preceding_days);
+		var collection = [];
+
+		function collectionDate(date, type) {
+			var newItem = {
+				calendar_date: stringDate(date),
+				currentClass: type,
+				day: date.getDate(),
+				month: months[date.getMonth()],
+				year: date.getFullYear()
+			};
+			return newItem;
+		}
+
+		for(var i=0; i < 42; i++) {
+			if(i < preceding_days || i >= 42 - trailing_days){
+				collection.push(collectionDate(start_day.addDays(i), 'inactiveMonth'));
+			}
+			else{
+				collection.push(collectionDate(start_day.addDays(i), ""));
+			}
+		}
+
+		console.log('collection', collection);
+
+		if (employee){
+
+		 return api.get('/schedules/employeemonth/?month=' + monthdate + '&year=' + year).then(function(resp){
+
+			var scheduleInfo = collection.map(function(item, i){
+					return ({
+						year: item.year,
+						month: item.month,
+						day: item.day,
+						calendar_date: item.calendar_date,
+						currentClass: item.currentClass,
+						starting_time: checkSchedule(item.calendar_date)
+					})
+				})
+
+				store.dispatch({
+					type: 'GET_DATEOBJECTS',
+					collection: scheduleInfo
+				})
+
+				function checkSchedule(check){
+					for(var i = 0; i < resp.data.length; i++){
+						if(resp.data[i].calendar_date === check) {
+							return ((resp.data[i].starting_time) ? resp.data[i].starting_time.slice(0, 5) : "")
+						}
+					}
+					return ""
+				}
+		})} else { 
+
+			store.dispatch({
+				type: 'GET_DATEOBJECTS',
+				collection: collection
+			})}
+}
+
+
+
+		// store.dispatch({
+		// 	type: 'GET_CALENDARDAYS',
+		// 	calendarDays: boxes
+		// })
+		
+
+	// console.log('calendarDays:', collection);
+	// console.log('Days in the month of ' + month, daysInMonths[x]);
+
+	// export function calendar(month, year, monthdate, employee){
+// 	// console.log('Init', month, year);
+	
+// 	var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"], 
+// 		year = parseInt(year, 10), 
+// 		daysInMonths = [31, (((year%4==0)&&(year%100!=0))||(year%400==0)) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31], 
+// 		boxes =[], 
+// 		collection = [],
+// 		x = months.indexOf(month),
+// 		startDay = new Date(year, x, 1).getDay(),
+// 		totalCalendarDays = 42 - daysInMonths[x] - startDay, 
+// 		daysInPreviousMonth = 0,
+// 		format = "",
+// 		weeklyCalendar = [];
+		
+// 		if(x === 0){
+// 			daysInPreviousMonth = daysInMonths[11];
+// 		} else {
+// 			daysInPreviousMonth = daysInMonths[x - 1]
+// 		}
+	
+// 	((startDay === 0) ? createCal(daysInMonths[x], totalCalendarDays, null, year, x) : createCal(daysInMonths[x], totalCalendarDays, startDay, year, x));
+
+// 	function createCal(a, b, c, d, x){
+// 		var pythonMonth = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+
+// 		for(var i = 1, n = 0; i <= a; i++, n++){
+// 			format = d + "-" + pythonMonth[x] + "-" + i;
+// 			boxes.push(format);
+// 			collection[n] = {
+// 				year: d,
+// 				month: months[x],
+// 				day: i,
+// 				calendar_date: format,
+// 				currentClass: ""
+// 			}
+// 			boxes.push(collection[n].calendar_date)
+// 		}
+// 		for(var j = 1; j <= b; j++){
+// 			format = ((x === 11) ? d + 1 : d) + "-" + pythonMonth[x] + "-" + j;
+// 			boxes.push(format);
+// 			collection.push({
+// 				year: ((x === 11) ? d + 1 : d),
+// 				month: ((x === 11) ? months[0] : months[x + 1]),
+// 				day: j,
+// 				calendar_date: format,
+// 				currentClass: "inactiveMonth"
+// 			})
+// 		}
+// 		if(c){
+// 			for(var h = 0; h < c; h++){
+// 				format = ((x === 0) ? d - 1 : d) + "-" + pythonMonth[x] + "-" + daysInPreviousMonth
+// 				boxes.unshift(format);
+// 				collection.unshift({
+// 					year: ((x === 0) ? d - 1 : d),
+// 					month: ((x === 0) ? months[11] : months[x - 1]),
+// 					day: daysInPreviousMonth,
+// 					calendar_date: format,
+// 					currentClass: "inactiveMonth"
+// 				})
+// 				daysInPreviousMonth -= 1;
+// 			}
+// 		}
+
+
+// 		if(employee) {
+// 			return api.get('/schedules/employeemonth/?month=' + monthdate + '&year=' + year).then(function(resp){
+			
+// 				var scheduleInfo = collection.map(function(item, i){
+// 					return ({
+// 						year: item.year,
+// 						month: item.month,
+// 						day: item.day,
+// 						calendar_date: item.calendar_date,
+// 						currentClass: item.currentClass,
+// 						starting_time: checkSchedule(item.calendar_date)
+// 					})
+// 				})
+			
+// 				store.dispatch({
+// 					type: 'GET_DATEOBJECTS',
+// 					collection: scheduleInfo
+// 				})
+
+// 				function checkSchedule(check){
+// 					for(var i = 0; i < resp.data.length; i++){
+// 						if(resp.data[i].calendar_date === check) {
+// 							return ((resp.data[i].starting_time) ? resp.data[i].starting_time.slice(0, 5) : "")
+// 						}
+// 					}
+// 					return ""
+// 				}		
+// 			})
+// 		} else {
+// 			store.dispatch({
+// 				type: 'GET_DATEOBJECTS',
+// 				collection: collection
+// 			})
+// 		}
+// 	}
+// }

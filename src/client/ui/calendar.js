@@ -126,8 +126,7 @@ export default React.createClass({
 		return (
 			<div className="scheduleBg">
 				
-				<SidePanel />
-
+				
 
 				<div id="imageContainer">
 					<img src={image}/>

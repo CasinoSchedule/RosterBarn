@@ -13,20 +13,24 @@ $selected: #b2b2b2;
 
 .sidePortal {
 	position: absolute;
-	top: 30px;
+	top: 0;
 	left: 0;
-	width: 120px;
+	width: 200px;
 	height: 100%;
 	background-color: $sidepanel;
 	display: flex;
 	flex-direction: column;
+	padding-bottom: 10px;
+	justify-content: space-around;
+				border: 1px solid red;
 }
 .collapseButton {
 	min-width: 40px;
 	max-width: 120px;
 	color: $darkgrey;
-	padding-top: 10px;
-	padding-left: 5px;
+	// padding-top: 10px;
+	// padding-left: 5px;
+		border: 2px solid orange;
 }
 .collapse {
 	width: 40px;
@@ -35,11 +39,13 @@ $selected: #b2b2b2;
 	color: $textshadow;
 }
 .portalOptions {
-	width: 100px;
-	height: 400px;
-	margin: 120px auto;
+	width: 100%;
+	height: 200px;
+	// margin: 120px auto;
 	display: flex;
 	justify-content: center;
+					border: 1px solid pink;
+
 }
 
 .fa-home:hover, .fa-plus-circle:hover, .fa-minus-circle:hover {
@@ -65,4 +71,105 @@ $selected: #b2b2b2;
 	border-radius: 80px;
 	z-index: 2;
 	background: $bluetheme;
+}
+.adminCal {
+	display: flex;
+	flex-direction: column;
+	width: 185px;
+	min-height: 162px;
+	max-height: 220px;
+	border: 1px solid $darkgrey;
+	margin-left: 10px;
+			// border: 3px solid green;
+}
+	
+.adminCalHeader {
+	display: flex;
+	flex-wrap: nowrap;
+	width: 100%;
+			// border: 1px solid red;
+	text-align: center;
+	height: 18px;
+	line-height: 18px;
+	font-size: 12px;
+	font-weight: bold;
+	background: $darkgrey; 
+    background: -moz-linear-gradient(top, $gradientfrom, $darkgrey); 
+    background: -webkit-gradient(linear, left top, left bottom, from($gradientfrom2), to($gradientto2));
+    justify-content: space-between;
+    -webkit-border-top-left-radius: 1px; 
+    // -webkit-border-top-right-radius: 5px; 
+    -moz-border-radius-topleft: 1px; 
+    // -moz-border-radius-topright: 5px; 
+    border-top-left-radius: 1px; 
+    // border-top-right-radius: 5px;  
+    text-shadow:0px -1px 0 $textshadow;
+}
+
+
+.adminCalDays {
+	height: 18px;
+	line-height: 18px;
+	display: flex;
+	flex-wrap: nowrap;
+	justify-content: space-around;
+	width: 100%;
+			// border: 1px solid pink;
+	text-align: center;
+	background: #fff;
+}
+.adminCalDays > * {
+	// border-right: 1px solid black;
+	width: 14.3%;
+	text-align: center;
+	font-size: 9px;
+}
+
+.adminCalDate {
+	width: 100%;
+	min-height: 100px;
+			// border: 3px solid red;
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.adminCalBox {
+	width: 14.285%;
+	height: 20px;
+	border-right: 1px solid $darkgrey;
+	border-top: 1px solid $darkgrey;
+	color: $bluetheme;
+	padding: 1px;
+	font-size: 10px;
+	background: #fff;
+}
+.publish {
+	width: 200px;
+	height: 150px;
+	margin: 20px auto;
+					// border: 1px solid lightgreen;
+
+}
+.publish button {
+	width: 100%;
+	height: 50px;
+	background: #2B96DD;
+	/* Background Gradient for Analagous Colors */
+    background-color: #BFEE90;
+    /* For WebKit (Safari, Chrome, etc) */
+    background: #BFEE90 -webkit-gradient(linear, left top, left bottom, from(#90EEA0), to(#BFEE90)) no-repeat;
+    /* Mozilla,Firefox/Gecko */
+    background: #BFEE90 -moz-linear-gradient(top, #90EEA0, #BFEE90) no-repeat;
+	border-radius: 2px;
+	color: black;
+	border: none;
+	border-bottom: 5px solid #90EEA0;
+	outline: none;
+	font-size: 16px;
+	font-family: 'Avenir Book';
+}
+.publish button:active {
+	border: none;
+	height: 44px;
+	margin-top: 6px;
 }
