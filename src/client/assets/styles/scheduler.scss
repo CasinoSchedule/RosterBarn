@@ -9,6 +9,10 @@ $bluetheme: #336eb5;
 $purpletheme: #0A4081;
 $sidepanel: #292E35;
 $selected: #b2b2b2;
+$greyScheme: #404040;
+$cakeBorder: #3665C1;
+$cakeBox: #2656B2;
+$cakeSelected: #302F3F;
 
 // body {
 // 	font-family: 'Andale Mono';
@@ -29,22 +33,67 @@ $selected: #b2b2b2;
 	top: 0;
 	left: 0;
 	width: 100%;
-	height: 30px;
+	height: 40px;
 	border-bottom: 1px solid $darkgrey;
 	padding-left: 15px;
 	padding-top: 5px;
+	background: $greyScheme;
+	display: flex;
+	justify-content: space-between;
 }
 .adminHeader img {
 	height: 20px;
 	width: auto;
 }
+.roster {
+	font-family: Copperplate;
+	color: white;
+	font-size: 22px;
+	text-shadow: 1px 1px 0 #000;
+}
+.barn {
+	font-family: 'Cooper Black';
+	color: $selected;
+	font-size: 22px;
+	text-shadow: 1px 1px 0 #000;
+}
+.employee {
+	width: 15%;
+}
+.letter {
+	color: $gradientfrom2;
+	font-size: 24px;
+	text-shadow: 1px 1px 0 #000;
+}
+.logout {
+	cursor: pointer;
+}
+.headerOptions {
+	display: flex;
+	justify-content: space-around;
+	width: 300px;
+	height: 40px;
+	line-height: 40px;
+	color: $textshadow;
+	font-family: Copperplate;
+}
+.fa-cogs, .fa-sign-out {
+	margin: 0 15px 0 10px;
+}
+.adminContainer {
+	margin: 40px 0 0 0;
+	width: 100%;
+	height: auto;
+	padding-left: 200px;
+			// border: 2px solid red;
+}
 .scheduleFlex {
 	display: flex;
 	flex-wrap: nowrap;
-	width: 1000px;
+	width: 100%;
 	min-height: 200px;
 	// border: 1px solid red;
-	margin: 0 0 0 220px;
+	// margin: 0 0 0 220px;
 	-moz-box-shadow:0px 3px 3px rgba(0, 0, 0, 0.25); 
     -webkit-box-shadow:0px 3px 3px rgba(0, 0, 0, 0.25);
 }
@@ -52,31 +101,112 @@ $selected: #b2b2b2;
 	width: 100%;
 	height: 50px;
 	line-height: 50px;
-	// border: 1px solid $darkgrey;
-	position: absolute;
-	top: 30px;
-	left: 200px;
-	text-align: left;
-	padding-left: 50px;
+	border: 1px solid $darkgrey;
+	background: $gradientfrom2;
+
+
+
+
+background: #5C258D; /* fallback for old browsers */
+background: -webkit-linear-gradient(to left, #5C258D , #4389A2); /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to left, #5C258D , #4389A2); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        // color: white;
+
+	// position: absolute;
+	// top: 30px;
+	// left: 200px;
+	// text-align: left;
+	// padding-left: 50px;
 	font-family: Calibri;
-	font-size: 20px;
+	font-size: 16px;
+	// text-transform: uppercase;
+	display: flex;
+	justify-content: center;	
+	// justify-content: space-between;
 
 }
-.weekLabel {
-	color: $gradientfrom2;
-	text-shadow:0px -1px 0 $darkgrey;
-	font-size: 24px;
+
+.adminPublish {
+	width: 18%;
+
+
 }
+
+.adminPublish button {
+	width: 100%;
+	height: 45px;
+	line-height: 45px;
+    background-color: #1ED660;
+	text-shadow: 1px 1px black;
+	color: #fff;
+	letter-spacing: 1px;
+	border: none;
+	border-bottom: 4px solid black;
+	// border-right: 1px solid #90EEA0;
+	outline: none;
+	font-size: 18px;
+	font-weight: 700;
+	font-family: 'Avenir Book';
+	-webkit-box-shadow: 3px 2px 5px 0px rgba(64,64,64,0.5);
+	-moz-box-shadow: 3px 2px 5px 0px rgba(64,64,64,0.5);
+	box-shadow: 3px 2px 5px 0px rgba(64,64,64,0.5);
+	// border-radius: 5px;
+}
+.adminPublish button:active {
+	border: none;
+	height: 42px;
+	margin-top: 2px;
+}
+
+.navigate {
+	width: 460px;
+	display: flex;
+	// border: 1px solid green;
+}
+.weekLabel {
+	width: 380px;
+	// color: $gradientfrom2;
+	text-shadow:1px 1px 0 $textshadow; 
+	font-size: 20px;
+	// text-transform: uppercase;
+	// border: 1px solid yellow;
+	text-align: center;
+	color: white;
+	text-shadow: 1px 1px 0 #000;
+}
+.leftButton, .rightButton {
+	width: 20px;
+	height: 20px;
+	line-height: 20px;
+	text-align: center;
+	background: $selected;
+	align-self: center;
+	-webkit-box-shadow: 3px 2px 5px 0px rgba(64,64,64,0.5);
+	-moz-box-shadow: 3px 2px 5px 0px rgba(64,64,64,0.5);
+	box-shadow: 3px 2px 5px 0px rgba(64,64,64,0.5);
+}
+.leftButton:hover, .rightButton:hover {
+	background: $gradientfrom2;
+}
+.leftButton {
+	margin-right: 15px;
+
+}
+.rightButton {
+	margin-left: 15px;
+}
+
 .changeFlexBoxSize {
 	width: 1200px;
 	margin: 0 0 0 50px;
+	color: red;
 }
 .nextButtons {
-	width: 1000px;
+	width: 100%;
 	display: flex;
 	justify-content: space-between;
-	// border: 1px solid blue;
-	margin: 90px 0 0 220px;
+	border: 1px solid blue;
+	// margin: 90px 0 0 220px;
 }
 .backForward > div > button {
 	font-size: 12px;
@@ -104,8 +234,9 @@ $selected: #b2b2b2;
 // 	display: inline;
 // 	border: 1px solid green;
 // }
-.employeeField {
-	width: 15%;
+.employee {
+	width: 14.3%;
+	font-size: 14px;
 	// border: 1px solid blue;
 }
 .schedule {
@@ -116,6 +247,10 @@ $selected: #b2b2b2;
 	flex-wrap: nowrap;
 	// border: 1px solid red;
 	width: 100%;
+	padding-left: 3px;
+}
+.weekOf:first-child {
+	background: $greyScheme;
 }
 .weekOfDay {
 	width: 14.3%;
@@ -125,6 +260,11 @@ $selected: #b2b2b2;
 	// border-left: 1px solid red;
 	border-right: 1px solid $darkgrey;
 	// color: white;
+	font-family: Arial;
+	font-size: 12px;
+	font-weight: 600;
+	text-transform: uppercase;
+	background: white;
 }
 .weekOfDay p {
 	font-size: 12px;
@@ -195,5 +335,6 @@ $selected: #b2b2b2;
 // }
 .eachDay input:only-of-type {
 	font-size: 12px;
-	font-family: 'Andale Mono';
+	font-family: 'Arial';
 }
+

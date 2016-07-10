@@ -4,6 +4,7 @@ import SidePanel from 'ui/sidePanel';
 import EmployeeToSchedule from 'ui/employeeToSchedule';
 import EmployeeMonthlySchedule from 'ui/employeeMonthlySchedule';
 import { calendar, getWeekByWeek, getEmployeeSchedule, caltest } from 'api/data';
+import { browserHistory } from 'react-router';
 
 require("assets/styles/scheduler.scss");
 var image = require("assets/images/logo2.png");
@@ -56,49 +57,59 @@ export default React.createClass({
 		// e.preventDefault();
 		console.log(obj);
 	},
+	logout: function(){
+		browserHistory.push('/')
+	},
 	render: function(){
 		return (
 			<div className="adminBg">
 
-				<SidePanel />
+				<SidePanel dateString={this.state.weeklyCalendar[0].calendar_date} />
 
-				{/* <div className="adminHeader">
-					<img src={image} /> 
-				</div> */ }
-
-				<div className="monthLabel">Week of <span className="weekLabel"> {this.state.weeklyCalendar[0].monthString} {this.state.weeklyCalendar[0].day}, {this.state.weeklyCalendar[0].year}</span> </div>	
-					<div className="nextButtons">
-						{/* <div>
-							<div className="publish"><button onClick={this.submitSchedule}>Publish Schedule</button></div>
-						</div> */}
-						<div className="backForward">
-							<div><button onClick={this.previousSchedule}>Previous week</button></div>
-							<div><button onClick={this.nextSchedule}>Next week</button></div>
-						</div>
+				<div className="adminHeader">
+					<div>
+					 <span className="roster"><span className="letter">R</span>oster</span><span className="barn"><span className="">B</span>arn</span>
 					</div>
-					{/* <button onClick={this.submitSchedule}>Publish Schedule</button>	*/}
+					<div className="headerOptions">
+						<div className="settings"><i className="fa fa-cogs" aria-hidden="true"></i>Settings</div>
+						<div className="logout" onClick={this.logout} ><i className="fa fa-sign-out" aria-hidden="true"></i>Logout</div>
+						
+					</div>
+				</div> 
+				<div className="adminContainer">
+
+					<div className="monthLabel">
+						{/*<div className="adminPublish">
+							<button>Publish</button>
+						</div>*/}
+
+						<div className="navigate">
+							<div className="leftButton" onClick={this.previousSchedule}><i className="fa fa-angle-left" aria-hidden="true"></i></div>
+
+							<div className="weekLabel"> {this.state.weeklyCalendar[0].monthString} {this.state.weeklyCalendar[0].day}, {this.state.weeklyCalendar[0].year}   
+
+									<span className="dash"> - </span> 
+
+								{this.state.weeklyCalendar[6].monthString} {this.state.weeklyCalendar[6].day}, {this.state.weeklyCalendar[6].year}
+							</div> 
+							<div className="rightButton" onClick={this.nextSchedule}><i className="fa fa-angle-right" aria-hidden="true"></i></div>
+						</div>
+					</div>	
+
+					
 
 				<div className={"scheduleFlex " + this.state.flexbox_size}>
 					
 					<div className="schedule">
-						<div className="scheduledays">
-							<div className="blankDayBox"></div>
-							<div>MON</div>
-							<div>TUE</div>
-							<div>WED</div>
-							<div>THUR</div>
-							<div>FRI</div>
-							<div>SAT</div>
-							<div>SUN</div>
-						</div>
+						
 						
 						<div className="weekOf">
-							<div className="blankEmployeeBox">Employees</div>
+							<div className="roster employee"><span className="letter">R</span>oster</div>
 							
 							{this.state.weeklyCalendar.map(function(item, i){
 								return (
 										<div key ={i} className="weekOfDay">
-											<p>{item.monthString}, {item.day}</p>
+											<p>{item.dayString}<span>&#160;</span> {item.day}</p>
 										</div>
 								)
 							}.bind(this))}  
@@ -118,7 +129,7 @@ export default React.createClass({
 					</div>
 				</div>
 						
-						
+				</div>		
 			</div>
 		)
 	}

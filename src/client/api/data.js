@@ -98,7 +98,7 @@ export function getWeekByWeek(year, month, day, cb){
 		    
 		    return dat;
 		}
-
+		var abbreviatedDayString = ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"];
 		var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 		var dat = new Date(year, month, day);
 		
@@ -114,6 +114,7 @@ export function getWeekByWeek(year, month, day, cb){
 			weekDays[i] = {
 				year: dat.addDays(n).getFullYear(),
 				monthString: months[dat.addDays(n).getMonth()],
+				dayString: abbreviatedDayString[dat.addDays(n).getDay()],
 				javascriptMonthNum: dat.addDays(n).getMonth(),
 				day: dat.addDays(n).getDate(),
 				calendar_date: dat.addDays(n).getFullYear() + "-" + pythonMonth[dat.addDays(n).getMonth()] + "-" + dat.addDays(n).getDate(),
@@ -141,10 +142,13 @@ export function getWorkWeekSchedule(month, year){
 			type: 'GET_EMPLOYEEMONTHLYSCHEDULE',
 			employeeMonthlySchedule: resp.data
 		})
-		console.log('From the call', resp.data);
+		// console.log('From the call', resp.data);
 	})
 }
 
+export function publish(obj){
+	return api.post('/schedules/shift/publish', obj);
+}
 
 export function setNewSchedule(uniqueId, arr, newScheduleItem) {
 	console.log('Set New Schedule ', newScheduleItem);

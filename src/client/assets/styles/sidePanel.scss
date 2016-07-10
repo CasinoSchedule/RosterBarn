@@ -9,6 +9,11 @@ $bluetheme: #336eb5;
 $purpletheme: #0A4081;
 $sidepanel: #292E35;
 $selected: #b2b2b2;
+$greyScheme: #404040;
+$cakeBorder: #3665C1;
+$cakeBox: #2656B2;
+$cakeSelected: #302F3F;
+
 
 
 .sidePortal {
@@ -17,20 +22,30 @@ $selected: #b2b2b2;
 	left: 0;
 	width: 200px;
 	height: 100%;
-	background-color: $sidepanel;
+	background-color: $greyScheme;
 	display: flex;
 	flex-direction: column;
 	padding-bottom: 10px;
-	justify-content: space-around;
-				border: 1px solid red;
+	justify-content: space-between;
+				// border: 1px solid red;
+}
+.sidePortalFlex {
+	width: 100%;
+	height: 90%;
+	display: flex;
+	flex-direction: column;
+	// justify-content: space-between;
+	margin: 40px 0 0 0;
+							// border: 2px dotted yellow;
 }
 .collapseButton {
-	min-width: 40px;
-	max-width: 120px;
+	width: 100%;
 	color: $darkgrey;
+	display: flex;
+	justify-content: flex-end;
 	// padding-top: 10px;
 	// padding-left: 5px;
-		border: 2px solid orange;
+		// border: 2px solid orange;
 }
 .collapse {
 	width: 40px;
@@ -40,11 +55,13 @@ $selected: #b2b2b2;
 }
 .portalOptions {
 	width: 100%;
-	height: 200px;
+	min-height: 300px;
 	// margin: 120px auto;
 	display: flex;
-	justify-content: center;
-					border: 1px solid pink;
+	flex-direction: column;
+	// justify-content: center;
+					// border: 1px solid pink;
+	background: $cakeSelected;
 
 }
 
@@ -79,7 +96,7 @@ $selected: #b2b2b2;
 	min-height: 162px;
 	max-height: 220px;
 	border: 1px solid $darkgrey;
-	margin-left: 10px;
+	margin-left: 5px;
 			// border: 3px solid green;
 }
 	
@@ -93,9 +110,8 @@ $selected: #b2b2b2;
 	line-height: 18px;
 	font-size: 12px;
 	font-weight: bold;
-	background: $darkgrey; 
-    background: -moz-linear-gradient(top, $gradientfrom, $darkgrey); 
-    background: -webkit-gradient(linear, left top, left bottom, from($gradientfrom2), to($gradientto2));
+	background-color: $bluetheme;
+    /* For WebKit (Safari, Chrome, etc) */
     justify-content: space-between;
     -webkit-border-top-left-radius: 1px; 
     // -webkit-border-top-right-radius: 5px; 
@@ -103,7 +119,13 @@ $selected: #b2b2b2;
     // -moz-border-radius-topright: 5px; 
     border-top-left-radius: 1px; 
     // border-top-right-radius: 5px;  
-    text-shadow:0px -1px 0 $textshadow;
+    text-shadow:1px 1px 0 $darkgrey;
+    background: #24C6DC; /* fallback for old browsers */
+background: -webkit-linear-gradient(to left, #24C6DC , #514A9D); /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to left, #24C6DC , #514A9D); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+       color: white;
+       text-shadow: 1px 1px 0 #000;
+       font-family: Arial;
 }
 
 
@@ -134,7 +156,7 @@ $selected: #b2b2b2;
 }
 
 .adminCalBox {
-	width: 14.285%;
+	width: 14.2904%;
 	height: 20px;
 	border-right: 1px solid $darkgrey;
 	border-top: 1px solid $darkgrey;
@@ -142,12 +164,13 @@ $selected: #b2b2b2;
 	padding: 1px;
 	font-size: 10px;
 	background: #fff;
+	box-sizing: border-box;
 }
 .publish {
-	width: 200px;
-	height: 150px;
-	margin: 20px auto;
-					// border: 1px solid lightgreen;
+	width: 100%;
+	min-height:40px;
+	// margin: 20px auto;
+					border: 1px dotted right;
 
 }
 .publish button {
@@ -155,21 +178,57 @@ $selected: #b2b2b2;
 	height: 50px;
 	background: #2B96DD;
 	/* Background Gradient for Analagous Colors */
-    background-color: #BFEE90;
+    background-color: #1ED660;
     /* For WebKit (Safari, Chrome, etc) */
-    background: #BFEE90 -webkit-gradient(linear, left top, left bottom, from(#90EEA0), to(#BFEE90)) no-repeat;
-    /* Mozilla,Firefox/Gecko */
-    background: #BFEE90 -moz-linear-gradient(top, #90EEA0, #BFEE90) no-repeat;
+    // background: #BFEE90 -webkit-gradient(linear, left top, left bottom, from(#90EEA0), to(#BFEE90)) no-repeat;
+    // /* Mozilla,Firefox/Gecko */
+    // background: #BFEE90 -moz-linear-gradient(top, #90EEA0, #BFEE90) no-repeat;
 	border-radius: 2px;
-	color: black;
+	text-shadow: 1px 1px black;
+	color: #fff;
+	letter-spacing: 1px;
 	border: none;
-	border-bottom: 5px solid #90EEA0;
+	border-bottom: 4px solid black;
+	// border-right: 1px solid #90EEA0;
 	outline: none;
-	font-size: 16px;
+	font-size: 18px;
+	font-weight: 700;
 	font-family: 'Avenir Book';
 }
 .publish button:active {
 	border: none;
 	height: 44px;
-	margin-top: 6px;
+	margin-top: 2px;
+}
+.publish button:hover {
+	color: $darkgrey;
+	text-shadow: 1px 1px 0 #fff;
+	background: #3Fe882;
+}
+details summary::-webkit-details-marker {
+	display: none;
+}
+summary {
+	outline: none;
+}
+.locations {
+	width: 100%;
+	height: 40px;
+	line-height: 40px;
+	color: $textshadow;
+	text-shadow: 1px 1px black;
+	background: $cakeSelected;
+	// border: 1px solid red;
+	font-family: Arial;
+	cursor: pointer;
+	// border-bottom: 1px solid $darkgrey;
+}
+.locations i {
+	width: 20px;
+}
+.locations:hover {
+	color: #fff;
+}
+.fa-calendar, .fa-users, .fa-user, .fa-map-signs, .fa-envelope-o {
+	margin: 0 20px 0 10px;
 }

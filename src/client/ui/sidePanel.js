@@ -1,11 +1,12 @@
 import React from 'react';
 import store from 'store';
 import { Link, browserHistory } from 'react-router';
-import { calendar } from 'api/data';
+import { calendar, publish } from 'api/data';
 
 require("assets/styles/sidePanel.scss");
 require('font-awesome-webpack');
 var $ = require('jquery');
+
 // var image = require("assets/images/ariawhite.png"); 
 
 var month = new Date().getMonth(), 
@@ -83,6 +84,10 @@ export default React.createClass({
 			flexbox_size: ((this.state.flexbox_size === "") ? "changeFlexBoxSize" : "")
 		})
 	},
+	publish: function(){
+		publish({date: this.props.dateString});
+		// console.log(this.props.dateString);
+	},
 	render: function(){
 		return (
 			<div className={"sidePortal " + this.state.collapse}>
@@ -90,20 +95,19 @@ export default React.createClass({
 				{/* <div className="profile"></div>
 				<div className="pic"></div> */}
 
-
-				<div className="collapseButton">
-					<i className={this.state.openClose} aria-hidden="true" onClick={this.collapseSidePanel}></i>
-				</div>
+				<div className="sidePortalFlex">
+				
+				
 				<div className="portalOptions">
 
 				{/*	<div className="homeButton">
 						<i className="fa fa-home fa-2x" aria-hidden="true" onClick={this.backToHome}></i> 
 					</div> */}
-				</div>
-				<div className="publish">
-					<button>Publish</button>
-				</div>
-				<div className="adminCal">
+
+					<details closed>
+						<summary className="locations"><i className="fa fa-calendar" aria-hidden="true"></i>Calendar</summary>
+
+						<div className="adminCal">
 
 						<div className="adminCalHeader">
 							<div className="previous" id="previous" onClick={this.nextMonth}>&lang;</div>
@@ -133,6 +137,34 @@ export default React.createClass({
 						</div>
 							
 				</div>
+					</details>
+
+					<details closed>
+						<summary className="locations"><i className="fa fa-users" aria-hidden="true"></i>Staff</summary>
+					</details>
+
+					<details closed>
+						<summary className="locations"><i className="fa fa-user" aria-hidden="true"></i>Position</summary>
+					</details>
+
+					<details closed>
+						<summary className="locations"><i className="fa fa-map-signs" aria-hidden="true"></i>Location</summary>
+					</details>
+
+					<details closed>
+						<summary className="locations"><i className="fa fa-envelope-o" aria-hidden="true"></i>Requests</summary>
+					</details>
+				</div>
+				
+				
+				</div>
+				
+				{/*<div className="collapseButton">
+					<i className={this.state.openClose} aria-hidden="true" onClick={this.collapseSidePanel}></i>
+				</div>*/}
+				<div className="publish" onClick={this.publish}>
+					<button>Publish</button>
+				</div> 
 			</div>
 		)
 	}
