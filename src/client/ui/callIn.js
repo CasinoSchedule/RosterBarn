@@ -18,12 +18,19 @@ export default React.createClass({
 		return (
 			<div className="callInBox">
 				<div className="shade"></div>
-				
-				<div className="callin">
-					You have requested to {this.props.request} for {this.props.callin}.
+				<div className='request_box'>
+					<div className="request_header">
+						Request to: <span className="request_span">{this.props.request}</span>
+						
+					</div>
+					<div className="request_message">
+						You are requesting {(this.props.request === "Early Out") ? " an " : " a "} <span className="underline">{this.props.request}</span> for {this.props.fullDate}. Please click Submit to confirm.
+					</div>
+					<div className="request_buttons">
+						<button className="employeeOptions" onClick={this.close}>Cancel</button>
+						<button className="employeeOptions" onClick={this.handleSubmit}>Submit</button>
+					</div>
 				</div>
-				<button className="employeeOptions" onClick={this.close}>Cancel</button>
-				<button className="employeeOptions" onClick={this.handleSubmit}>Submit</button>
 			</div>
 		)
 	}

@@ -192,13 +192,13 @@ export default React.createClass({
 						<div className="dayOptions">
 							<a href="" onClick={this.callIn} id="call_in">Call In</a>
 							<a href="" onClick={this.callIn} id="early_out">Early Out</a>
-							<a href="" onClick={this.callIn} id="switch_shift">Switch Shift</a>
+							<a href="" onClick={this.callIn} id="switch_shift">Shift Switch</a>
 							<a href="" onClick={this.callIn} id="shift_giveaway">Shift Giveaway</a>
 						</div>
 					</div>
 				</div>
 
-				{this.state.showCallIn ? <CallIn callin={this.state.fullDate} request={this.state.request} /> : ""}
+				{this.state.showCallIn ? <CallIn fullDate={this.state.fullDate} request={this.state.request} /> : ""}
 			</div>
 		)
 	}
