@@ -9,7 +9,11 @@ $bluetheme: #336eb5;
 $purpletheme: #0A4081;
 $sidepanel: #292E35;
 $selected: #b2b2b2;
-
+$navyBlue: #354458;
+$lightBlue: #3A9AD9;
+$teal: #29ABA4;
+$khaki: #E9E0D6;
+$peach: #EB7260;
 
 
 .scheduleBg {
@@ -217,4 +221,7 @@ $selected: #b2b2b2;
 	color: #000;
 	// text-shadow:1px 1px 0 #000;
 	font-size: 10px;
+}
+#startTime {
+	color: $purpletheme;
 }

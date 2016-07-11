@@ -35,7 +35,8 @@ export default React.createClass({
 			working_today: "",
 			working: false,
 			working_bool: true,
-			starting_time: ""
+			starting_time: "",
+			request: ""
 		})
 	},
 	componentWillMount: function(){
@@ -60,10 +61,21 @@ export default React.createClass({
 	},
 	callIn: function(e){
 		e.preventDefault();
+		var day_status = document.querySelector('.day_status').innerHTML;
+		var val = e.target.innerHTML;
+
+		if(day_status === "Day Off" || day_status === "It's your day off. Seize the day!") {
+			document.querySelector('.day_status').innerHTML = "It's your day off. Seize the day!"
+			console.log('hittin');
+		} else {
+			this.setState({
+				request: val
+			})
+		
 			store.dispatch({
 				type: 'CHANGE_SHOWCALLIN',
 				showCallIn: true
-		})
+		})}
 	},
 	backToHome: function(){
 		browserHistory.push('/home');
@@ -156,7 +168,7 @@ export default React.createClass({
 								return (
 									<div key ={i} className={"box " + item.currentClass} id={"box" + i} onClick={this.selectDay.bind(this, item, i)}>
 										<p>{item.day}</p>
-										<p>{item.starting_time}</p>
+										<p id="startTime">{item.starting_time}</p>
 									</div>
 								)
 							}.bind(this))} 	
@@ -174,19 +186,19 @@ export default React.createClass({
 						</div>
 						<div className="divider"></div>
 						<div className="status">
-							{((!(this.state.working_today === "")) && (this.state.working_bool)) ? <p>Working today at <span>{this.state.working_today}</span>.</p> : ((this.state.working) && (this.state.starting_time)) ? <p>Scheduled on {this.state.fullDate} at {this.state.starting_time}.</p> : "Day Off"}
+							{((!(this.state.working_today === "")) && (this.state.working_bool)) ? <p className="day_status">Working today at <span>{this.state.working_today}</span>.</p> : ((this.state.working) && (this.state.starting_time)) ? <p className="day_status">Scheduled on {this.state.fullDate} at {this.state.starting_time}.</p> : <p className="day_status">Day Off</p>}
 						</div>
 						<div className="divider"></div>
 						<div className="dayOptions">
-							<a href="" onClick={this.callIn}>Call In</a>
-							<a href="" onClick={this.callIn}>Early Out</a>
-							<a href="" onClick={this.callIn}>Switch Shift</a>
-							<a href="" onClick={this.callIn}>Shift Giveaway</a>
+							<a href="" onClick={this.callIn} id="call_in">Call In</a>
+							<a href="" onClick={this.callIn} id="early_out">Early Out</a>
+							<a href="" onClick={this.callIn} id="switch_shift">Switch Shift</a>
+							<a href="" onClick={this.callIn} id="shift_giveaway">Shift Giveaway</a>
 						</div>
 					</div>
 				</div>
 
-				{this.state.showCallIn ? <CallIn callin={this.state.fullDate}/> : ""}
+				{this.state.showCallIn ? <CallIn callin={this.state.fullDate} request={this.state.request} /> : ""}
 			</div>
 		)
 	}

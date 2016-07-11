@@ -20,7 +20,7 @@ export default React.createClass({
 				<div className="shade"></div>
 				
 				<div className="callin">
-					You have requested to Call in for {this.props.callin}.
+					You have requested to {this.props.request} for {this.props.callin}.
 				</div>
 				<button className="employeeOptions" onClick={this.close}>Cancel</button>
 				<button className="employeeOptions" onClick={this.handleSubmit}>Submit</button>
