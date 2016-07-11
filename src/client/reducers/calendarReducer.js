@@ -4,7 +4,8 @@ const calendarInitialState = {
 	calendarDays: [],
 	collection: [],
 	weeklyCalendar: [],
-	flexbox_size: ""
+	flexbox_size: "",
+	working_today: {}
 }
 
 export default function(state = calendarInitialState, action){
@@ -18,7 +19,8 @@ export default function(state = calendarInitialState, action){
 				calendarDays: state.calendarDays,
 				collection: state.collection,
 				weeklyCalendar: state.weeklyCalendar,
-				flexbox_size: state.flexbox_size
+				flexbox_size: state.flexbox_size,
+				working_today: state.working_today
 			}
 
 		case 'GET_CALENDARDAYS':
@@ -28,7 +30,8 @@ export default function(state = calendarInitialState, action){
 				calendarDays: action.calendarDays,
 				collection: state.collection,
 				weeklyCalendar: state.weeklyCalendar,
-				flexbox_size: state.flexbox_size
+				flexbox_size: state.flexbox_size,
+				working_today: state.working_today
 			}
 
 		case 'GET_DATEOBJECTS':
@@ -38,7 +41,8 @@ export default function(state = calendarInitialState, action){
 				calendarDays: state.calendarDays,
 				collection: action.collection,
 				weeklyCalendar: state.weeklyCalendar,
-				flexbox_size: state.flexbox_size
+				flexbox_size: state.flexbox_size,
+				working_today: action.working_today
 			}
 
 		case 'GET_WEEKLYCALENDAR':
@@ -49,7 +53,8 @@ export default function(state = calendarInitialState, action){
 				calendarDays: state.calendarDays,
 				collection: state.collection,
 				weeklyCalendar: action.weeklyCalendar,
-				flexbox_size: state.flexbox_size
+				flexbox_size: state.flexbox_size,
+				working_today: state.working_today
 			}
 
 		case 'ALTER_FLEXBOXSIZE':
@@ -59,7 +64,8 @@ export default function(state = calendarInitialState, action){
 				calendarDays: state.calendarDays,
 				collection: state.collection,
 				weeklyCalendar: state.weeklyCalendar,
-				flexbox_size: action.flexbox_size
+				flexbox_size: action.flexbox_size,
+				working_today: state.working_today
 			}
 
 	default:

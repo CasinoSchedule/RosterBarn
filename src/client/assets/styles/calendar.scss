@@ -200,6 +200,9 @@ $selected: #b2b2b2;
 .status {
 	height: 80px;
 	// border: 1px solid red;
+	text-align: center;
+	font-size: 16px;
+	font-family: Arial;
 }
 
 .highlight {
@@ -211,7 +214,7 @@ $selected: #b2b2b2;
 }
 .inactiveMonth {
 	background: rgb(195, 195, 195);
-	color: #fff;
-	text-shadow:0px -1px 0 #000;
+	color: #000;
+	// text-shadow:1px 1px 0 #000;
 	font-size: 10px;
 }

@@ -104,7 +104,7 @@ export default React.createClass({
 						
 						
 						<div className="weekOf">
-							<div className="roster employee"><span className="letter">R</span>oster</div>
+							<div className="roster employee"><span className="letter">R</span>oster<i className="fa fa-user-plus" aria-hidden="true"></i><span className="addUser"></span></div>
 							
 							{this.state.weeklyCalendar.map(function(item, i){
 								return (

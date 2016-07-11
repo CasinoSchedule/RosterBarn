@@ -48,3 +48,6 @@ html {box-sizing:border-box; height:100%;}
 html, body, #app, #app > div {
   height:100%;
 }
+button {
+	outline: none;
+}

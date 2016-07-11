@@ -337,4 +337,15 @@ background: linear-gradient(to left, $purpletheme , #4389A2); /* W3C, IE 10+/ Ed
 	font-size: 12px;
 	font-family: 'Arial';
 }
-
+.fa-user-plus {
+	margin-left: 65px;
+	position: relative;
+}
+.fa-user-plus:hover {
+	color: $gradientfrom2;
+}
+.addUser {
+	width: 200px;
+	height: 200px;
+	background: red;
+}

@@ -4,6 +4,9 @@ import store from 'store';
 require('assets/styles/callIn.scss');
 
 export default React.createClass({
+	handleSubmit: function(e){
+		e.preventDefault();
+	},
 	close: function(e){
 		e.preventDefault();
 		store.dispatch({
@@ -15,7 +18,12 @@ export default React.createClass({
 		return (
 			<div className="callInBox">
 				<div className="shade"></div>
-				<button type="submit" className="employeeOptions" onClick={this.close}>Test (Close Box)</button>
+				
+				<div className="callin">
+					You have requested to Call in for {this.props.callin}.
+				</div>
+				<button className="employeeOptions" onClick={this.close}>Cancel</button>
+				<button className="employeeOptions" onClick={this.handleSubmit}>Submit</button>
 			</div>
 		)
 	}

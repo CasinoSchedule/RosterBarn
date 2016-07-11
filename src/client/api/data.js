@@ -191,6 +191,16 @@ export function stringDate(date) {
 	return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
 }
 
+export function working_today(scheduleInfo){
+	var start_time = ""
+	scheduleInfo.forEach(function(item, i){
+		if(item.day === new Date().getDate() && item.javascriptMonthNum === new Date().getMonth()){
+			start_time = item.starting_time
+		}
+	})
+	return start_time
+}
+
 export function calendar(month, year, monthdate, employee){
 	// console.log('Init', month, year, monthdate);
 	
@@ -208,7 +218,8 @@ export function calendar(month, year, monthdate, employee){
 				currentClass: type,
 				day: date.getDate(),
 				month: months[date.getMonth()],
-				year: date.getFullYear()
+				year: date.getFullYear(),
+				javascriptMonthNum: date.getMonth()
 			};
 			return newItem;
 		}
@@ -222,11 +233,13 @@ export function calendar(month, year, monthdate, employee){
 			}
 		}
 
-		console.log('collection', collection);
+		// console.log('collection', collection);
 
 		if (employee){
 
 		 return api.get('/schedules/employeemonth/?month=' + monthdate + '&year=' + year).then(function(resp){
+
+		 	var data = resp.data;
 
 			var scheduleInfo = collection.map(function(item, i){
 					return ({
@@ -235,23 +248,45 @@ export function calendar(month, year, monthdate, employee){
 						day: item.day,
 						calendar_date: item.calendar_date,
 						currentClass: item.currentClass,
+						javascriptMonthNum: item.javascriptMonthNum,
 						starting_time: checkSchedule(item.calendar_date)
 					})
 				})
 
+			var working = working_today(scheduleInfo);
+
 				store.dispatch({
 					type: 'GET_DATEOBJECTS',
-					collection: scheduleInfo
+					collection: scheduleInfo,
+					working_today: working
 				})
 
+				// console.log('scheduleInfo', scheduleInfo);
+
+				// console.log("Working Today:", working);
+
 				function checkSchedule(check){
-					for(var i = 0; i < resp.data.length; i++){
-						if(resp.data[i].calendar_date === check) {
-							return ((resp.data[i].starting_time) ? resp.data[i].starting_time.slice(0, 5) : "")
+					var hour_time_check = 0;
+					for(var i = 0; i < data.length; i++){
+						if(data[i].calendar_date === check) {
+							if(data[i].starting_time){
+								hour_time_check = parseInt(data[i].starting_time.slice(0, 2));
+								if(hour_time_check === 12){
+									return data[i].starting_time.slice(0, 5) + "pm";
+								} else if(hour_time_check < 12) {
+									return data[i].starting_time.slice(0, 5) + "am"
+								} else {
+									hour_time_check = hour_time_check - 12
+									return hour_time_check + ":" + data[i].starting_time.slice(3, 5) + "pm"
+								}
+							}
+							else {
+								return ""
+							}
 						}
 					}
-					return ""
 				}
+		
 		})} else { 
 
 			store.dispatch({

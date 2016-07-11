@@ -18,7 +18,7 @@ var month = new Date().getMonth(),
 	months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"], 
 	daysInMonths = [31, (((year%4==0)&&(year%100!=0))||(year%400==0)) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31], 
 	date = new Date().getDate(), 
-	day = days[new Date().getDay()];
+	day = days[new Date().getDay()]
 
 export default React.createClass({
 	getInitialState: function(){
@@ -31,21 +31,12 @@ export default React.createClass({
 			selectedDay: date,
 			day: day,
 			fullDate: months[new Date().getMonth()] + " " + date + ", " + year,
-			collection: []
+			collection: [],
+			working_today: "",
+			working: false,
+			working_bool: true,
+			starting_time: ""
 		})
-	},
-	updateState: function(){
-		this.unsubscribe = store.subscribe(function(){
-			var currentStore = store.getState();
-			this.setState({
-				showCallIn: currentStore.showReducer.showCallIn,
-				employeeMonthlySchedule: currentStore.employeeReducer.employeeMonthlySchedule,
-				month: currentStore.calendarReducer.month,
-				year: currentStore.calendarReducer.year,
-				calendarDays: currentStore.calendarReducer.calendarDays,
-				collection: currentStore.calendarReducer.collection
-			})
-		}.bind(this));
 	},
 	componentWillMount: function(){
 		this.unsubscribe = store.subscribe(function(){
@@ -56,14 +47,16 @@ export default React.createClass({
 				month: currentStore.calendarReducer.month,
 				year: currentStore.calendarReducer.year,
 				calendarDays: currentStore.calendarReducer.calendarDays,
-				collection: currentStore.calendarReducer.collection
+				collection: currentStore.calendarReducer.collection,
+				working_today: currentStore.calendarReducer.working_today
 			})
 		}.bind(this));
-		
+		calendar(months[month], year, month+1, true);
+
 	},
 	componentDidMount: function(){
-		calendar(months[month], year, month+1, true);
-		// this.updateState();
+		
+		
 	},
 	callIn: function(e){
 		e.preventDefault();
@@ -81,6 +74,11 @@ export default React.createClass({
 			var shootmonth = months.indexOf(x[0]) + 1;
 			calendar(x[0], x[1], shootmonth, true);
 		}, 50);
+		// this.setState({
+		// 	working: false,
+		// 	starting_time: "",
+		// 	working_today: {}
+		// })
 	},
 	nextMonth: function(e){
 		e.preventDefault();
@@ -101,10 +99,13 @@ export default React.createClass({
 				month: ((this.state.month === 11) ? this.state.month = 0 : this.state.month + 1)
 			})
 			this.createCalendar();
-		}
+		}	
 	},
 	selectDay: function(item, index, e){
 		e.preventDefault();
+		this.setState({
+			working_bool: false
+		})
 		var y = months.indexOf(item.month);
 		var z = new Date(item.year, y, item.day).getDay();
 		
@@ -115,7 +116,9 @@ export default React.createClass({
 		this.setState({
 			selectedDay: item.day,
 			day: days[z],
-			fullDate: item.month + " " + item.day + ", " + item.year
+			fullDate: item.month + " " + item.day + ", " + item.year,
+			starting_time: item.starting_time,
+			working: (!(item.starting_time === "") ? true : false)
 		})
 
 	},
@@ -171,11 +174,11 @@ export default React.createClass({
 						</div>
 						<div className="divider"></div>
 						<div className="status">
-
+							{((!(this.state.working_today === "")) && (this.state.working_bool)) ? <p>Working today at <span>{this.state.working_today}</span>.</p> : ((this.state.working) && (this.state.starting_time)) ? <p>Scheduled on {this.state.fullDate} at {this.state.starting_time}.</p> : "Day Off"}
 						</div>
 						<div className="divider"></div>
 						<div className="dayOptions">
-							<a href="" onClick={this.callIn} >Call In</a>
+							<a href="" onClick={this.callIn}>Call In</a>
 							<a href="" onClick={this.callIn}>Early Out</a>
 							<a href="" onClick={this.callIn}>Switch Shift</a>
 							<a href="" onClick={this.callIn}>Shift Giveaway</a>
@@ -183,7 +186,7 @@ export default React.createClass({
 					</div>
 				</div>
 
-				{this.state.showCallIn ? <CallIn /> : ""}
+				{this.state.showCallIn ? <CallIn callin={this.state.fullDate}/> : ""}
 			</div>
 		)
 	}
