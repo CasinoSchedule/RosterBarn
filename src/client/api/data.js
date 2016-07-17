@@ -38,7 +38,7 @@ export function checkAdmin(){
 		}
 	})
 }
-export function getEmployeeSchedule(year, month, day){
+export function getEmployeeSchedule(year, month, day, shift){
 	var pythonMonth = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 	var pythonChopDate = new Date(year, month-1, day);
 	year = pythonChopDate.getFullYear();
@@ -49,12 +49,14 @@ export function getEmployeeSchedule(year, month, day){
 	var pythonBackToJavascriptMonth = month - 1;
 	var scheduledEmployees = [];
 	var weekdays = [];
-	var myArr = [];
+	
 	return api.get('/schedules/weekshift/?date=' + year + "-" + month + "-" + day).then(function(resp){
 		workWeekSchedule = resp.data;
-		return api.get('/profiles/employee/').then(function(resp){
+		var shiftFilter = ((shift) ? '/profiles/employee/' + shift : '/profiles/employee/');
+
+		return api.get(shiftFilter).then(function(resp){
 			employees = resp.data;
-			
+			console.log('Employee List', resp.data)
 			getWeekByWeek(year, pythonBackToJavascriptMonth, day, function(weekdays){
 					weekdays = weekdays;
 

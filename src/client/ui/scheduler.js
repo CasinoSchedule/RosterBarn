@@ -3,7 +3,7 @@ import store from 'store';
 import SidePanel from 'ui/sidePanel';
 import EmployeeToSchedule from 'ui/employeeToSchedule';
 import EmployeeMonthlySchedule from 'ui/employeeMonthlySchedule';
-import { calendar, getWeekByWeek, getEmployeeSchedule, caltest, addEmployee } from 'api/data';
+import { calendar, getWeekByWeek, getEmployeeSchedule, caltest, addEmployee, updateEmployee } from 'api/data';
 import { browserHistory } from 'react-router';
 
 require("assets/styles/scheduler.scss");
@@ -67,11 +67,16 @@ export default React.createClass({
 		getWeekByWeek(year, month, date + forward);
 		
 	},
+	filterByShift: function(shift){
+		var addOnEndpoint = ((shift) ? "?shift_title=" + shift : "");
+		getEmployeeSchedule(year, pythonMonth[month], (date + forward), addOnEndpoint);
+		getWeekByWeek(year, month, date + forward);
+	},
 	render: function(){
 		return (
 			<div className="adminBg">
 
-				<SidePanel dateString={this.state.weeklyCalendar[0].calendar_date} />
+				<SidePanel dateString={this.state.weeklyCalendar[0].calendar_date} filterByShift={this.filterByShift} />
 
 				<div className="adminHeader">
 					<div>

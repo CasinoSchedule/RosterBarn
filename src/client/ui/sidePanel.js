@@ -103,8 +103,10 @@ export default React.createClass({
 		getEmployeeSchedule(item.year, (item.javascriptMonthNum + 1), item.day);
 		getWeekByWeek(item.year, item.javascriptMonthNum, item.day);
 	},
-	deleteEmployee: function(e){
-
+	shiftFilter: function(e){
+		var val = e.target.id[1];
+		// console.log(val);
+		this.props.filterByShift(val);
 	},
 	render: function(){
 		return (
@@ -173,6 +175,16 @@ export default React.createClass({
 
 					<details closed>
 						<summary className="locations"><i className="fa fa-envelope-o" aria-hidden="true"></i>Requests</summary>
+					</details>
+
+					<details closed>
+						<summary className="locations"><i className="fa fa-clock-o" aria-hidden="true"></i>Shifts</summary>
+							<div className="shiftBox">
+								<div className="shifts" id="a3" onClick={this.shiftFilter}>Grave</div>
+								<div className="shifts" id="a1" onClick={this.shiftFilter}>Day</div>
+								<div className="shifts" id="a2" onClick={this.shiftFilter}>Swing</div>
+								<div className="shifts" id="a" onClick={this.shiftFilter}>All</div>
+							</div>
 					</details>
 				</div>
 				

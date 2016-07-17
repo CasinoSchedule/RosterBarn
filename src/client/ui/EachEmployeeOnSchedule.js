@@ -52,13 +52,18 @@ export default React.createClass({
 	},
 	handleNameBlur: function(e){
 		var val = this.refs.nameString.value.split(" ");
-		console.log(val);
-		updateEmployee(this.state.id, {
-			first_name: val[0], 
-			last_name: val[1],
-			regular_days_off: [1],
-			availability: [3]
-		});
+		// console.log(this.state.id, {
+		// 	first_name: val[0], 
+		// 	last_name: val[1],
+		// 	regular_days_off: [1],
+		// 	availability: [1]
+		// });
+		// updateEmployee(this.state.id, {
+		// 	first_name: val[0], 
+		// 	last_name: val[1],
+		// 	regular_days_off: [1],
+		// 	availability: [1]
+		// });
 
 	},
 	render: function(){

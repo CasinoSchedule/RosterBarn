@@ -13,7 +13,7 @@ const config = {
   },
   http: {
     host: '0.0.0.0',
-    port: process.env.port || 8000
+    port: process.env.port || 5000
   }
 }
 
