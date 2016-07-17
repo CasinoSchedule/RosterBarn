@@ -24,8 +24,9 @@ export default React.createClass({
 						
 					</div>
 					<div className="request_message">
-						You are requesting {(this.props.request === "Early Out") ? " an " : " a "} <span className="underline">{this.props.request}</span> for {this.props.fullDate}. Please click Submit to confirm.
+						You are requesting {(this.props.request === "Early Out") ? " an " : " a "} <span className="underline">{this.props.request}</span> for {this.props.fullDate}.
 					</div>
+					<div className="confirm"> Please click Submit to confirm. </div>
 					<div className="request_buttons">
 						<button className="employeeOptions" onClick={this.close}>Cancel</button>
 						<button className="employeeOptions" onClick={this.handleSubmit}>Submit</button>

@@ -11,6 +11,7 @@ import App from 'layouts/app';
 import Home from 'ui/home';
 import Calendar from 'ui/calendar';
 import Scheduler from 'ui/scheduler';
+import LandingPage from 'ui/landingPage';
 
 
 
@@ -18,6 +19,7 @@ export default (
   <Provider store={store}>
     <Router history={browserHistory}>
       <Route component={App}>
+      	<Route path='/landingPage' component={LandingPage} />
       	<Route path='/' component={Home} />
       	<Route path='/calendar' component={Calendar} />
       	<Route path='/scheduler' component={Scheduler} />    	

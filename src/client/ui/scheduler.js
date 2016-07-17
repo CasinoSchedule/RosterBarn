@@ -3,7 +3,7 @@ import store from 'store';
 import SidePanel from 'ui/sidePanel';
 import EmployeeToSchedule from 'ui/employeeToSchedule';
 import EmployeeMonthlySchedule from 'ui/employeeMonthlySchedule';
-import { calendar, getWeekByWeek, getEmployeeSchedule, caltest } from 'api/data';
+import { calendar, getWeekByWeek, getEmployeeSchedule, caltest, addEmployee } from 'api/data';
 import { browserHistory } from 'react-router';
 
 require("assets/styles/scheduler.scss");
@@ -60,6 +60,13 @@ export default React.createClass({
 	logout: function(){
 		browserHistory.push('/')
 	},
+	addEmployee: function(e){
+		e.preventDefault();
+		addEmployee({first_name: "Add", last_name: "Employee"});
+		getEmployeeSchedule(year, pythonMonth[month], (date + forward));
+		getWeekByWeek(year, month, date + forward);
+		
+	},
 	render: function(){
 		return (
 			<div className="adminBg">
@@ -71,6 +78,7 @@ export default React.createClass({
 					 <span className="roster"><span className="letter">R</span>oster</span><span className="barn"><span className="">B</span>arn</span>
 					</div>
 					<div className="headerOptions">
+						<div className="options"><i className="fa fa-bars" aria-hidden="true"></i>Options</div>
 						<div className="settings"><i className="fa fa-cogs" aria-hidden="true"></i>Settings</div>
 						<div className="logout" onClick={this.logout} ><i className="fa fa-sign-out" aria-hidden="true"></i>Logout</div>
 						
@@ -104,7 +112,7 @@ export default React.createClass({
 						
 						
 						<div className="weekOf">
-							<div className="roster employee"><span className="letter">R</span>oster<i className="fa fa-user-plus" aria-hidden="true"></i><span className="addUser"></span></div>
+							<div className="roster employee"><span className="letter">R</span>oster<i className="fa fa-user-plus" aria-hidden="true" onClick={this.addEmployee}></i><span className="addUser"></span></div>
 							
 							{this.state.weeklyCalendar.map(function(item, i){
 								return (

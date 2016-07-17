@@ -50,8 +50,11 @@ $selected: #b2b2b2;
 	background: yellow;
 }
 
-#test input{
+#test input {
 	text-align: center;
+	width: 100%;
+	overflow-x: scroll;
+    overflow-y: hidden;
 }
 .nameField {					// Each Name On Schedule
 	// background: $teal;
@@ -64,14 +67,11 @@ $selected: #b2b2b2;
 	overflow-x: scroll;
     overflow-y: hidden;
     white-space: nowrap;
-
-   
-
-
-
-// background: #24C6DC; /* fallback for old browsers */
-// background: -webkit-linear-gradient(to left, #24C6DC , #514A9D); Chrome 10-25, Safari 5.1-6
-// background: linear-gradient(to left, #24C6DC , #514A9D); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-           
-    
+	// border: 1px solid red;
+	// width: 100%;
+}
+.nameField input[type=text] {
+	// width: 200px;
+	// border: 2px solid blue;
+	// background: yellow;
 }

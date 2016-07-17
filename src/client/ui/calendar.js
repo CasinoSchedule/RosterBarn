@@ -31,6 +31,7 @@ export default React.createClass({
 			selectedDay: date,
 			day: day,
 			fullDate: months[new Date().getMonth()] + " " + date + ", " + year,
+			jsDateToCheck: "",
 			collection: [],
 			working_today: "",
 			working: false,
@@ -56,15 +57,31 @@ export default React.createClass({
 
 	},
 	componentDidMount: function(){
-		
+		console.log('Working_Today', this.state.working_today);
 		
 	},
 	callIn: function(e){
 		e.preventDefault();
+		console.log('Js Date', this.state.jsDateToCheck);
+		// console.log('Curr Date', new Date(year, month, date));
+		var jsDate = this.state.jsDateToCheck;
+		var dateToCheck = new Date(jsDate[0], jsDate[1], jsDate[2]);
+		var day_off_text = "Day Off";
+		var seize_the_text = "It's your day off. Seize the day!";
+		var in_the_past_text = "Date must be in the future.";
+		if(dateToCheck < new Date()){
+			console.log('In the past')
+			console.log(dateToCheck)
+			return document.querySelector('.day_status').innerHTML = in_the_past_text
+		} else {
+			this.setState({
+				request: val
+			})
+		}
 		var day_status = document.querySelector('.day_status').innerHTML;
 		var val = e.target.innerHTML;
 
-		if(day_status === "Day Off" || day_status === "It's your day off. Seize the day!") {
+		if(day_status === day_off_text || day_status === seize_the_text) {
 			document.querySelector('.day_status').innerHTML = "It's your day off. Seize the day!"
 			console.log('hittin');
 		} else {
@@ -130,9 +147,13 @@ export default React.createClass({
 			day: days[z],
 			fullDate: item.month + " " + item.day + ", " + item.year,
 			starting_time: item.starting_time,
-			working: (!(item.starting_time === "") ? true : false)
+			working: (!(item.starting_time === "") ? true : false),
+			jsDateToCheck: [item.year, y, item.day]
 		})
 
+	},
+	logout: function(){
+		browserHistory.push('/');
 	},
 	componentWillUnmount: function () {
 		this.unsubscribe();
@@ -142,9 +163,16 @@ export default React.createClass({
 			<div className="scheduleBg">
 				
 				
-
-				<div id="imageContainer">
-					<img src={image}/>
+				<div className="headerBar">
+					<div>
+					 	<span className="roster"><span className="letter">R</span>oster</span><span className="barn"><span className="">B</span>arn</span>
+					</div>
+					<div id="imageContainer">
+						<img src={image}/>
+					</div>
+					<div className="employeeLogout" onClick={this.logout}>
+						Logout
+					</div>
 				</div>
 				<div className="calenderFlex">
 

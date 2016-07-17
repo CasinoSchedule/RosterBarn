@@ -49,6 +49,8 @@ $peach: #EB7260;
 	justify-content: space-between;
 	align-items: center;
 	padding-bottom: 10px;
+	-moz-box-shadow:3px 3px 3px rgba(0, 0, 0, 0.25); 
+    -webkit-box-shadow: 6px 6px 6px rgba(0, 0, 0, 0.25); 
 }
 .employeeOptions {
 	width: 70px;
@@ -94,4 +96,9 @@ $peach: #EB7260;
 }
 .underline {
 	text-decoration: underline;
+}
+.confirm {
+	color: black;
+	font-size: 17px;
+	text-shadow: none;
 }

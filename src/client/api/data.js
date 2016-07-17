@@ -1,5 +1,6 @@
 import api from 'api/api';
 import store from 'store';
+import { browserHistory } from 'react-router'; 
 
 api.new('https://sheltered-springs-57964.herokuapp.com/');
 // api.new('http://10.68.0.45:8000/');
@@ -12,6 +13,31 @@ export function logout() {
  return api.logout();
 }
 
+export function addEmployee(obj){
+	// console.log(obj);
+	return api.post('/profiles/employee/', obj);
+
+}
+
+export function updateEmployee(id, obj){
+	return api.put('/profiles/employee/update/' + id + "/", obj);
+
+}
+export function deleteEmployee(id){
+	return api.delete('/profiles/employee/' + id + "/");
+
+}
+
+export function checkAdmin(){
+	return api.get('/profiles/check/').then(function(resp){
+		console.log('checkAdmin function', resp.data.type);
+		if(resp.data.type === "manager"){
+			browserHistory.push('/scheduler')
+		} else {
+			browserHistory.push('/calendar')
+		}
+	})
+}
 export function getEmployeeSchedule(year, month, day){
 	var pythonMonth = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 	var pythonChopDate = new Date(year, month-1, day);
@@ -36,7 +62,10 @@ export function getEmployeeSchedule(year, month, day){
 						scheduledEmployees.push({
 								nameString: employees[i].first_name + " " + employees[i].last_name,
 								employee_id: employees[i].employee_id,
-								classInfoName: "nameField"
+								classInfoName: "nameField",
+								first_name: employees[i].first_name,
+								last_name: employees[i].last_name,
+								id: employees[i].id
 								
 							})
 						for(var j = 0; j < 7; j++){
@@ -44,6 +73,8 @@ export function getEmployeeSchedule(year, month, day){
 							let uniqueId = weekdays[j].calendar_date + '-' + employees[i].id;
 							let obj = {
 								id: employees[i].id,
+								first_name: employees[i].first_name,
+								last_name: employees[i].last_name,
 								name: employees[i].first_name + " " + employees[i].last_name,
 								calendar_date: weekdays[j].calendar_date,
 								employee_id: employees[i].employee_id,
@@ -79,7 +110,7 @@ export function getEmployeeSchedule(year, month, day){
 
 
 				console.log('newarr', newarr);
-				// console.log('scheduledEmployees', scheduledEmployees);
+				// console.log('scheduledEmployees', scheduledEmployees);	
 				// console.log('Cb', weekdays);
 				// console.log('workWeekSchedule', workWeekSchedule);
 				// console.log('employees', employees);
@@ -147,7 +178,7 @@ export function getWorkWeekSchedule(month, year){
 }
 
 export function publish(obj){
-	return api.post('/schedules/shift/publish', obj);
+	return api.post('/schedules/shift/publish/', obj);
 }
 
 export function setNewSchedule(uniqueId, arr, newScheduleItem) {
@@ -171,7 +202,7 @@ export function setNewSchedule(uniqueId, arr, newScheduleItem) {
 
 export function sendEmployeeShiftObj(obj){
 	console.log('Send Employee Shift Obj', obj);
-	return api.post('/schedules/shift/many', obj)
+	return api.post('/schedules/shift/many/', obj)
 }
 
 
@@ -198,7 +229,7 @@ export function working_today(scheduleInfo){
 			start_time = item.starting_time
 		}
 	})
-	return start_time
+	return start_time || ""
 }
 
 export function calendar(month, year, monthdate, employee){
@@ -263,7 +294,7 @@ export function calendar(month, year, monthdate, employee){
 
 				// console.log('scheduleInfo', scheduleInfo);
 
-				// console.log("Working Today:", working);
+				console.log("Working Today From Calendar Function:", working);
 
 				function checkSchedule(check){
 					var hour_time_check = 0;

@@ -1,7 +1,7 @@
 import React from 'react';
 import store from 'store';
 import { Link, browserHistory } from 'react-router';
-import { calendar, publish } from 'api/data';
+import { calendar, publish, getEmployeeSchedule, getWeekByWeek } from 'api/data';
 
 require("assets/styles/sidePanel.scss");
 require('font-awesome-webpack');
@@ -22,7 +22,8 @@ export default React.createClass({
 			flexbox_size: "",
 			collection: [],
 			month: months[new Date().getMonth()],
-			year: year
+			year: year,
+			publishButton: "noChanges"
 		})
 	},
 	componentWillMount: function(){
@@ -33,7 +34,8 @@ export default React.createClass({
 				flexbox_size: currentStore.calendarReducer.flexbox_size,
 				collection: currentStore.calendarReducer.collection,
 				month: currentStore.calendarReducer.month,
-				year: currentStore.calendarReducer.year
+				year: currentStore.calendarReducer.year,
+				publishButton: currentStore.cssReducer.publishButton
 			})
 		}.bind(this));
 	},
@@ -50,7 +52,7 @@ export default React.createClass({
 	nextMonth: function(e){
 		e.preventDefault();
 		// $('.box').removeClass('highlight');
-		console.log('Hit');
+		// console.log('Hit');
 		if(e.target.id === "previous") {
 			
 			store.dispatch({
@@ -85,8 +87,24 @@ export default React.createClass({
 		})
 	},
 	publish: function(){
-		publish({date: this.props.dateString});
-		// console.log(this.props.dateString);
+		if(this.state.publishButton  === "publish"){
+			publish({date: this.props.dateString});
+			// console.log(this.props.dateString);
+			store.dispatch({
+				type: 'CHANGE_PUBLISHBUTTON',
+				publishButton: "noChanges"
+			})
+		}
+		// console.log('Check successful');
+	},
+	scheduleJump: function(item, e){
+		e.preventDefault();
+		console.log(item);
+		getEmployeeSchedule(item.year, (item.javascriptMonthNum + 1), item.day);
+		getWeekByWeek(item.year, item.javascriptMonthNum, item.day);
+	},
+	deleteEmployee: function(e){
+
 	},
 	render: function(){
 		return (
@@ -128,7 +146,7 @@ export default React.createClass({
 						<div className="adminCalDate">
 							{this.state.collection.map(function(item, i){
 								return (
-									<div key ={i} className={"adminCalBox " + item.currentClass} id={"box" + i}>
+									<div key ={i} className={"adminCalBox " + item.currentClass} id={"box" + i} onClick={this.scheduleJump.bind(this, item)}>
 										<p>{item.day}</p>
 									</div>
 								)
@@ -141,6 +159,8 @@ export default React.createClass({
 
 					<details closed>
 						<summary className="locations"><i className="fa fa-users" aria-hidden="true"></i>Staff</summary>
+
+
 					</details>
 
 					<details closed>
@@ -162,8 +182,8 @@ export default React.createClass({
 				{/*<div className="collapseButton">
 					<i className={this.state.openClose} aria-hidden="true" onClick={this.collapseSidePanel}></i>
 				</div>*/}
-				<div className="publish" onClick={this.publish}>
-					<button>Publish</button>
+				<div className={this.state.publishButton} onClick={this.publish}>
+					<button>Publish & Notify</button>
 				</div> 
 			</div>
 		)
