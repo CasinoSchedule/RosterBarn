@@ -109,34 +109,27 @@ $cakeSelected: #302F3F;
 	line-height: 50px;
 	border: 1px solid $darkgrey;
 	background: #0E4583;
-
-
-
-
-/* background: #5C258D; /* fallback for old browsers */
-/* background: -webkit-linear-gradient(to left, $purpletheme , #4389A2); /* Chrome 10-25, Safari 5.1-6 */
-/* background: linear-gradient(to left, $purpletheme , #4389A2); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-        
-        // color: white;
-
-	// position: absolute;
-	// top: 30px;
-	// left: 200px;
-	// text-align: left;
-	// padding-left: 50px;
 	font-family: Calibri;
 	font-size: 16px;
-	// text-transform: uppercase;
-	display: flex;
-	justify-content: center;	
-	// justify-content: space-between;
 
+	display: flex;
+	// justify-content: center;	
+	justify-content: space-between;
+
+}
+.shiftStatus {
+	width: 230px;
+	// border: 1px solid yellow;
+	line-height: 50px;
+	color: white;
+	font-size: 18px;
+	text-align: center;
+	font-family: 'Arial';
+	letter-spacing: 2px;
 }
 
 .adminPublish {
 	width: 18%;
-
-
 }
 
 .adminPublish button {
@@ -355,4 +348,21 @@ $cakeSelected: #302F3F;
 	width: 200px;
 	height: 200px;
 	background: red;
+}
+.grave {
+	background: #048F40;
+}
+.day {
+	background: #2F138A;
+}
+.swing {
+	background: #C92F06;
+}
+.all {
+	background: #042850;
+}
+.shiftTitle {
+	text-transform: uppercase;
+	text-shadow: 1px 1px 1px #000;
+	font-weight: 700;
 }

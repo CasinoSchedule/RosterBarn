@@ -24,7 +24,8 @@ export default React.createClass({
 		return ({
 			weeklyCalendar: [],
 			employeeWeeklySchedule: [],
-			flexbox_size: ""
+			flexbox_size: "",
+			shiftColor: ""
 		})
 	},
 	componentWillMount: function(){
@@ -33,7 +34,8 @@ export default React.createClass({
 			this.setState({
 				weeklyCalendar: currentStore.calendarReducer.weeklyCalendar,
 				employeeWeeklySchedule: currentStore.adminReducer.employeeWeeklySchedule,
-				flexbox_size: currentStore.calendarReducer.flexbox_size
+				flexbox_size: currentStore.calendarReducer.flexbox_size,
+				shiftColor: currentStore.cssReducer.shiftColor
 			})
 		}.bind(this));
 		getEmployeeSchedule(year, pythonMonth[month], date);
@@ -67,10 +69,14 @@ export default React.createClass({
 		getWeekByWeek(year, month, date + forward);
 		
 	},
-	filterByShift: function(shift){
+	filterByShift: function(shift, type){
 		var addOnEndpoint = ((shift) ? "?shift_title=" + shift : "");
 		getEmployeeSchedule(year, pythonMonth[month], (date + forward), addOnEndpoint);
 		getWeekByWeek(year, month, date + forward);
+		store.dispatch({
+			type: 'CHANGE_SHIFTBOX',
+			shiftColor: type
+		})
 	},
 	render: function(){
 		return (
@@ -92,9 +98,9 @@ export default React.createClass({
 				<div className="adminContainer">
 
 					<div className="monthLabel">
-						{/*<div className="adminPublish">
-							<button>Publish</button>
-						</div>*/}
+						<div className={"shiftStatus " + this.state.shiftColor}>
+							<div className="shiftTitle">{this.state.shiftColor}</div>
+						</div>
 
 						<div className="navigate">
 							<div className="leftButton" onClick={this.previousSchedule}><i className="fa fa-angle-left" aria-hidden="true"></i></div>
