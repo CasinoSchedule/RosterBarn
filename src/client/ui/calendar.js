@@ -205,7 +205,7 @@ export default React.createClass({
 							
 					</div>
 
-					<div className="day">
+					<div className="dayOf">
 						<div className="headerDay">{(this.state.selectedDay === new Date().getDate() ? "Today" : "Selected Day")}</div>
 						<div className="currentDay">
 							<p>{this.state.selectedDay}</p>
