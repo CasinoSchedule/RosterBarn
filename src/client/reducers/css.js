@@ -1,6 +1,7 @@
 const cssInitialState = {
 	publishButton: "noChanges",
-	shiftColor: ""
+	shiftColor: "",
+	shiftNum: 0
 
 }
 
@@ -11,14 +12,16 @@ export default function(state = cssInitialState, action){
 		case 'CHANGE_PUBLISHBUTTON':
 			return {
 				publishButton: action.publishButton,
-				shiftColor: state.shiftColor
+				shiftColor: state.shiftColor,
+				shiftNum: state.shiftNum
 			}
 
 		case 'CHANGE_SHIFTBOX':
 		// console.log('It hits');
 			return {
 				publishButton: state.publishButton,
-				shiftColor: action.shiftColor
+				shiftColor: action.shiftColor,
+				shiftNum: action.shiftNum
 			}
 
 	default:

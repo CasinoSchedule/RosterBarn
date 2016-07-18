@@ -25,7 +25,8 @@ export default React.createClass({
 			weeklyCalendar: [],
 			employeeWeeklySchedule: [],
 			flexbox_size: "",
-			shiftColor: ""
+			shiftColor: "",
+			shiftNum: 0
 		})
 	},
 	componentWillMount: function(){
@@ -35,7 +36,8 @@ export default React.createClass({
 				weeklyCalendar: currentStore.calendarReducer.weeklyCalendar,
 				employeeWeeklySchedule: currentStore.adminReducer.employeeWeeklySchedule,
 				flexbox_size: currentStore.calendarReducer.flexbox_size,
-				shiftColor: currentStore.cssReducer.shiftColor
+				shiftColor: currentStore.cssReducer.shiftColor,
+				shiftNum: currentStore.cssReducer.shiftNum
 			})
 		}.bind(this));
 		getEmployeeSchedule(year, pythonMonth[month], date);
@@ -47,12 +49,14 @@ export default React.createClass({
 	},
 	nextSchedule: function(){
 		forward += 7;
-		getEmployeeSchedule(year, pythonMonth[month], (date + forward));
+		var addOnEndpoint = ((this.state.shiftColor) ? "?shift_title=" + this.state.shiftNum : "");
+		getEmployeeSchedule(year, pythonMonth[month], (date + forward), addOnEndpoint);
 		getWeekByWeek(year, month, date + forward);
 	},
 	previousSchedule: function(){
 		forward -= 7;
-		getEmployeeSchedule(year, pythonMonth[month], (date + forward));
+		var addOnEndpoint = ((this.state.shiftColor) ? "?shift_title=" + this.state.shiftNum : "");
+		getEmployeeSchedule(year, pythonMonth[month], (date + forward), addOnEndpoint);
 		getWeekByWeek(year, month, date + forward);
 	},
 	submitSchedule: function(obj){
@@ -75,7 +79,8 @@ export default React.createClass({
 		getWeekByWeek(year, month, date + forward);
 		store.dispatch({
 			type: 'CHANGE_SHIFTBOX',
-			shiftColor: type
+			shiftColor: type,
+			shiftNum: ((shift) ? shift : "")
 		})
 	},
 	render: function(){

@@ -293,3 +293,6 @@ summary {
 .shifts:hover {
 	background: #0E4583;
 }
+.shifts::first-letter {
+	text-transform: uppercase;
+}
