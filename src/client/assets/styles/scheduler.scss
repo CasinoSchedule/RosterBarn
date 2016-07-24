@@ -13,6 +13,7 @@ $greyScheme: #404040;
 $cakeBorder: #3665C1;
 $cakeBox: #2656B2;
 $cakeSelected: #302F3F;
+$scheduleHeader: #0E4583;
 
 // body {
 // 	font-family: 'Andale Mono';
@@ -27,6 +28,7 @@ $cakeSelected: #302F3F;
 	position: absolute;
 	top: 0;
 	left: 0;
+	// size: landscape; 
 }
 .adminHeader {
 	position: absolute;
@@ -127,7 +129,29 @@ $cakeSelected: #302F3F;
 	font-family: 'Arial';
 	letter-spacing: 2px;
 }
+.printClearButtons {
+	width: 250px;
+	height: 50px;
+	// line-height: 50px;
+	// vertical-align: center;
+			// border: 1px solid yellow;
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+}
 
+.printClearButtons > button {
+	width: 100px;
+	height: 30px;
+	line-height: 20px;
+	font-size: 12px;
+	background: #b2b2b2;
+	color: white;
+	text-shadow: 1px 1px 1px #000;
+}
+.printClearButtons > button:hover {
+	background: $gradientfrom2;
+}
 .adminPublish {
 	width: 18%;
 }
@@ -314,18 +338,19 @@ $cakeSelected: #302F3F;
 }
 .eachDay {
 	width: 14.3%;
-	height: 30px;
-	line-height: 30px;
+	height: 40px;
+	// line-height: 30px;
 	border: 1px solid #f4f4f4;
 	text-align: center;
 
 }
 
 .eachDay input {
-	width: 50px;
+	// width: 50px;
 	border: none;
 	outline: none;
 	background:transparent;
+	// border: 1px solid red;
 }
 // .eachDay input {
 // 	background: #e9e9e9;
@@ -365,4 +390,21 @@ $cakeSelected: #302F3F;
 	text-transform: uppercase;
 	text-shadow: 1px 1px 1px #000;
 	font-weight: 700;
+}
+.employeeBox-enter {
+  opacity: 0.01;
+}
+
+.employeeBox-enter.employeeBox-enter-active {
+  opacity: 1;
+  transition: opacity 400ms ease-in;
+}
+
+.employeeBox-leave {
+  opacity: 1;
+}
+
+.employeeBox-leave.employeeBox-leave-active {
+  opacity: 0.01;
+  transition: opacity 300ms ease-in;
 }

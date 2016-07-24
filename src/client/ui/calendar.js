@@ -1,5 +1,6 @@
 import React from 'react';
 import store from 'store';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import CallIn from 'ui/callIn';
 import SidePanel from 'ui/sidePanel';
 import {Link, browserHistory} from 'react-router';
@@ -225,8 +226,10 @@ export default React.createClass({
 						</div>
 					</div>
 				</div>
-
-				{this.state.showCallIn ? <CallIn fullDate={this.state.fullDate} request={this.state.request} /> : ""}
+						<ReactCSSTransitionGroup transitionName="employeeBox" transitionEnterTimeout={500} transitionLeaveTimeout={300}>
+							{this.state.showCallIn ? <CallIn fullDate={this.state.fullDate} request={this.state.request} key={this.state.fullDate}/> : ""}
+						</ReactCSSTransitionGroup>
+				
 			</div>
 		)
 	}

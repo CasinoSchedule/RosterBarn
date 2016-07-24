@@ -1,14 +1,16 @@
 import React from 'react';
 import store from 'store';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import SidePanel from 'ui/sidePanel';
 import EmployeeToSchedule from 'ui/employeeToSchedule';
-import EmployeeMonthlySchedule from 'ui/employeeMonthlySchedule';
-import { calendar, getWeekByWeek, getEmployeeSchedule, caltest, addEmployee, updateEmployee } from 'api/data';
+import EmployeeInfoForm from 'ui/employeeInfoForm';
+import Confirm from 'ui/confirm';
+import { calendar, getWeekByWeek, getEmployeeSchedule, caltest, addNewEmployee, updateEmployee } from 'api/data';
 import { browserHistory } from 'react-router';
 
 require("assets/styles/scheduler.scss");
 var image = require("assets/images/logo2.png");
-
+// var ReactCSSTransitionGroup = require('react-addons-css-transition-group');
 var month = new Date().getMonth(), 
 	year = new Date().getFullYear(),
 	date = new Date().getDate(), 
@@ -26,7 +28,10 @@ export default React.createClass({
 			employeeWeeklySchedule: [],
 			flexbox_size: "",
 			shiftColor: "",
-			shiftNum: 0
+			shiftNum: 0,
+			showForm: false,
+			employeeInfo: {},
+			showConfirm: false
 		})
 	},
 	componentWillMount: function(){
@@ -37,7 +42,10 @@ export default React.createClass({
 				employeeWeeklySchedule: currentStore.adminReducer.employeeWeeklySchedule,
 				flexbox_size: currentStore.calendarReducer.flexbox_size,
 				shiftColor: currentStore.cssReducer.shiftColor,
-				shiftNum: currentStore.cssReducer.shiftNum
+				shiftNum: currentStore.cssReducer.shiftNum,
+				showForm: currentStore.showReducer.showForm,
+				employeeInfo: currentStore.employeeReducer.employeeInfo,
+				showConfirm: currentStore.showReducer.showConfirm
 			})
 		}.bind(this));
 		getEmployeeSchedule(year, pythonMonth[month], date);
@@ -68,8 +76,15 @@ export default React.createClass({
 	},
 	addEmployee: function(e){
 		e.preventDefault();
-		addEmployee({first_name: "Add", last_name: "Employee"});
-		getEmployeeSchedule(year, pythonMonth[month], (date + forward));
+		var shift = this.state.shiftNum || 1;
+		var addOnEndpoint = ((this.state.shiftColor) ? "?shift_title=" + this.state.shiftNum : "");
+		console.log(this.state.shiftNum, shift);
+		addNewEmployee({
+			first_name: "Add", 
+			last_name: "Employee",
+			availability: [this.state.shiftNum]
+		});
+		getEmployeeSchedule(year, pythonMonth[month], (date + forward), addOnEndpoint);
 		getWeekByWeek(year, month, date + forward);
 		
 	},
@@ -81,6 +96,16 @@ export default React.createClass({
 			type: 'CHANGE_SHIFTBOX',
 			shiftColor: type,
 			shiftNum: ((shift) ? shift : "")
+		})
+	},
+	printSchedule: function(){
+		window.print();
+		// window.open('', 'mySched', 'height=400,width=600');
+	},
+	clearSchedule: function(){
+		store.dispatch({
+			type: 'CHANGE_SHOWCONFIRM',
+			showConfirm: true
 		})
 	},
 	render: function(){
@@ -118,13 +143,20 @@ export default React.createClass({
 							</div> 
 							<div className="rightButton" onClick={this.nextSchedule}><i className="fa fa-angle-right" aria-hidden="true"></i></div>
 						</div>
+
+
+						<div className="printClearButtons">
+							<button onClick={this.clearSchedule}>Clear Schedule</button>
+							<button onClick={this.printSchedule}>Print Schedule</button>
+						</div>
+
 					</div>	
 
 					
 
 				<div className={"scheduleFlex " + this.state.flexbox_size}>
 					
-					<div className="schedule">
+					<div className="schedule" >
 						
 						
 						<div className="weekOf">
@@ -153,7 +185,19 @@ export default React.createClass({
 					</div>
 				</div>
 						
-				</div>		
+				</div>	
+						<ReactCSSTransitionGroup transitionName="employeeBox" transitionEnterTimeout={500} transitionLeaveTimeout={300}>
+						{(this.state.showForm) 
+							? <EmployeeInfoForm 
+								info={this.state.employeeInfo} key={this.state.employeeInfo.uniqueId} /> 
+							: ""}	
+						</ReactCSSTransitionGroup>
+						<ReactCSSTransitionGroup transitionName="employeeBox" transitionEnterTimeout={500} transitionLeaveTimeout={300}>
+						{(this.state.showConfirm) 
+							? <Confirm
+								key={1} /> 
+							: ""}	
+						</ReactCSSTransitionGroup>
 			</div>
 		)
 	}

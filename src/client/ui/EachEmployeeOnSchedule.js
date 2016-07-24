@@ -7,13 +7,18 @@ require('assets/styles/employeeToSchedule.scss');
 export default React.createClass({
 	getInitialState: function() {
 		return {
+			thing: this.props.thing,
 			starting_time: this.props.thing.starting_time,
 			nameString: this.props.thing.nameString,
 			first_name: this.props.thing.first_name,
 			last_name: this.props.thing.last_name,
-			id: this.props.thing.id
+			id: this.props.thing.id,
+			photo_url: this.props.thing.photo_url,
+			availability: this.props.thing.availability,
+			tempLocation: "area"
 		}
 	},
+	
 	handleBlur: function(e){
 		var uniqueId = this.props.thing.uniqueId;
 
@@ -31,16 +36,15 @@ export default React.createClass({
 		// });
 		
 		sendEmployeeShiftObj([{
-			starting_time: this.refs.starting_time.value,
 			day: this.props.thing.calendar_date,
-			employee: this.props.thing.id
-
+			employee: this.props.thing.id,
+			starting_time: this.refs.starting_time.value
 		}])
 		
 	},
 	handleChange: function(e) {
-		var value = e.target.value;
-		console.log('Hit handleChange');
+		// var value = e.target.value;
+		// console.log('Hit handleChange');
 		this.setState({
 			starting_time: this.refs.starting_time.value,
 			nameString: this.state.nameString
@@ -52,19 +56,34 @@ export default React.createClass({
 	},
 	handleNameBlur: function(e){
 		var val = this.refs.nameString.value.split(" ");
-		// console.log(this.state.id, {
-		// 	first_name: val[0], 
-		// 	last_name: val[1],
-		// 	regular_days_off: [1],
-		// 	availability: [1]
-		// });
-		// updateEmployee(this.state.id, {
-		// 	first_name: val[0], 
-		// 	last_name: val[1],
-		// 	regular_days_off: [1],
-		// 	availability: [1]
-		// });
+		if(this.state.nameString !== this.refs.nameString.value) {
+			updateEmployee(this.state.id, {
+				first_name: val[0], 
+				last_name: val[1],
+				regular_days_off: this.props.thing.regular_days_off || [""],
+				availability: this.props.thing.availability
+			});
+			// Consider page update here to reflect new roster.
 
+		}
+
+	},
+	handleClick: function(e){
+		store.dispatch({
+			type: 'CHANGE_SHOWFORM',
+			showForm: true
+		})
+
+		store.dispatch({
+			type: 'THROW_EMPLOYEEINFO',
+			employeeInfo: this.props.thing
+		})
+	},
+	handleMouseOut: function(){
+		store.dispatch({
+			type: 'CHANGE_SHOWFORM',
+			showForm: false
+		})
 	},
 	render: function(){
 		return (
@@ -72,12 +91,23 @@ export default React.createClass({
 					<div className="eachDay">
 						
 							<div className={this.props.thing.classInfoName} id="test">
-							{(this.props.thing.nameString) 
-								? <input type="text" ref="nameString" value={this.props.thing.nameString}  onChange={this.handleChange} onBlur={this.handleNameBlur} className={this.props.thing.classInfoName} /> 
-								: ""}
-							{!(this.props.thing.nameString) ? <input onChange={this.handleChange} onBlur={this.handleBlur} type="text" ref="starting_time" value={this.state.starting_time} /> : ""}
+								{(this.props.thing.nameString) 
+									? 	<div className="nameImageBox">
+											<div><img src={this.props.thing.photo_url} onClick={this.handleClick} /></div>
+											<div className="nameIdBox">
+												<div><input type="text" ref="nameString" value={this.props.thing.nameString}  onChange={this.handleChange} onBlur={this.handleNameBlur} className={this.props.thing.classInfoName} /></div> 
+												<div className="idNum">{this.props.thing.employee_id}</div>
+											</div>
+										</div>
+									: ""}
+								{!(this.props.thing.nameString) 
+									? 	<div className="timeLocationBox">
+											<div><input onChange={this.handleChange} onBlur={this.handleBlur} type="text" ref="starting_time" value={this.state.starting_time} /></div> 
+											<div><input onChange={this.handleChange} onBlur={this.handleBlur} type="text" ref="location" value={this.state.tempLocation} /></div>
+										</div>
+									: ""}
 							</div>
-						
+
 					</div>
 				
 		)

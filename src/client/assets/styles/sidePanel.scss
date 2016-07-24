@@ -272,16 +272,19 @@ summary {
 .locations:hover {
 	color: #fff;
 }
-.fa-calendar, .fa-users, .fa-user, .fa-map-signs, .fa-envelope-o, .fa-clock-o {
+.fa-calendar, .fa-users, .fa-user, .fa-map-signs, .fa-envelope-o, .fa-clock-o, .fa-tint {
 	margin: 0 20px 0 10px;
 }
-.shiftBox {
+.fa-tint {
+	color: #F12121;
+}
+.shiftBox, .colorBox {
 	// border: 1px solid red;
 	width: 100%;
 	height: 160px;
 	text-align: center;
 }
-.shifts {
+.shifts, .colors {
 	height: 40px;
 	line-height: 40px;
 	font-size: 14px;
@@ -290,7 +293,7 @@ summary {
 	border-bottom: 1px solid $darkgrey;
 	border-top: 1px solid $darkgrey;
 }
-.shifts:hover {
+.shifts:hover, .colors:hover {
 	background: #0E4583;
 }
 .shifts::first-letter {

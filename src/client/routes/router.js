@@ -12,7 +12,7 @@ import Home from 'ui/home';
 import Calendar from 'ui/calendar';
 import Scheduler from 'ui/scheduler';
 import LandingPage from 'ui/landingPage';
-
+import Info from 'ui/employeeInfoForm';
 
 
 export default (
@@ -20,6 +20,7 @@ export default (
     <Router history={browserHistory}>
       <Route component={App}>
       	<Route path='/landingPage' component={LandingPage} />
+        <Route path='/info' component={Info} />
       	<Route path='/' component={Home} />
       	<Route path='/calendar' component={Calendar} />
       	<Route path='/scheduler' component={Scheduler} />    	

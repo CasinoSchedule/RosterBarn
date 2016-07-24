@@ -13,10 +13,13 @@ export function logout() {
  return api.logout();
 }
 
-export function addEmployee(obj){
-	// console.log(obj);
-	return api.post('/profiles/employee/', obj);
+export function addNewEmployee(obj){
+	console.log('New Email registered');
+	return api.post('/profiles/notify/employee/', obj);
 
+}
+export function registerNewEmail(obj){
+	return api.post('/profiles/employee/', obj);
 }
 
 export function updateEmployee(id, obj){
@@ -67,7 +70,13 @@ export function getEmployeeSchedule(year, month, day, shift){
 								classInfoName: "nameField",
 								first_name: employees[i].first_name,
 								last_name: employees[i].last_name,
-								id: employees[i].id
+								id: employees[i].id,
+								photo_url: employees[i].photo_url,
+								availability: employees[i].availability,
+								uniqueId: employees[i].id + '-' + employees[i].employee_id,
+								phone_number: employees[i].phone_number,
+								email: employees[i].email,
+								position_title: employees[i].position_title
 								
 							})
 						for(var j = 0; j < 7; j++){
@@ -80,9 +89,13 @@ export function getEmployeeSchedule(year, month, day, shift){
 								name: employees[i].first_name + " " + employees[i].last_name,
 								calendar_date: weekdays[j].calendar_date,
 								employee_id: employees[i].employee_id,
-								starting_time: checkSchedule2(weekdays[j].calendar_date, employees[i].employee_id),
+								starting_time: checkIfWorking(weekdays[j].calendar_date, employees[i].id),
+								station_title: "",
 								uniqueId: uniqueId,
-								classInfoTime: "timeField"
+								classInfoTime: "timeField",
+								phone_number: employees[i].phone_number,
+								email: employees[i].email,
+								position_title: employees[i].position_title
 							}
 
 							scheduledEmployees.push(obj);
@@ -90,9 +103,10 @@ export function getEmployeeSchedule(year, month, day, shift){
 					}
 			})
 				
-				function checkSchedule2(date, id){
+				function checkIfWorking(date, id){
 					for(var i = 0; i < workWeekSchedule.length; i++){
-						if(workWeekSchedule[i].calendar_date === date && workWeekSchedule[i].employee.employee_id === id) {
+						if(workWeekSchedule[i].calendar_date === date && workWeekSchedule[i].employee.id === id) {
+							
 							return ((workWeekSchedule[i].starting_time) ? workWeekSchedule[i].starting_time.slice(0, 5) : "")
 						}
 					}

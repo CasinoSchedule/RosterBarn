@@ -157,11 +157,12 @@ $peach: #EB7260;
 	height: 60px;
 	line-height: 60px;
 	text-align: center;
-	background: $darkgrey; 
-    background: -moz-linear-gradient(top, $gradientfrom, $darkgrey); 
-    background: -webkit-gradient(linear, left top, left bottom, from($gradientfrom2), to($gradientto2));
+	background: $gradientfrom2; 
+    // background: -moz-linear-gradient(top, $gradientfrom, $darkgrey); 
+    // background: -webkit-gradient(linear, left top, left bottom, from($gradientfrom2), to($gradientto2));
     justify-content: space-between;
     color: white;
+    text-shadow: 1px 1px 1px #000;
 }
 .currentDay {
 	height: 180px;
@@ -239,10 +240,9 @@ $peach: #EB7260;
 }
 
 .highlight {
-	background: $selected;
-	background: $darkgrey; 
-    background: -moz-linear-gradient(top, $gradientfrom, $darkgrey); 
-    background: -webkit-gradient(linear, left top, left bottom, from($gradientfrom2), to($gradientto2));
+	background: $gradientfrom2; 
+    // background: -moz-linear-gradient(top, $gradientfrom, $darkgrey); 
+    // background: -webkit-gradient(linear, left top, left bottom, from($gradientfrom2), to($gradientto2));
     color: black;
 }
 .inactiveMonth {
