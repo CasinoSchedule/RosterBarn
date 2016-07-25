@@ -11,7 +11,6 @@
     "lint:fix": "npm run lint -- --fix",
     "start": "nodemon",
     "postinstall": "webpack -p /bin/bundle",
-    // "start:prod": "NODE_ENV=production PORT=$PORT node bin/server",
     "compile": "DEBUG=app:* NODE_ENV=production BUILD=TRUE node bin/bundle",
     "deploy": "rm -rf dist && npm run compile && git add dist -A && git commit -m 'deploy' && git push heroku master"
   },
