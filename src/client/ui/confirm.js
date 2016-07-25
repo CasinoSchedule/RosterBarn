@@ -10,6 +10,13 @@ export default React.createClass({
 			showConfirm: false
 		})
 	},
+	confirmClear: function(){
+		this.props.clearSchedule();
+		store.dispatch({
+			type: 'CHANGE_SHOWCONFIRM',
+			showConfirm: false
+		})
+	},
 	render: function(){
 		return (
 			<div className="confirmBox">
@@ -22,7 +29,7 @@ export default React.createClass({
 					</div>
 					<div className="confirmButtons">
 						<button onClick={this.close}>Cancel</button>
-						<button onClick={this.close}>Confirm</button>
+						<button onClick={this.confirmClear}>Confirm</button>
 					</div>
 				</div> 
 				

@@ -78,7 +78,7 @@ $selected: #b2b2b2;
 	// overflow-x: scroll;
  //    overflow-y: hidden;
     white-space: nowrap;
-	// border: 1px solid red;
+	// border: 1px solid $darkgrey;
 	// width: 100%;
 }
 .idNum {
@@ -99,7 +99,9 @@ $selected: #b2b2b2;
 .nameImageBox {
 	display: flex;
 	width: 100%;
-			// border: 1px solid red;
+	// box-shadow: 1px 1px 1px $darkgrey;
+
+			// border: 2px solid $darkgrey;
 }
 // .nameImageBox:first-child {
 // 	overflow: hidden;
@@ -109,6 +111,11 @@ $selected: #b2b2b2;
 	height: 34px;
 	border-radius: 5px;
 	// border-right: 1px solid $darkgrey;
+}
+.nameImageBox:first-child img:hover {
+	width: 44px;
+	height: 36px;
+	box-shadow: 2px 2px 2px $darkgrey;
 }
 .timeLocationBox {
 	display: flex;
@@ -123,4 +130,9 @@ $selected: #b2b2b2;
 .nameIdBox {
 	display: flex;
 	flex-direction: column;
+}
+.locationStyle {
+	font-size: 10px;
+	color: $purpletheme;
+	font-weight: 600;
 }

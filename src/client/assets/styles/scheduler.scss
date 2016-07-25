@@ -408,3 +408,39 @@ $scheduleHeader: #0E4583;
   opacity: 0.01;
   transition: opacity 300ms ease-in;
 }
+.red {
+	background: red;
+	border-radius: 5px;
+	text-shadow: 1px 1px 1px $textshadow;
+}
+.yellow{
+	background: yellow;
+	border-radius: 5px;
+	text-shadow: 1px 1px 1px $textshadow;
+}
+.pink {
+	background: pink;
+	border-radius: 5px;
+	text-shadow: 1px 1px 1px $textshadow;
+}
+.orange {
+	background: orange;
+	border-radius: 5px;
+	text-shadow: 1px 1px 1px $textshadow;
+}
+@media print {
+	.sidePortal, .headerOptions, .printClearButtons, .rightButton, .leftButton, .nameImageBox img, .fa-user-plus {
+		visibility: hidden;
+		display: none;
+	}
+	.adminContainer {
+		padding-left: 0;
+	}
+	.weekOf {
+		border: 1px solid $darkgrey;
+	}
+	.weekOfDay {
+		height: 40px;
+	}
+
+}

@@ -15,7 +15,8 @@ export default React.createClass({
 			id: this.props.thing.id,
 			photo_url: this.props.thing.photo_url,
 			availability: this.props.thing.availability,
-			tempLocation: "area"
+			station: this.props.thing.station,
+			val: this.props.thing.val || ""
 		}
 	},
 	
@@ -23,7 +24,8 @@ export default React.createClass({
 		var uniqueId = this.props.thing.uniqueId;
 
 		this.setState({
-			starting_time: this.refs.starting_time.value
+			starting_time: this.refs.starting_time.value,
+			station: this.refs.station.value
 		});
 
 		// setNewSchedule(uniqueId, this.props.sched, {
@@ -39,6 +41,9 @@ export default React.createClass({
 			day: this.props.thing.calendar_date,
 			employee: this.props.thing.id,
 			starting_time: this.refs.starting_time.value
+			// ,
+			// station: this.refs.station.value
+			
 		}])
 		
 	},
@@ -47,7 +52,8 @@ export default React.createClass({
 		// console.log('Hit handleChange');
 		this.setState({
 			starting_time: this.refs.starting_time.value,
-			nameString: this.state.nameString
+			nameString: this.state.nameString,
+			station: this.refs.station.value
 		})
 		store.dispatch({
 			type: 'CHANGE_PUBLISHBUTTON',
@@ -101,9 +107,9 @@ export default React.createClass({
 										</div>
 									: ""}
 								{!(this.props.thing.nameString) 
-									? 	<div className="timeLocationBox">
-											<div><input onChange={this.handleChange} onBlur={this.handleBlur} type="text" ref="starting_time" value={this.state.starting_time} /></div> 
-											<div><input onChange={this.handleChange} onBlur={this.handleBlur} type="text" ref="location" value={this.state.tempLocation} /></div>
+									? 	<div className={"timeLocationBox " + this.props.thing.val}>
+											<div><input onChange={this.handleChange} onBlur={this.handleBlur} type="text" ref="starting_time" defaultValue={this.props.thing.starting_time} /></div> 
+											<div><input onChange={this.handleChange} onBlur={this.handleBlur} type="text" ref="station" defaultValue={this.props.thing.station} className="locationStyle "/></div>
 										</div>
 									: ""}
 							</div>

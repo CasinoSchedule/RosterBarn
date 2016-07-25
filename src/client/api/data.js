@@ -13,12 +13,12 @@ export function logout() {
  return api.logout();
 }
 
-export function addNewEmployee(obj){
+export function registerNewEmail(obj){
 	console.log('New Email registered');
 	return api.post('/profiles/notify/employee/', obj);
 
 }
-export function registerNewEmail(obj){
+export function addNewEmployee(obj){
 	return api.post('/profiles/employee/', obj);
 }
 
@@ -55,11 +55,12 @@ export function getEmployeeSchedule(year, month, day, shift){
 	
 	return api.get('/schedules/weekshift/?date=' + year + "-" + month + "-" + day).then(function(resp){
 		workWeekSchedule = resp.data;
+		// console.log('Weekly Schedules from Back End', resp.data);
 		var shiftFilter = ((shift) ? '/profiles/employee/' + shift : '/profiles/employee/');
 
 		return api.get(shiftFilter).then(function(resp){
 			employees = resp.data;
-			console.log('Employee List', resp.data)
+			// console.log('Employee List', resp.data)
 			getWeekByWeek(year, pythonBackToJavascriptMonth, day, function(weekdays){
 					weekdays = weekdays;
 
@@ -81,6 +82,7 @@ export function getEmployeeSchedule(year, month, day, shift){
 							})
 						for(var j = 0; j < 7; j++){
 							// console.log(employees[i].employee_id)
+							var currentShift = checkIfWorking(weekdays[j].calendar_date, employees[i].id);
 							let uniqueId = weekdays[j].calendar_date + '-' + employees[i].id;
 							let obj = {
 								id: employees[i].id,
@@ -89,8 +91,8 @@ export function getEmployeeSchedule(year, month, day, shift){
 								name: employees[i].first_name + " " + employees[i].last_name,
 								calendar_date: weekdays[j].calendar_date,
 								employee_id: employees[i].employee_id,
-								starting_time: checkIfWorking(weekdays[j].calendar_date, employees[i].id),
-								station_title: "",
+								starting_time: currentShift.time,
+								station: currentShift.station,
 								uniqueId: uniqueId,
 								classInfoTime: "timeField",
 								phone_number: employees[i].phone_number,
@@ -104,10 +106,15 @@ export function getEmployeeSchedule(year, month, day, shift){
 			})
 				
 				function checkIfWorking(date, id){
+					// console.log('In the function', workWeekSchedule);
 					for(var i = 0; i < workWeekSchedule.length; i++){
 						if(workWeekSchedule[i].calendar_date === date && workWeekSchedule[i].employee.id === id) {
 							
-							return ((workWeekSchedule[i].starting_time) ? workWeekSchedule[i].starting_time.slice(0, 5) : "")
+							return ((workWeekSchedule[i].starting_time) 
+								? {
+									time: workWeekSchedule[i].starting_time.slice(0, 5), 
+									station: ((workWeekSchedule[i].station) ? workWeekSchedule[i].station.title : "")} 
+								: "")
 						}
 					}
 					return ""
@@ -125,7 +132,7 @@ export function getEmployeeSchedule(year, month, day, shift){
 				})
 
 
-				console.log('newarr', newarr);
+				// console.log('employeeWeeklySchedule', newarr);
 				// console.log('scheduledEmployees', scheduledEmployees);	
 				// console.log('Cb', weekdays);
 				// console.log('workWeekSchedule', workWeekSchedule);
@@ -178,7 +185,7 @@ export function getWeekByWeek(year, month, day, cb){
 		: "")
 		
 
-		// console.log(weekDays);
+		// console.log('weeklyCalendar', weekDays);
 
 }
 

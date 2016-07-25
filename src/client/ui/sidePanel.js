@@ -114,6 +114,7 @@ export default React.createClass({
 	changeColor: function(e){
 		var val = e.target.id;
 		console.log(val);
+		this.props.setColor(val);
 	},
 	render: function(){
 		return (
@@ -187,9 +188,9 @@ export default React.createClass({
 					<details closed>
 						<summary className="locations"><i className="fa fa-tint" aria-hidden="true"></i>Color Code</summary>
 							<div className="colorBox">
-								<div className="colors" id="area" onClick={this.changeColor}>By Area</div>
-								<div className="colors" id="position" onClick={this.changeColor}>By Position</div>
-								<div className="colors" id="time" onClick={this.changeColor}>By Start-Time</div>
+								<div className="colors" id="station" onClick={this.changeColor}>By Area</div>
+								<div className="colors" id="positionClass" onClick={this.changeColor}>By Position</div>
+								<div className="colors" id="starting_time" onClick={this.changeColor}>By Start-Time</div>
 							</div>
 					</details>
 
