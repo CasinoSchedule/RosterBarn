@@ -10,7 +10,9 @@ export default React.createClass({
 					<div className="namesAcross">
 						{this.props.item.map(function(thing, index){
 							return (
-								<EachEmployeeOnSchedule sched={this.props.sched} key={thing.uniqueId} thing={thing} />
+								<EachEmployeeOnSchedule 
+									key={thing.uniqueId} 
+									thing={thing} />
 							)
 						}.bind(this))}
 					</div>		

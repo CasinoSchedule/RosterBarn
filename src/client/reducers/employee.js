@@ -1,5 +1,6 @@
 const employeeInitialState = {
-	employeeMonthlySchedule: []
+	employeeMonthlySchedule: [],
+	employeeInfo: {}
 }
 
 export default function(state = employeeInitialState, action){
@@ -8,7 +9,16 @@ export default function(state = employeeInitialState, action){
 
 		case 'GET_EMPLOYEEMONTHLYSCHEDULE':
 			return {
-				employeeMonthlySchedule: action.employeeMonthlySchedule
+				employeeMonthlySchedule: action.employeeMonthlySchedule,
+				employeeInfo: state.employeeInfo
+			}
+
+		case 'THROW_EMPLOYEEINFO':
+		// console.log(action.employeeInfo);
+			return {
+				employeeMonthlySchedule: state.employeeMonthlySchedule,
+				employeeInfo: action.employeeInfo
+
 			}
 
 	default:

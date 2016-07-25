@@ -16,14 +16,14 @@ $khaki: #E9E0D6;
 $peach: #EB7260;
 
 .shade {
-	position: absolute;
+	position: fixed;
 	top: 0;
 	left: 0;
 	// background-size: cover;
 	height: 100%;
 	width: 100%;
 
-	// background: rgba(21, 21, 21, .5);
+	background: rgba(21, 21, 21, .5);
 }
 
 .request_box, .error {
@@ -68,9 +68,9 @@ $peach: #EB7260;
 	height: 50px;
 	line-height: 50px;
 				// border: 1px solid blue;
-	background: $darkgrey; 
-    background: -moz-linear-gradient(top, $gradientfrom, $darkgrey); 
-    background: -webkit-gradient(linear, left top, left bottom, from($gradientfrom2), to($gradientto2));
+	background: $gradientfrom2; 
+    // background: -moz-linear-gradient(top, $gradientfrom, $darkgrey); 
+    // background: -webkit-gradient(linear, left top, left bottom, from($gradientfrom2), to($gradientto2));
 	-moz-box-shadow:0px 3px 3px rgba(0, 0, 0, 0.25); 
     -webkit-box-shadow:0px 3px 3px rgba(0, 0, 0, 0.25); 
 	padding-left: 10px;

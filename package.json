@@ -1,12 +1,16 @@
 {
   "name": "scheduleapp",
   "version": "1.0.0",
+  "engines": {
+    "node": "5.6.0"
+  },
   "description": "",
   "main": "bin/server/index.js",
   "scripts": {
     "lint": "eslint . ./",
     "lint:fix": "npm run lint -- --fix",
     "start": "nodemon",
+    "postinstall": "webpack -p /bin/bundle",
     "compile": "DEBUG=app:* NODE_ENV=production BUILD=TRUE node bin/bundle",
     "deploy": "rm -rf dist && npm run compile && git add dist -A && git commit -m 'deploy' && git push heroku master"
   },
@@ -33,7 +37,7 @@
     "redux": "^3.4.0",
     "redux-thunk": "^2.0.1",
     "socket.io": "^1.4.5",
-    "webpack": "^1.13.0"
+    "webpack": "^1.13.1"
   },
   "devDependencies": {
     "app-config-chain": "^1.0.4",

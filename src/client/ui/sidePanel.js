@@ -2,6 +2,8 @@ import React from 'react';
 import store from 'store';
 import { Link, browserHistory } from 'react-router';
 import { calendar, publish, getEmployeeSchedule, getWeekByWeek } from 'api/data';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+
 
 require("assets/styles/sidePanel.scss");
 require('font-awesome-webpack');
@@ -109,6 +111,11 @@ export default React.createClass({
 		console.log(type);
 		this.props.filterByShift(val, type);
 	},
+	changeColor: function(e){
+		var val = e.target.id;
+		console.log(val);
+		this.props.setColor(val);
+	},
 	render: function(){
 		return (
 			<div className={"sidePortal " + this.state.collapse}>
@@ -176,6 +183,15 @@ export default React.createClass({
 
 					<details closed>
 						<summary className="locations"><i className="fa fa-envelope-o" aria-hidden="true"></i>Requests</summary>
+					</details>
+
+					<details closed>
+						<summary className="locations"><i className="fa fa-tint" aria-hidden="true"></i>Color Code</summary>
+							<div className="colorBox">
+								<div className="colors" id="station" onClick={this.changeColor}>By Area</div>
+								<div className="colors" id="positionClass" onClick={this.changeColor}>By Position</div>
+								<div className="colors" id="starting_time" onClick={this.changeColor}>By Start-Time</div>
+							</div>
 					</details>
 
 					<details closed>
