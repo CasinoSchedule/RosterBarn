@@ -329,6 +329,20 @@ export function calendar(month, year, monthdate, employee){
 }
 
 
+export function addNewEmployeeUser(username, password, profile_id, cb){
+	//console.log("profile: ", profile_id);
+
+  return api.post('profiles/useremployee/', {username:username, password:password, profile_id:profile_id}).then(function(){
+    api.login(username, password).then(function(){
+       cb();
+    }).catch(function(err){
+      console.log(err);
+    });
+  }).catch(function(err){
+    console.log(err);
+  });
+}
+
 
 		// store.dispatch({
 		// 	type: 'GET_CALENDARDAYS',

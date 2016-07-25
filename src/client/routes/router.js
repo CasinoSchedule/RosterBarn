@@ -12,6 +12,7 @@ import Home from 'ui/home';
 import Calendar from 'ui/calendar';
 import Scheduler from 'ui/scheduler';
 import LandingPage from 'ui/landingPage';
+import employeeSignUp from 'ui/employeeSignUp';
 
 
 
@@ -22,7 +23,8 @@ export default (
       	<Route path='/landingPage' component={LandingPage} />
       	<Route path='/' component={Home} />
       	<Route path='/calendar' component={Calendar} />
-      	<Route path='/scheduler' component={Scheduler} />    	
+      	<Route path='/scheduler' component={Scheduler} />
+        <Route path='/employee/*' component={employeeSignUp} />	
       </Route>
     </Router>
   </Provider>
