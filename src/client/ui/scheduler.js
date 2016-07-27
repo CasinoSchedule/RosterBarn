@@ -220,7 +220,7 @@ export default React.createClass({
 
 					<ReactCSSTransitionGroup transitionName="employeeBox" transitionEnterTimeout={500} transitionLeaveTimeout={300}>
 						{(this.state.showForm) 
-							? <EmployeeInfoForm 
+							? <EmployeeInfoForm
 								info={this.state.employeeInfo} key={this.state.employeeInfo.uniqueId} /> 
 							: ""}	
 					</ReactCSSTransitionGroup>
