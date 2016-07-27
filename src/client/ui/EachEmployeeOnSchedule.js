@@ -61,13 +61,15 @@ export default React.createClass({
 		})
 	},
 	handleNameBlur: function(e){
-		var val = this.refs.nameString.value.split(" ");
+		var val = this.refs.nameString.value.split(" ") || "";
+		console.log(this.state.id, {
+				first_name: val[0], 
+				last_name: val[1]
+			});
 		if(this.state.nameString !== this.refs.nameString.value) {
 			updateEmployee(this.state.id, {
 				first_name: val[0], 
-				last_name: val[1],
-				regular_days_off: this.props.thing.regular_days_off || [""],
-				availability: this.props.thing.availability
+				last_name: val[1]
 			});
 			// Consider page update here to reflect new roster.
 

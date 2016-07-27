@@ -1,18 +1,16 @@
 import React from 'react';
-import store from 'store';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import SidePanel from 'ui/sidePanel';
 import EmployeeToSchedule from 'ui/employeeToSchedule';
-import EmployeeRow from 'ui/employeeRow';
 import EmployeeInfoForm from 'ui/employeeInfoForm';
 import Confirm from 'ui/confirm';
-import { addNewEmployee, getEmployeeSchedule, updateEmployee, sendEmployeeShiftObj } from 'api/data';
-import { getWeekByWeek } from 'api/workspace'
+import { calendar, getWeekByWeek, getEmployeeSchedule, caltest, addNewEmployee, updateEmployee, sendEmployeeShiftObj } from 'api/data';
 import { browserHistory } from 'react-router';
-import {v4} from 'uuid';
-import RaisedButton from 'material-ui';
+import { connect } from 'react-redux';
+import store from 'store';
 
 require("assets/styles/scheduler.scss");
+
 var image = require("assets/images/logo2.png");
 var month = new Date().getMonth(), 
 	year = new Date().getFullYear(),
@@ -21,45 +19,16 @@ var month = new Date().getMonth(),
 	day = days[new Date().getDay()], 
 	pythonMonth = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
 	months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],  
-	forward = 0
+	forward = 0;
 
-export default React.createClass({
-	getInitialState: function() {
-		return ({
-			weeklyCalendar: [],
-			employeeWeeklySchedule: [],
-			flexbox_size: "",
-			shiftColor: "",
-			shiftNum: 0,
-			showForm: false,
-			employeeInfo: {},
-			showConfirm: false
-		})
-	},
-	componentWillMount: function(){
-		this.unsubscribe = store.subscribe(function(){
-			var currentStore = store.getState();
-			this.setState({
-				weeklyCalendar: currentStore.calendarReducer.weeklyCalendar,
-				employeeWeeklySchedule: currentStore.adminReducer.employeeWeeklySchedule,
-				flexbox_size: currentStore.calendarReducer.flexbox_size,
-				shiftColor: currentStore.cssReducer.shiftColor,
-				shiftNum: currentStore.cssReducer.shiftNum,
-				showForm: currentStore.showReducer.showForm,
-				employeeInfo: currentStore.employeeReducer.employeeInfo,
-				showConfirm: currentStore.showReducer.showConfirm
-			})
-		}.bind(this));
-		this.refreshCurrentState();
-	},
+const Scheduler = React.createClass({
 	refreshCurrentState: function(){
-		var addOnEndpoint = ((this.state.shiftNum) ? "?shift_title=" + this.state.shiftNum : "");
+		var addOnEndpoint = ((this.props.shiftNum) ? "?shift_title=" + this.props.shiftNum : "");
 		getEmployeeSchedule(year, pythonMonth[month], (date + forward), addOnEndpoint);
-		console.log('Initial Params', year, pythonMonth[month], (date + forward), addOnEndpoint);
 		getWeekByWeek(year, month, date + forward);
-
-		// Get New Date Object to send instead of (date + forward)
-
+	},
+	componentWillMount: function () {
+		this.refreshCurrentState();
 	},
 	nextSchedule: function(){
 		forward += 7;
@@ -99,7 +68,7 @@ export default React.createClass({
 	},
 	clearSchedule: function(){
 		var clearAll = [];
-		var employees = this.state.employeeWeeklySchedule;
+		var employees = this.props.employeeWeeklySchedule;
 		for(let i = 0; i < employees.length; i++){
 			for(let j = 0; j < 7; j++){
 				clearAll.push({
@@ -116,7 +85,7 @@ export default React.createClass({
 		var fieldToChange = val
 		var test = [];
 		var colors = ['red', 'yellow', 'pink', 'orange'];
-		var cut = this.state.employeeWeeklySchedule;
+		var cut = this.props.employeeWeeklySchedule;
 		for(let i = 0; i < cut.length; i++){
 			for(let j = 1; j < 8; j++){
 				if(cut[i][j][fieldToChange]) {
@@ -149,7 +118,7 @@ export default React.createClass({
 		return (
 			<div className="adminBg">
 
-				<SidePanel dateString={this.state.weeklyCalendar[0].calendar_date} filterByShift={this.filterByShift} setColor={this.setColor} />
+				<SidePanel dateString={this.props.weeklyCalendar[0].calendar_date} filterByShift={this.filterByShift} setColor={this.setColor} />
 
 				<div className="adminHeader">
 					<div>
@@ -165,18 +134,18 @@ export default React.createClass({
 				<div className="adminContainer">
 
 					<div className="monthLabel">
-						<div className={"shiftStatus " + this.state.shiftColor}>
-							<div className="shiftTitle">{this.state.shiftColor}</div>
+						<div className={"shiftStatus " + this.props.shiftColor}>
+							<div className="shiftTitle">{this.props.shiftColor}</div>
 						</div>
 
 						<div className="navigate">
 							<div className="leftButton" onClick={this.previousSchedule}><i className="fa fa-angle-left" aria-hidden="true"></i></div>
 
-							<div className="weekLabel"> {this.state.weeklyCalendar[0].monthString} {this.state.weeklyCalendar[0].day}, {this.state.weeklyCalendar[0].year}   
+							<div className="weekLabel"> {this.props.weeklyCalendar[0].monthString} {this.props.weeklyCalendar[0].day}, {this.props.weeklyCalendar[0].year}   
 
 									<span className="dash"> - </span> 
 
-								{this.state.weeklyCalendar[6].monthString} {this.state.weeklyCalendar[6].day}, {this.state.weeklyCalendar[6].year}
+								{this.props.weeklyCalendar[6].monthString} {this.props.weeklyCalendar[6].day}, {this.props.weeklyCalendar[6].year}
 							</div> 
 							<div className="rightButton" onClick={this.nextSchedule}><i className="fa fa-angle-right" aria-hidden="true"></i></div>
 						</div>
@@ -191,7 +160,7 @@ export default React.createClass({
 
 					
 
-				<div className={"scheduleFlex " + this.state.flexbox_size}>
+				<div className={"scheduleFlex " + this.props.flexbox_size}>
 					
 					<div className="schedule" >
 						
@@ -199,9 +168,9 @@ export default React.createClass({
 						<div className="weekOf">
 							<div className="roster employee"><span className="letter">R</span>oster<i className="fa fa-user-plus" aria-hidden="true" onClick={this.addEmployee}></i><span className="addUser"></span></div>
 							
-							{this.state.weeklyCalendar.map(function(item, i){
+							{this.props.weeklyCalendar.map(function(item, i){
 								return (
-										<div key ={v4()} className="weekOfDay">
+										<div key ={i} className="weekOfDay">
 											<p>{item.dayString}<span>&#160;</span> {item.day}</p>
 										</div>
 								)
@@ -209,28 +178,53 @@ export default React.createClass({
 							
 						</div>
 						
-								<EmployeeRow employeeWeeklySchedule={this.state.employeeWeeklySchedule} />
+							<div className="eachRow">
+						
+								{this.props.employeeWeeklySchedule.map(function(item, i){
+									return (
+										<EmployeeToSchedule 
+											key={i}  
+											item={item} />
+									)
+								}.bind(this))}
 							
+							</div>
+						
 					</div>
 				</div>
 						
 				</div>	
 
 					<ReactCSSTransitionGroup transitionName="employeeBox" transitionEnterTimeout={500} transitionLeaveTimeout={300}>
-						{(this.state.showForm) 
-							? <EmployeeInfoForm
-								info={this.state.employeeInfo} key={this.state.employeeInfo.uniqueId} /> 
+						{(this.props.showForm) 
+							? <EmployeeInfoForm 
+								info={this.props.employeeInfo} key={this.props.employeeInfo.uniqueId} /> 
 							: ""}	
 					</ReactCSSTransitionGroup>
 
 					<ReactCSSTransitionGroup transitionName="employeeBox" transitionEnterTimeout={500} transitionLeaveTimeout={300}>
-						{(this.state.showConfirm) 
+						{(this.props.showConfirm) 
 							? <Confirm
-								key={v4()} clearSchedule={this.clearSchedule}/> 
-							: ""}	
+								key={1} clearSchedule={this.clearSchedule}/> 
+							: ""}	 
 					</ReactCSSTransitionGroup>
 
 			</div>
 		)
 	}
 })
+
+const stateToProps = function(state) {
+	return {
+		weeklyCalendar: state.calendarReducer.weeklyCalendar,
+		employeeWeeklySchedule: state.adminReducer.employeeWeeklySchedule,
+		flexbox_size: state.calendarReducer.flexbox_size,
+		shiftColor: state.cssReducer.shiftColor,
+		shiftNum: state.cssReducer.shiftNum,
+		showForm: state.showReducer.showForm,
+		employeeInfo: state.employeeReducer.employeeInfo,
+		showConfirm: state.showReducer.showConfirm
+	}
+}
+
+export default connect(stateToProps)(Scheduler)
