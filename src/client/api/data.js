@@ -91,8 +91,8 @@ export function getEmployeeSchedule(year, month, day, shift){
 								name: employees[i].first_name + " " + employees[i].last_name,
 								calendar_date: weekdays[j].calendar_date,
 								employee_id: employees[i].employee_id,
-								starting_time: currentShift.time,
-								station: currentShift.station,
+								starting_time: currentShift.time || '',
+								station: currentShift.station || '',
 								uniqueId: uniqueId,
 								classInfoTime: "timeField",
 								phone_number: employees[i].phone_number,
@@ -132,7 +132,7 @@ export function getEmployeeSchedule(year, month, day, shift){
 				})
 
 
-				// console.log('employeeWeeklySchedule', newarr);
+				console.log('employeeWeeklySchedule', newarr);
 				// console.log('scheduledEmployees', scheduledEmployees);	
 				// console.log('Cb', weekdays);
 				// console.log('workWeekSchedule', workWeekSchedule);
@@ -146,22 +146,15 @@ export function getEmployeeSchedule(year, month, day, shift){
 }
 
 export function getWeekByWeek(year, month, day, cb){
-	Date.prototype.addDays = function(days){
-		    var dat = new Date(this.valueOf());
-		    dat.setDate(dat.getDate() + days);
-		    
-		    return dat;
-		}
 		var abbreviatedDayString = ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"];
-		var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+		var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 		var dat = new Date(year, month, day);
-		
 		var dayIndex = dat.getDay();
-		
+		var weekDays = [];
 		var dayIndexArray = [[-6, -5, -4, -3, -2, -1, 0],[0, 1, 2, 3, 4, 5, 6],[-1, 0, 1, 2, 3, 4, 5],[-2, -1, 0, 1, 2, 3, 4],[-3, -2, -1, 0, 1, 2, 3],[-4, -3, -2, -1, 0, 1, 2],[-5, -4, -3, -2, -1, 0, 1]];
 
 
-		var weekDays = [];
+		
 		for(let i = 0; i < 7; i++){
 			let n = dayIndexArray[dayIndex][i]
 			var pythonMonth = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
@@ -348,116 +341,3 @@ export function calendar(month, year, monthdate, employee){
 				collection: collection
 			})}
 }
-
-
-
-		// store.dispatch({
-		// 	type: 'GET_CALENDARDAYS',
-		// 	calendarDays: boxes
-		// })
-		
-
-	// console.log('calendarDays:', collection);
-	// console.log('Days in the month of ' + month, daysInMonths[x]);
-
-	// export function calendar(month, year, monthdate, employee){
-// 	// console.log('Init', month, year);
-	
-// 	var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"], 
-// 		year = parseInt(year, 10), 
-// 		daysInMonths = [31, (((year%4==0)&&(year%100!=0))||(year%400==0)) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31], 
-// 		boxes =[], 
-// 		collection = [],
-// 		x = months.indexOf(month),
-// 		startDay = new Date(year, x, 1).getDay(),
-// 		totalCalendarDays = 42 - daysInMonths[x] - startDay, 
-// 		daysInPreviousMonth = 0,
-// 		format = "",
-// 		weeklyCalendar = [];
-		
-// 		if(x === 0){
-// 			daysInPreviousMonth = daysInMonths[11];
-// 		} else {
-// 			daysInPreviousMonth = daysInMonths[x - 1]
-// 		}
-	
-// 	((startDay === 0) ? createCal(daysInMonths[x], totalCalendarDays, null, year, x) : createCal(daysInMonths[x], totalCalendarDays, startDay, year, x));
-
-// 	function createCal(a, b, c, d, x){
-// 		var pythonMonth = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-
-// 		for(var i = 1, n = 0; i <= a; i++, n++){
-// 			format = d + "-" + pythonMonth[x] + "-" + i;
-// 			boxes.push(format);
-// 			collection[n] = {
-// 				year: d,
-// 				month: months[x],
-// 				day: i,
-// 				calendar_date: format,
-// 				currentClass: ""
-// 			}
-// 			boxes.push(collection[n].calendar_date)
-// 		}
-// 		for(var j = 1; j <= b; j++){
-// 			format = ((x === 11) ? d + 1 : d) + "-" + pythonMonth[x] + "-" + j;
-// 			boxes.push(format);
-// 			collection.push({
-// 				year: ((x === 11) ? d + 1 : d),
-// 				month: ((x === 11) ? months[0] : months[x + 1]),
-// 				day: j,
-// 				calendar_date: format,
-// 				currentClass: "inactiveMonth"
-// 			})
-// 		}
-// 		if(c){
-// 			for(var h = 0; h < c; h++){
-// 				format = ((x === 0) ? d - 1 : d) + "-" + pythonMonth[x] + "-" + daysInPreviousMonth
-// 				boxes.unshift(format);
-// 				collection.unshift({
-// 					year: ((x === 0) ? d - 1 : d),
-// 					month: ((x === 0) ? months[11] : months[x - 1]),
-// 					day: daysInPreviousMonth,
-// 					calendar_date: format,
-// 					currentClass: "inactiveMonth"
-// 				})
-// 				daysInPreviousMonth -= 1;
-// 			}
-// 		}
-
-
-// 		if(employee) {
-// 			return api.get('/schedules/employeemonth/?month=' + monthdate + '&year=' + year).then(function(resp){
-			
-// 				var scheduleInfo = collection.map(function(item, i){
-// 					return ({
-// 						year: item.year,
-// 						month: item.month,
-// 						day: item.day,
-// 						calendar_date: item.calendar_date,
-// 						currentClass: item.currentClass,
-// 						starting_time: checkSchedule(item.calendar_date)
-// 					})
-// 				})
-			
-// 				store.dispatch({
-// 					type: 'GET_DATEOBJECTS',
-// 					collection: scheduleInfo
-// 				})
-
-// 				function checkSchedule(check){
-// 					for(var i = 0; i < resp.data.length; i++){
-// 						if(resp.data[i].calendar_date === check) {
-// 							return ((resp.data[i].starting_time) ? resp.data[i].starting_time.slice(0, 5) : "")
-// 						}
-// 					}
-// 					return ""
-// 				}		
-// 			})
-// 		} else {
-// 			store.dispatch({
-// 				type: 'GET_DATEOBJECTS',
-// 				collection: collection
-// 			})
-// 		}
-// 	}
-// }

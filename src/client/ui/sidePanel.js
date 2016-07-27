@@ -91,13 +91,11 @@ export default React.createClass({
 	publish: function(){
 		if(this.state.publishButton  === "publish"){
 			publish({date: this.props.dateString});
-			// console.log(this.props.dateString);
 			store.dispatch({
 				type: 'CHANGE_PUBLISHBUTTON',
 				publishButton: "noChanges"
 			})
 		}
-		// console.log('Check successful');
 	},
 	scheduleJump: function(item, e){
 		e.preventDefault();
@@ -132,7 +130,7 @@ export default React.createClass({
 						<i className="fa fa-home fa-2x" aria-hidden="true" onClick={this.backToHome}></i> 
 					</div> */}
 
-					<details closed>
+					<details>
 						<summary className="locations"><i className="fa fa-calendar" aria-hidden="true"></i>Calendar</summary>
 
 						<div className="adminCal">
@@ -167,25 +165,25 @@ export default React.createClass({
 				</div>
 					</details>
 
-					<details closed>
+					<details>
 						<summary className="locations"><i className="fa fa-users" aria-hidden="true"></i>Staff</summary>
 
 
 					</details>
 
-					<details closed>
+					<details>
 						<summary className="locations"><i className="fa fa-user" aria-hidden="true"></i>Position</summary>
 					</details>
 
-					<details closed>
+					<details>
 						<summary className="locations"><i className="fa fa-map-signs" aria-hidden="true"></i>Location</summary>
 					</details>
 
-					<details closed>
+					<details>
 						<summary className="locations"><i className="fa fa-envelope-o" aria-hidden="true"></i>Requests</summary>
 					</details>
 
-					<details closed>
+					<details>
 						<summary className="locations"><i className="fa fa-tint" aria-hidden="true"></i>Color Code</summary>
 							<div className="colorBox">
 								<div className="colors" id="station" onClick={this.changeColor}>By Area</div>
@@ -194,7 +192,7 @@ export default React.createClass({
 							</div>
 					</details>
 
-					<details closed>
+					<details>
 						<summary className="locations"><i className="fa fa-clock-o" aria-hidden="true"></i>Shifts</summary>
 							<div className="shiftBox">
 								<div className="shifts" id="a1" onClick={this.shiftFilter}>grave</div>

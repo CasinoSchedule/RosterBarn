@@ -1,6 +1,7 @@
 import React from 'react';
 import store from 'store';
 import EachEmployeeOnSchedule from 'ui/eachEmployeeOnSchedule';
+import {v4} from 'uuid';
 
 require('assets/styles/employeeToSchedule.scss');
 
