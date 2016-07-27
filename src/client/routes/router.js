@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 import { Router, Route, browserHistory } from 'react-router';
 import { Provider } from 'react-redux';
 import store from 'store';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+
 
 // layouts
 import App from 'layouts/app';
@@ -18,6 +20,7 @@ import Info from 'ui/employeeInfoForm';
 
 
 export default (
+  <MuiThemeProvider>
   <Provider store={store}>
     <Router history={browserHistory}>
       <Route component={App}>
@@ -30,4 +33,5 @@ export default (
       </Route>
     </Router>
   </Provider>
+  </MuiThemeProvider>
 )

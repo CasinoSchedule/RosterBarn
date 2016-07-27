@@ -10,7 +10,13 @@ import { addNewEmployee, getEmployeeSchedule, updateEmployee, sendEmployeeShiftO
 import { getWeekByWeek } from 'api/workspace'
 import { browserHistory } from 'react-router';
 import {v4} from 'uuid';
-import RaisedButton from 'material-ui';
+import RaisedButton from 'material-ui/RaisedButton';
+import injectTapEventPlugin from 'react-tap-event-plugin';
+import FlatButton from 'material-ui/FlatButton';
+
+// Needed for onTouchTap
+// http://stackoverflow.com/a/34015469/988941
+injectTapEventPlugin();
 
 require("assets/styles/scheduler.scss");
 var image = require("assets/images/logo2.png");
@@ -183,7 +189,7 @@ export default React.createClass({
 
 
 						<div className="printClearButtons">
-							<button onClick={this.confirmClear}>Clear Schedule</button>
+							<FlatButton label="Primary" primary={true} />
 							<button onClick={this.printSchedule}>Print Schedule</button>
 						</div>
 
