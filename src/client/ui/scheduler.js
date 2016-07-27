@@ -189,8 +189,8 @@ export default React.createClass({
 
 
 						<div className="printClearButtons">
-							<FlatButton label="Primary" primary={true} />
-							<button onClick={this.printSchedule}>Print Schedule</button>
+							<FlatButton label="Clear" primary={true} onClick={this.confirmClear} />
+							<FlatButton label="Print" primary={true} onClick={this.printSchedule} />
 						</div>
 
 					</div>	
