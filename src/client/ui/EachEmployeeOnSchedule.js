@@ -1,6 +1,7 @@
 import React from 'react';
 import store from 'store';
 import { setNewSchedule, sendEmployeeShiftObj, addEmployee, updateEmployee } from 'api/data';
+import TimePicker from 'material-ui/TimePicker';
 
 require('assets/styles/employeeToSchedule.scss');
 
@@ -45,7 +46,14 @@ export default React.createClass({
 			// station: this.refs.station.value
 			
 		}])
-		
+		console.log([{
+			day: this.props.thing.calendar_date,
+			employee: this.props.thing.id,
+			starting_time: this.refs.starting_time.value
+			// ,
+			// station: this.refs.station.value
+			
+		}]);
 	},
 	handleChange: function(e) {
 		// var value = e.target.value;
@@ -110,8 +118,8 @@ export default React.createClass({
 									: ""}
 								{!(this.props.thing.nameString) 
 									? 	<div className={"timeLocationBox " + this.props.thing.val}>
-											<div><input onChange={this.handleChange} onBlur={this.handleBlur} type="text" ref="starting_time" defaultValue={this.props.thing.starting_time} /></div> 
-											<div><input onChange={this.handleChange} onBlur={this.handleBlur} type="text" ref="station" defaultValue={this.props.thing.station} className="locationStyle "/></div>
+											<div><input onChange={this.handleChange} onBlur={this.handleBlur} ref="starting_time" defaultValue={this.props.thing.starting_time} /></div> 
+											<div><input onChange={this.handleChange} onBlur={this.handleBlur} ref="station" defaultValue={this.props.thing.station} className="locationStyle "/></div>
 										</div>
 									: ""}
 							</div>

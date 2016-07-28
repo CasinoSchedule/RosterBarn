@@ -3,15 +3,11 @@ import store from 'store';
 import { v4 } from 'uuid';
 
 export function getShifts(year, month, day){
-	return api.get('/schedules/weekshift/?date=' + year + "-" + month + "-" + day).then(function(resp){ 
-		return resp.data;
-	})
+	return api.get('/schedules/weekshift/?date=' + year + "-" + month + "-" + day)
 }
 
 export function getEmployeesByShift(shiftFilter){
-	return api.get(shiftFilter).then(function(resp){
-		return resp.data;
-	})
+	return api.get(shiftFilter);
 }
 
 export function createEmployeeInfo(employee, type){
@@ -48,7 +44,10 @@ export function createEmployeeShift(employee, type, currentShift, date){
 }
 
 export function getEmployeeSchedule(year, month, day, shift){
-	var workWeekSchedule = getShifts(year, month, day);
+	var workWeekSchedule = getShifts(year, month, day)
+	.then(function(response){
+
+	});
 	var shiftFilter = ((shift) ? '/profiles/employee/' + shift : '/profiles/employee/');
 	var employees = getEmployeesByShift(shiftFilter);
 	var pythonBackToJavascriptMonth = month - 1;

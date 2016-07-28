@@ -62,11 +62,13 @@ export default React.createClass({
 		var addOnEndpoint = ((this.state.shiftNum) ? "?shift_title=" + this.state.shiftNum : "");
 		var departmentId = localStorage.getItem("departmentId");
 		getEmployeeSchedule(year, pythonMonth[month], (date + forward), addOnEndpoint, departmentId);
+
 		console.log('Initial Params', year, pythonMonth[month], (date + forward), addOnEndpoint);
 		getWeekByWeek(year, month, date + forward);
 		console.log("department", departmentId);
 
 		// Get New Date Object to send instead of (date + forward)
+		console.log('DepartmentId', departmentId)
 
 	},
 	nextSchedule: function(){
@@ -155,6 +157,11 @@ export default React.createClass({
 		// console.log('cut', cut);
 	},
 	logout: function(){
+		localStorage.clear();
+		store.dispatch({
+			type: 'USER_LOGOUT'
+		})
+
 		browserHistory.push('/')
 	},
 	render: function(){
@@ -196,8 +203,8 @@ export default React.createClass({
 
 
 						<div className="printClearButtons">
-							<FlatButton label="Primary" primary={true} />
-							<button onClick={this.printSchedule}>Print Schedule</button>
+							<FlatButton label="Clear" primary={true} onClick={this.confirmClear} />
+							<FlatButton label="Print" primary={true} onClick={this.printSchedule} />
 						</div>
 
 					</div>	

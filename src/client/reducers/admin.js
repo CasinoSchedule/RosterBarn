@@ -10,6 +10,10 @@ export default function(state = adminInitialState, action){
 			return {
 				employeeWeeklySchedule: action.employeeWeeklySchedule
 			}
+
+		case 'USER_LOGOUT':
+		console.log('Admin reducer', adminInitialState);
+		return adminInitialState
 	default:
 		return state;
 
