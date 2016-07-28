@@ -11,6 +11,7 @@ import CalendarReducer from 'reducers/calendarReducer';
 import AdminReducer from 'reducers/admin';
 import CssReducer from 'reducers/css';
 
+
 // Combine Reducers
 var reducers = combineReducers({
 	showReducer: ShowReducer,
@@ -20,6 +21,15 @@ var reducers = combineReducers({
 	cssReducer: CssReducer
   // more...
 });
+
+const rootReducer = (state, action) => {
+	console.log('rootReducer hit');
+  if (action.type === 'USER_LOGOUT') {
+    state = undefined
+  }
+
+  return reducers(state, action)
+}
 
 // Create Store
 var store = createStoreWithMiddleware(reducers);

@@ -32,14 +32,16 @@ export function deleteEmployee(id){
 }
 
 export function checkAdmin(){
-	return api.get('/profiles/check/').then(function(resp){
-		console.log('checkAdmin function', resp.data.type);
-		if(resp.data.type === "manager"){
-			browserHistory.push('/scheduler')
-		} else {
-			browserHistory.push('/calendar')
-		}
-	})
+    return api.get('/profiles/check/').then(function(resp){
+        console.log('checkAdmin function', resp.data.type, resp.data.department, resp.data.department_title);
+        if(resp.data.type === "manager"){
+            localStorage.setItem("departmentId", resp.data.department);
+            localStorage.setItem("departmentTitle", resp.data.department_title);
+            browserHistory.push('/scheduler')
+        } else {
+            browserHistory.push('/calendar')
+        }
+    })
 }
 export function getEmployeeSchedule(year, month, day, shift){
 	var pythonMonth = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];

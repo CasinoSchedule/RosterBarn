@@ -60,11 +60,13 @@ export default React.createClass({
 	},
 	refreshCurrentState: function(){
 		var addOnEndpoint = ((this.state.shiftNum) ? "?shift_title=" + this.state.shiftNum : "");
+		var departmentId = localStorage.getItem('departmentId');
 		getEmployeeSchedule(year, pythonMonth[month], (date + forward), addOnEndpoint);
 		console.log('Initial Params', year, pythonMonth[month], (date + forward), addOnEndpoint);
 		getWeekByWeek(year, month, date + forward);
 
 		// Get New Date Object to send instead of (date + forward)
+		console.log('DepartmentId', departmentId)
 
 	},
 	nextSchedule: function(){
@@ -149,6 +151,11 @@ export default React.createClass({
 		// console.log('cut', cut);
 	},
 	logout: function(){
+		localStorage.clear();
+		store.dispatch({
+			type: 'USER_LOGOUT'
+		})
+
 		browserHistory.push('/')
 	},
 	render: function(){
