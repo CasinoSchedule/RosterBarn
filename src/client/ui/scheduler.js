@@ -158,11 +158,12 @@ export default React.createClass({
 	},
 	logout: function(){
 		localStorage.clear();
+		
 		store.dispatch({
 			type: 'USER_LOGOUT'
 		})
-
-		browserHistory.push('/')
+	
+		// browserHistory.push('/')
 	},
 	render: function(){
 		return (

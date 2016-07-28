@@ -30,8 +30,10 @@ export default React.createClass({
 	handleSubmit: function(e){
 		e.preventDefault();
 		console.log(this.state.username, this.state.password);
+		localStorage.clear();
 		login(this.state.username, this.state.password).then(function(resp){
 			console.log('handle then');
+			localStorage.clear();
 			checkAdmin();
 		}.bind(this)).catch(function(err){
 			console.log('handle catch');

@@ -67,6 +67,9 @@ export default function(state = calendarInitialState, action){
 				flexbox_size: action.flexbox_size,
 				working_today: state.working_today
 			}
+		case 'USER_LOGOUTS':
+		console.log('Calendar reducer', calendarInitialState);
+			return calendarInitialState
 
 	default:
 		return state;

@@ -20,6 +20,8 @@ export default function(state = employeeInitialState, action){
 				employeeInfo: action.employeeInfo
 
 			}
+		case 'USER_LOGOUTSS':
+			return employeeInitialState;
 
 	default:
 		return state;
