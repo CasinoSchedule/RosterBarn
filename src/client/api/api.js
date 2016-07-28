@@ -22,6 +22,7 @@ instance.login = function(user, pass) {
  return this.post('api-token-auth/', {username: user, password: pass})
    .then(function(resp){
      var token = resp.data.token;
+     console.log("token", token);
      Cookie.set('token', token);
      interceptor = this.interceptors.request.use(function(config){
        config.headers['Authorization'] = 'Token ' + token;

@@ -33,15 +33,17 @@ export function deleteEmployee(id){
 
 export function checkAdmin(){
 	return api.get('/profiles/check/').then(function(resp){
-		console.log('checkAdmin function', resp.data.type);
+		console.log('checkAdmin function', resp.data.type, resp.data.department, resp.data.department_title);
 		if(resp.data.type === "manager"){
+			localStorage.setItem("departmentId", resp.data.department);
+			localStorage.setItem("departmentTitle", resp.data.department_title);
 			browserHistory.push('/scheduler')
 		} else {
 			browserHistory.push('/calendar')
 		}
 	})
 }
-export function getEmployeeSchedule(year, month, day, shift){
+export function getEmployeeSchedule(year, month, day, shift, department){
 	var pythonMonth = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 	var pythonChopDate = new Date(year, month-1, day);
 	year = pythonChopDate.getFullYear();
@@ -52,10 +54,11 @@ export function getEmployeeSchedule(year, month, day, shift){
 	var pythonBackToJavascriptMonth = month - 1;
 	var scheduledEmployees = [];
 	var weekdays = [];
+	var departmentQuery = "&department=" + department;
 	
-	return api.get('/schedules/weekshift/?date=' + year + "-" + month + "-" + day).then(function(resp){
+	return api.get('/schedules/weekshift/?date=' + year + "-" + month + "-" + day + departmentQuery).then(function(resp){
 		workWeekSchedule = resp.data;
-		// console.log('Weekly Schedules from Back End', resp.data);
+		console.log('Weekly Schedules from Back End', resp.data);
 		var shiftFilter = ((shift) ? '/profiles/employee/' + shift : '/profiles/employee/');
 
 		return api.get(shiftFilter).then(function(resp){

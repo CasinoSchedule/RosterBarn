@@ -60,9 +60,11 @@ export default React.createClass({
 	},
 	refreshCurrentState: function(){
 		var addOnEndpoint = ((this.state.shiftNum) ? "?shift_title=" + this.state.shiftNum : "");
-		getEmployeeSchedule(year, pythonMonth[month], (date + forward), addOnEndpoint);
+		var departmentId = localStorage.getItem("departmentId");
+		getEmployeeSchedule(year, pythonMonth[month], (date + forward), addOnEndpoint, departmentId);
 		console.log('Initial Params', year, pythonMonth[month], (date + forward), addOnEndpoint);
 		getWeekByWeek(year, month, date + forward);
+		console.log("department", departmentId);
 
 		// Get New Date Object to send instead of (date + forward)
 
@@ -76,17 +78,21 @@ export default React.createClass({
 		this.refreshCurrentState();
 	},
 	addEmployee: function(e){
+		console.log('test',localStorage.getItem("departmentId"))
 		e.preventDefault();
 		addNewEmployee({
 			first_name: "Add", 
 			last_name: "Employee",
-			availability: ((this.state.shiftNum) ? [this.state.shiftNum] : [1])
+			availability: ((this.state.shiftNum) ? [this.state.shiftNum] : [1]),
+			department: localStorage.getItem("departmentId")
 		});
 		this.refreshCurrentState();
 	},
 	filterByShift: function(shift, type){
 		var addOnEndpoint = ((shift) ? "?shift_title=" + shift : "");
-		getEmployeeSchedule(year, pythonMonth[month], (date + forward), addOnEndpoint);
+		var department = localStorage.getItem("departmentId");
+		console.log("d", department);
+		getEmployeeSchedule(year, pythonMonth[month], (date + forward), addOnEndpoint, department);
 		getWeekByWeek(year, month, date + forward);
 		store.dispatch({
 			type: 'CHANGE_SHIFTBOX',
@@ -161,6 +167,7 @@ export default React.createClass({
 					<div>
 					 <span className="roster"><span className="letter">R</span>oster</span><span className="barn"><span className="">B</span>arn</span>
 					</div>
+					<div className="headerOptions"><span className="departmentName">{localStorage.getItem("departmentTitle")}</span></div>
 					<div className="headerOptions">
 						<div className="options"><i className="fa fa-bars" aria-hidden="true"></i>Options</div>
 						<div className="settings"><i className="fa fa-cogs" aria-hidden="true"></i>Settings</div>
