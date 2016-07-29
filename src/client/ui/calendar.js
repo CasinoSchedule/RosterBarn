@@ -4,7 +4,8 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import CallIn from 'ui/callIn';
 import SidePanel from 'ui/sidePanel';
 import {Link, browserHistory} from 'react-router';
-import { getEmployeeSchedule, calendar } from 'api/data';
+import { getEmployeeSchedule, calendar, logout } from 'api/data';
+import Cookie from 'js-cookie';
 
 
 require("assets/styles/calendar.scss");
@@ -154,6 +155,9 @@ export default React.createClass({
 
 	},
 	logout: function(){
+		logout();
+		Cookie.remove('token');
+		localStorage.clear();
 		browserHistory.push('/');
 	},
 	componentWillUnmount: function () {

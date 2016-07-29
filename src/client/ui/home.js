@@ -2,12 +2,15 @@ import React from 'react';
 import store from 'store';
 import { login, checkAdmin } from 'api/data';
 import { Link, browserHistory } from 'react-router';
+import Cookie from 'js-cookie';
 
 require("assets/styles/home.scss");
 var image = require("assets/images/ariawhite.png");
 
 export default React.createClass({
 	getInitialState: function(){
+		//Cookie.remove('token');
+		console.log("homepage", Cookie.get('token'));
 		return {
 			username: "",
 			password: "",
