@@ -46,7 +46,7 @@ export function checkAdmin(){
 		}
 	})
 }
-export function getEmployeeSchedule(year, month, day, shiftId, departmentId){ // shift, department
+export function getEmployeeSchedule(year, month, day, shiftId, departmentId){
 	console.log("getting schedule");
 	var pythonMonth = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 	var pythonChopDate = new Date(year, month-1, day);
@@ -69,11 +69,11 @@ export function getEmployeeSchedule(year, month, day, shiftId, departmentId){ //
 	employeeParams['department'] = departmentId;
 	var employeeQuery = queryStringFromDict(employeeParams);
 
+	console.log('date check', weekShiftParams['date']);
+
 	return api.get('/schedules/weekshift/' + shiftQuery).then(function(resp){
 		workWeekSchedule = resp.data;
 		console.log('Weekly Schedules from Back End', resp.data);
-
-		//var shiftFilter = ((shift) ? '/profiles/employee/' + shift : '/profiles/employee/');
 
 		return api.get('/profiles/employee/' + employeeQuery).then(function(resp){
 			employees = resp.data;
@@ -360,7 +360,6 @@ export function calendar(month, year, monthdate, employee){
 }
 
 export function addNewEmployeeUser(username, password, profile_id, cb){
-	//console.log("profile: ", profile_id);
 
   return api.post('profiles/useremployee/', {username:username, password:password, profile_id:profile_id}).then(function(){
     api.login(username, password).then(function(){

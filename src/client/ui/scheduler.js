@@ -62,7 +62,6 @@ export default React.createClass({
 		this.refreshCurrentState();
 	},
 	refreshCurrentState: function(){
-		var addOnEndpoint = ((this.state.shiftNum) ? "?shift_title=" + this.state.shiftNum : "");
 		var departmentId = localStorage.getItem("departmentId");
 		var shiftId = this.state.shiftNum;
 
@@ -95,12 +94,10 @@ export default React.createClass({
 		this.refreshCurrentState();
 	},
 	filterByShift: function(shift, type){
-		var addOnEndpoint = ((shift) ? "?shift_title=" + shift : "");
 		var shiftId = shift;
 		var departmentId = localStorage.getItem("departmentId");
-
 		
-		getEmployeeSchedule(year, pythonMonth[month], (date + forward), shiftId, departmentId); //addOnEndpoint, department
+		getEmployeeSchedule(year, pythonMonth[month], (date + forward), shiftId, departmentId);
 		getWeekByWeek(year, month, date + forward);
 		store.dispatch({
 			type: 'CHANGE_SHIFTBOX',
