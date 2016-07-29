@@ -1,6 +1,7 @@
 import api from 'api/api';
 import store from 'store';
-import { browserHistory } from 'react-router'; 
+import { browserHistory } from 'react-router';
+import Cookie from 'js-cookie';
 
 api.new('https://sheltered-springs-57964.herokuapp.com/');
 // api.new('http://10.68.0.45:8000/');
@@ -32,7 +33,8 @@ export function deleteEmployee(id){
 }
 
 export function checkAdmin(){
-<<<<<<< HEAD
+	console.log("api", api);
+	console.log("check_admin", Cookie.get('token'));
 	return api.get('/profiles/check/').then(function(resp){
 		console.log('checkAdmin function', resp.data.type, resp.data.department, resp.data.department_title);
 		if(resp.data.type === "manager"){
@@ -43,20 +45,9 @@ export function checkAdmin(){
 			browserHistory.push('/calendar')
 		}
 	})
-=======
-    return api.get('/profiles/check/').then(function(resp){
-        console.log('checkAdmin function', resp.data.type, resp.data.department, resp.data.department_title);
-        if(resp.data.type === "manager"){
-            localStorage.setItem("departmentId", resp.data.department);
-            localStorage.setItem("departmentTitle", resp.data.department_title);
-            browserHistory.push('/scheduler')
-        } else {
-            browserHistory.push('/calendar')
-        }
-    })
->>>>>>> 401bd27eaf41394210365ca22c87171438479acc
 }
-export function getEmployeeSchedule(year, month, day, shift, department){
+export function getEmployeeSchedule(year, month, day, shiftId, departmentId){ // shift, department
+	console.log("getting schedule");
 	var pythonMonth = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 	var pythonChopDate = new Date(year, month-1, day);
 	year = pythonChopDate.getFullYear();
@@ -67,14 +58,24 @@ export function getEmployeeSchedule(year, month, day, shift, department){
 	var pythonBackToJavascriptMonth = month - 1;
 	var scheduledEmployees = [];
 	var weekdays = [];
-	var departmentQuery = "&department=" + department;
-	
-	return api.get('/schedules/weekshift/?date=' + year + "-" + month + "-" + day + departmentQuery).then(function(resp){
+
+	var weekShiftParams = {};
+	weekShiftParams['date'] = year + '-' + month + '-' + day;
+	weekShiftParams['department'] = departmentId;
+	var shiftQuery = queryStringFromDict(weekShiftParams);
+
+	var employeeParams = {};
+	employeeParams['shift_title'] = shiftId;
+	employeeParams['department'] = departmentId;
+	var employeeQuery = queryStringFromDict(employeeParams);
+
+	return api.get('/schedules/weekshift/' + shiftQuery).then(function(resp){
 		workWeekSchedule = resp.data;
 		console.log('Weekly Schedules from Back End', resp.data);
-		var shiftFilter = ((shift) ? '/profiles/employee/' + shift : '/profiles/employee/');
 
-		return api.get(shiftFilter).then(function(resp){
+		//var shiftFilter = ((shift) ? '/profiles/employee/' + shift : '/profiles/employee/');
+
+		return api.get('/profiles/employee/' + employeeQuery).then(function(resp){
 			employees = resp.data;
 			// console.log('Employee List', resp.data)
 			getWeekByWeek(year, pythonBackToJavascriptMonth, day, function(weekdays){
@@ -370,5 +371,21 @@ export function addNewEmployeeUser(username, password, profile_id, cb){
   }).catch(function(err){
     console.log(err);
   });
+}
+
+export function queryStringFromDict(dict) {
+	// Takes an object of query params and returns a query string.
+	var valuesArray = [];
+	for(var key in dict) {
+		if(dict[key]) {
+			valuesArray.push(String(key) + '=' + String(dict[key]))
+		}
+	}
+	if(valuesArray.length > 0){
+		return '?' + valuesArray.join('&');
+	}
+	else{
+		return '';
+	}
 }
 

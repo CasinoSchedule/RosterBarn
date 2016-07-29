@@ -14,6 +14,7 @@ if (Cookie.get('token')) {
  var token = Cookie.get('token');
  interceptor = instance.interceptors.request.use(function(config){
    config.headers['Authorization'] = 'Token ' + token;
+   console.log("axios api token", token);
    return config;
  });
 }
@@ -26,6 +27,7 @@ instance.login = function(user, pass) {
      Cookie.set('token', token);
      interceptor = this.interceptors.request.use(function(config){
        config.headers['Authorization'] = 'Token ' + token;
+       console.log("login_config_token", token);
        return config;
      })
      return resp;
@@ -33,6 +35,8 @@ instance.login = function(user, pass) {
 };
 
 instance.logout = function() {
+  console.log("api_logout");
+  Cookie.remove('token');
  this.interceptors.request.eject(interceptor);
  return true;
 }
