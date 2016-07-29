@@ -67,7 +67,7 @@ export default React.createClass({
 
 		getEmployeeSchedule(year, pythonMonth[month], (date + forward), shiftId, departmentId);
 
-		console.log('Initial Params', year, pythonMonth[month], (date + forward), addOnEndpoint);
+		// console.log('Initial Params', year, pythonMonth[month], (date + forward), addOnEndpoint);
 		getWeekByWeek(year, month, date + forward);
 		console.log("department", departmentId);
 
