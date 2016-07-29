@@ -33,10 +33,8 @@ export function deleteEmployee(id){
 }
 
 export function checkAdmin(){
-
 	console.log("api", api);
 	console.log("check_admin", Cookie.get('token'));
-
 	return api.get('/profiles/check/').then(function(resp){
 		console.log('checkAdmin function', resp.data.type, resp.data.department, resp.data.department_title);
 		if(resp.data.type === "manager"){
