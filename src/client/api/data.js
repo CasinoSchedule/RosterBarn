@@ -69,8 +69,6 @@ export function getEmployeeSchedule(year, month, day, shiftId, departmentId){
 	employeeParams['department'] = departmentId;
 	var employeeQuery = queryStringFromDict(employeeParams);
 
-	console.log('date check', weekShiftParams['date']);
-
 	return api.get('/schedules/weekshift/' + shiftQuery).then(function(resp){
 		workWeekSchedule = resp.data;
 		console.log('Weekly Schedules from Back End', resp.data);

@@ -65,7 +65,7 @@ export default React.createClass({
 		var departmentId = localStorage.getItem("departmentId");
 		var shiftId = this.state.shiftNum;
 
-		getEmployeeSchedule(year, pythonMonth[month], (date + forward), shiftId, departmentId); // addOnEndpoint
+		getEmployeeSchedule(year, pythonMonth[month], (date + forward), shiftId, departmentId);
 
 		console.log('Initial Params', year, pythonMonth[month], (date + forward), addOnEndpoint);
 		getWeekByWeek(year, month, date + forward);
