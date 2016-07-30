@@ -6,14 +6,13 @@ import EmployeeToSchedule from 'ui/employeeToSchedule';
 import EmployeeRow from 'ui/employeeRow';
 import EmployeeInfoForm from 'ui/employeeInfoForm';
 import Confirm from 'ui/confirm';
-import { addNewEmployee, getEmployeeSchedule, updateEmployee, sendEmployeeShiftObj, logout } from 'api/data';
+import { addNewEmployee, getEmployeeSchedule, updateEmployee, clearAllSchedule, logout } from 'api/data';
 import { getWeekByWeek } from 'api/workspace'
 import { browserHistory } from 'react-router';
 import {v4} from 'uuid';
 import RaisedButton from 'material-ui/RaisedButton';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import FlatButton from 'material-ui/FlatButton';
-
 import Cookie from 'js-cookie';
 
 // Needed for onTouchTap
@@ -128,7 +127,7 @@ export default React.createClass({
 				})
 			}
 		}
-		sendEmployeeShiftObj(clearAll, year, pythonMonth[month], (date + forward), shiftId, departmentId);
+		clearAllSchedule(clearAll, year, pythonMonth[month], (date + forward), shiftId, departmentId);
 		// console.log(clearAll, year, pythonMonth[month], (date + forward), shiftId, departmentId);
 		// setTimeout(this.refreshCurrentState(), 2000);
 
