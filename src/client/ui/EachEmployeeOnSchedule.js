@@ -1,6 +1,6 @@
 import React from 'react';
 import store from 'store';
-import { setNewSchedule, sendEmployeeShiftObj, addEmployee, updateEmployee } from 'api/data';
+import { setNewSchedule, sendSingleEmployeeShiftObj, addEmployee, updateEmployee } from 'api/data';
 import TimePicker from 'material-ui/TimePicker';
 
 require('assets/styles/employeeToSchedule.scss');
@@ -38,7 +38,7 @@ export default React.createClass({
 		// 	starting_time: this.refs.starting_time.value
 		// });
 		
-		sendEmployeeShiftObj([{
+		sendSingleEmployeeShiftObj([{
 			day: this.props.thing.calendar_date,
 			employee: this.props.thing.id,
 			starting_time: this.refs.starting_time.value

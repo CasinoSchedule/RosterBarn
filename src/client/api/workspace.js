@@ -34,7 +34,7 @@ export function createEmployeeShift(employee, type, currentShift, date){
 	var newItem = {
 		uniqueId: v4(),
 		id: employee.id,
-		calendar_date: weekdays[j].calendar_date,
+		calendar_date: date,
 		starting_time: currentShift.time || '',
 		station: currentShift.station || '',
 		visible: employee.visible,
@@ -44,65 +44,65 @@ export function createEmployeeShift(employee, type, currentShift, date){
 }
 
 export function getEmployeeSchedule(year, month, day, shift){
-	var workWeekSchedule = getShifts(year, month, day)
-	.then(function(response){
-
-	});
 	var shiftFilter = ((shift) ? '/profiles/employee/' + shift : '/profiles/employee/');
-	var employees = getEmployeesByShift(shiftFilter);
+	var workWeekSchedule = [], employees = [], scheduledEmployees = [], weekdays = [];
 	var pythonBackToJavascriptMonth = month - 1;
-	var scheduledEmployees = [];
+	
+	Promise.all([
+		getWeekByWeek(year, pythonBackToJavascriptMonth, day, function(days){
+			weekdays = days;
+			console.log('weekdays', weekdays);
+			console.log(shiftFilter);
+	}), getEmployeesByShift(shiftFilter).then(function(resp){
+			console.log('employees', resp.data);
+			employees = resp.data;
 
-	// var pythonMonth = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-	// var pythonChopDate = new Date(year, month-1, day);
-	// year = pythonChopDate.getFullYear();
-	// month = pythonMonth[pythonChopDate.getMonth()];
-	// day = pythonChopDate.getDate();
-	
-	
-	
-	
+	}), getShifts(year, month, day).then(function(resp){
+			console.log('workWeekSchedule', resp.data)
+			workWeekSchedule = resp.data;
+	})]).then(function(){
 		
-			getWeekByWeek(year, pythonBackToJavascriptMonth, day, function(weekdays){
-					var weekdays = weekdays;
-					console.log('employees', employees)
-					for(let i = 0; i < employees.length; i++){
-						console.log(employees[i]);
-						scheduledEmployees.push(createEmployeeInfo(employees[i], "namefield"))
-						for(let j = 0; j < 7; j++){
-							let currentShift = checkIfWorking(weekdays[j].calendar_date, employees[i].id);
-								scheduledEmployees.push(createEmployeeShift(employees[i], 'timefield', currentShift, weekdays[j].calendar_date));
-						}
-					}
-			})
-
-			console.log(scheduledEmployees);
+			for(let i = 0; i < employees.length; i++){
 				
-				
-				function checkIfWorking(date, id){
-					var check = workWeekSchedule[i];
+				scheduledEmployees.push(createEmployeeInfo(employees[i], "namefield"))
+				for(let j = 0; j < 7; j++){
+					console.log('In for the next for', workWeekSchedule);
+					console.log(weekdays[j].calendar_date, employees[i].id);
+					let currentShift = checkIfWorking(weekdays[j].calendar_date, employees[i].id, workWeekSchedule[i]);
+					console.log('currentShift', currentShift);
+						scheduledEmployees.push(createEmployeeShift(employees[i], 'timefield', currentShift, weekdays[j].calendar_date));
+				}
+			}
+	
+			function checkIfWorking(date, id, workWeekSchedule){
+					var check = workWeekSchedule;
+					console.log('checkIfWorking Hit', check)
+					console.log('length', workWeekSchedule.length)
 					for(var i = 0; i < workWeekSchedule.length; i++){
 						if(check.calendar_date === date && check.employee.id === id) {
-							return ((check.starting_time) 
-								? 	{	time: check.starting_time.slice(0, 5), 
-										station: ((check.station) ? check.station.title : "")} 
-								: "")}
+							return ((check.starting_time) ? {time: check.starting_time.slice(0, 5), station: ((check.station) ? check.station.title : "")} 
+								: "")
 
+						}
+						return ""
 					}
-					return ""
-				}
+			}
 
-
-				var employeeRow = [];
+			var employeeRow = [];
 				for(let i = 0; i < employees.length; i++){
 					employeeRow.push(scheduledEmployees.splice(0, 8));
 				}
-
+				console.log(employeeRow)
 				store.dispatch({
 					type: 'GET_EMPLOYEEWEEKLYSCHEDULE',
 					employeeWeeklySchedule: employeeRow
 				})
+	})
+	
+			
 
+
+	
 }
 
 export function getWeekByWeek(year, month, day, cb){

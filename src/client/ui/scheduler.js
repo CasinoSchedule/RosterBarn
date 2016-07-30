@@ -117,6 +117,8 @@ export default React.createClass({
 	clearSchedule: function(){
 		var clearAll = [];
 		var employees = this.state.employeeWeeklySchedule;
+		var departmentId = localStorage.getItem("departmentId");
+		var shiftId = this.state.shiftNum;
 		for(let i = 0; i < employees.length; i++){
 			for(let j = 0; j < 7; j++){
 				clearAll.push({
@@ -126,8 +128,11 @@ export default React.createClass({
 				})
 			}
 		}
-		sendEmployeeShiftObj(clearAll);
-		this.refreshCurrentState();
+		sendEmployeeShiftObj(clearAll, year, pythonMonth[month], (date + forward), shiftId, departmentId);
+		// console.log(clearAll, year, pythonMonth[month], (date + forward), shiftId, departmentId);
+		// setTimeout(this.refreshCurrentState(), 2000);
+
+		//  year, month, day, shiftId, departmentId
 	},
 	setColor: function(val){
 		var fieldToChange = val
