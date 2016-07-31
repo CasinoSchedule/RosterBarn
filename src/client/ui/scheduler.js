@@ -6,7 +6,7 @@ import EmployeeToSchedule from 'ui/employeeToSchedule';
 import EmployeeRow from 'ui/employeeRow';
 import EmployeeInfoForm from 'ui/employeeInfoForm';
 import Confirm from 'ui/confirm';
-import { addNewEmployee, getEmployeeSchedule, updateEmployee, clearAllSchedule, logout } from 'api/data';
+import { addNewEmployee, getEmployeeSchedule, getWeekbyWeek, updateEmployee, clearAllSchedule, logout } from 'api/data';
 import { getWeekByWeek } from 'api/workspace'
 import { browserHistory } from 'react-router';
 import {v4} from 'uuid';
@@ -20,8 +20,9 @@ import Cookie from 'js-cookie';
 injectTapEventPlugin();
 
 require("assets/styles/scheduler.scss");
-var image = require("assets/images/logo2.png");
-var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"], 
+
+var image = require("assets/images/logo2.png"),
+	days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"], 
 	day = days[new Date().getDay()], 
 	months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 
@@ -61,11 +62,11 @@ export default React.createClass({
 		}.bind(this));
 		this.refreshCurrentState(new Date());
 	},
-	refreshCurrentState: function(dateObj, shiftId, clearAll){
+	refreshCurrentState: function(date, shiftId, clearAll){
 		var departmentId = localStorage.getItem("departmentId");
 		var shiftId = ((shiftId) ? shiftId : this.state.shiftNum);
-		getEmployeeSchedule(dateObj, shiftId, departmentId, clearAll);
-		getWeekByWeek(dateObj);
+		getEmployeeSchedule(date, shiftId, departmentId, clearAll);
+		getWeekByWeek(date);
 	},
 	handleDateChange: function(next){
 		var newWeekDate = this.state.currentDate.addDays(next);
@@ -82,7 +83,7 @@ export default React.createClass({
 	},
 	addEmployee: function(e){
 		addNewEmployee({
-			first_name: "Add", 
+			first_name: "New", 
 			last_name: "Employee",
 			availability: ((this.state.shiftNum) ? [this.state.shiftNum] : [1]),
 			department: localStorage.getItem("departmentId")
@@ -230,7 +231,7 @@ export default React.createClass({
 							
 						</div>
 						
-								<EmployeeRow employeeWeeklySchedule={this.state.employeeWeeklySchedule} />
+						<EmployeeRow employeeWeeklySchedule={this.state.employeeWeeklySchedule} />
 							
 					</div>
 				</div>
@@ -247,10 +248,12 @@ export default React.createClass({
 							: ""}	
 					</ReactCSSTransitionGroup>
 
+
 					<ReactCSSTransitionGroup transitionName="employeeBox" transitionEnterTimeout={500} transitionLeaveTimeout={300}>
 						{(this.state.showConfirm) 
 							? <Confirm
-								key={v4()} clearSchedule={this.clearSchedule}/> 
+								key={v4()} 
+								clearSchedule={this.clearSchedule}/> 
 							: ""}	
 					</ReactCSSTransitionGroup>
 

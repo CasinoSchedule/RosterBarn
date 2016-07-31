@@ -130,7 +130,8 @@ export function getEmployeeSchedule(date, shiftId, departmentId, clearAll){
 
 export function getWeekByWeek(date, cb){
 		var abbreviatedDayString = ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"];
-		var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+		var months = ["January", "February", "March", "April", "May", "June", "July", "August", 
+						"September", "October", "November", "December"];
 		var dayIndex = date.getDay();
 		var dumbWay = [-6, 0, -1, -2, -3, -4, -5];
 		var smartWay = (dayIndex + 6) % 7;

@@ -133,19 +133,21 @@ export function getWeekByWeek(date, cb){
 		var abbreviatedDayString = ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"];
 		var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 		var dayIndex = date.getDay();
+		var dumbWay = [-6, 0, -1, -2, -3, -4, -5];
+		var smartWay = (dayIndex + 6) % 7;
+		var daysToNearestMonday = dumbWay[dayIndex];
+		var weekStartDate = date.addDays(daysToNearestMonday);
 		var weekDays = [];
-		var dayIndexArray = [[-6, -5, -4, -3, -2, -1, 0],[0, 1, 2, 3, 4, 5, 6],[-1, 0, 1, 2, 3, 4, 5],[-2, -1, 0, 1, 2, 3, 4],[-3, -2, -1, 0, 1, 2, 3],[-4, -3, -2, -1, 0, 1, 2],[-5, -4, -3, -2, -1, 0, 1]];
+		
 
 		for(let i = 0; i < 7; i++){
-			let n = dayIndexArray[dayIndex][i]
-			var pythonMonth = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 			weekDays[i] = {
-				year: date.addDays(n).getFullYear(),
-				monthString: months[date.addDays(n).getMonth()],
-				dayString: abbreviatedDayString[date.addDays(n).getDay()],
-				javascriptMonthNum: date.addDays(n).getMonth(),
-				day: date.addDays(n).getDate(),
-				calendar_date: date.addDays(n).getFullYear() + "-" + pythonMonth[date.addDays(n).getMonth()] + "-" + date.addDays(n).getDate(),
+				year: weekStartDate.addDays(i).getFullYear(),
+				monthString: months[weekStartDate.addDays(i).getMonth()],
+				dayString: abbreviatedDayString[weekStartDate.addDays(i).getDay()],
+				javascriptMonthNum: weekStartDate.addDays(i).getMonth(),
+				day: weekStartDate.addDays(i).getDate(),
+				calendar_date: weekStartDate.addDays(i).getFullYear() + "-" + (weekStartDate.addDays(i).getMonth() + 1) + "-" + weekStartDate.addDays(i).getDate(),
 				currentClass: ""
 			}
 		}

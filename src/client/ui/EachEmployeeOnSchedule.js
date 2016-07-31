@@ -111,7 +111,7 @@ export default React.createClass({
 									? 	<div className="nameImageBox">
 											<div><img src={this.props.thing.photo_url} onClick={this.handleClick} /></div>
 											<div className="nameIdBox">
-												<div><input type="text" ref="nameString" value={this.props.thing.nameString}  onChange={this.handleChange} onBlur={this.handleNameBlur} className={this.props.thing.classInfoName} /></div> 
+												<div className={this.props.thing.classInfoName}>{this.props.thing.nameString}</div> 
 												<div className="idNum">{this.props.thing.employee_id}</div>
 											</div>
 										</div>
