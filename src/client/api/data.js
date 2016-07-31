@@ -120,7 +120,7 @@ export function getEmployeeSchedule(date, shiftId, departmentId, clearAll){
 
 				store.dispatch({
 					type: 'GET_EMPLOYEEWEEKLYSCHEDULE',
-					employeeWeeklySchedule: newarr
+					employeeWeeklySchedule: employeeRow
 				})
 				
 		})	
