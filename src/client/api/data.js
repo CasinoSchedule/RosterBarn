@@ -2,7 +2,10 @@ import api from 'api/api';
 import store from 'store';
 import { browserHistory } from 'react-router';
 import Cookie from 'js-cookie';
+<<<<<<< HEAD
 import { v4 } from 'uuid';
+=======
+>>>>>>> 08de97c22fca98c39e9f063d4f621877bdb6b0cf
 
 api.new('https://sheltered-springs-57964.herokuapp.com/');
 // api.new('http://10.68.0.45:8000/');
@@ -34,8 +37,13 @@ export function deleteEmployee(id){
 }
 
 export function checkAdmin(){
+<<<<<<< HEAD
 	// console.log("api", api);
 	// console.log("check_admin", Cookie.get('token'));
+=======
+	console.log("api", api);
+	console.log("check_admin", Cookie.get('token'));
+>>>>>>> 08de97c22fca98c39e9f063d4f621877bdb6b0cf
 	return api.get('/profiles/check/').then(function(resp){
 		// console.log('checkAdmin function', resp.data.type, resp.data.department, resp.data.department_title);
 		if(resp.data.type === "manager"){
@@ -47,11 +55,29 @@ export function checkAdmin(){
 		}
 	})
 }
+<<<<<<< HEAD
 export function getEmployeeSchedule(date, shiftId, departmentId, clearAll){
 	var workWeekSchedule = [], employees = [], scheduledEmployees = [], weekdays = [];
 
 	var weekShiftParams = {};
 	weekShiftParams['date'] = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+=======
+export function getEmployeeSchedule(year, month, day, shiftId, departmentId){
+	console.log("getting schedule");
+	var pythonMonth = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+	var pythonChopDate = new Date(year, month-1, day);
+	year = pythonChopDate.getFullYear();
+	month = pythonMonth[pythonChopDate.getMonth()];
+	day = pythonChopDate.getDate();
+	var workWeekSchedule = [];
+	var employees = [];
+	var pythonBackToJavascriptMonth = month - 1;
+	var scheduledEmployees = [];
+	var weekdays = [];
+
+	var weekShiftParams = {};
+	weekShiftParams['date'] = year + '-' + month + '-' + day;
+>>>>>>> 08de97c22fca98c39e9f063d4f621877bdb6b0cf
 	weekShiftParams['department'] = departmentId;
 	var shiftQuery = queryStringFromDict(weekShiftParams);
 
@@ -59,10 +85,18 @@ export function getEmployeeSchedule(date, shiftId, departmentId, clearAll){
 	employeeParams['shift_title'] = shiftId;
 	employeeParams['department'] = departmentId;
 	var employeeQuery = queryStringFromDict(employeeParams);
+<<<<<<< HEAD
 
 	return api.get('/schedules/weekshift/' + shiftQuery).then(function(resp){
 		workWeekSchedule = ((clearAll) ? [] : resp.data);
 
+=======
+
+	return api.get('/schedules/weekshift/' + shiftQuery).then(function(resp){
+		workWeekSchedule = resp.data;
+		console.log('Weekly Schedules from Back End', resp.data);
+
+>>>>>>> 08de97c22fca98c39e9f063d4f621877bdb6b0cf
 		return api.get('/profiles/employee/' + employeeQuery).then(function(resp){
 			employees = resp.data;
 	

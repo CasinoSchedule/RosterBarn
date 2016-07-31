@@ -6,13 +6,19 @@ import EmployeeToSchedule from 'ui/employeeToSchedule';
 import EmployeeRow from 'ui/employeeRow';
 import EmployeeInfoForm from 'ui/employeeInfoForm';
 import Confirm from 'ui/confirm';
+<<<<<<< HEAD
 import { addNewEmployee, getEmployeeSchedule, updateEmployee, clearAllSchedule, logout } from 'api/data';
+=======
+import { addNewEmployee, getEmployeeSchedule, updateEmployee, sendEmployeeShiftObj, logout } from 'api/data';
+>>>>>>> 08de97c22fca98c39e9f063d4f621877bdb6b0cf
 import { getWeekByWeek } from 'api/workspace'
 import { browserHistory } from 'react-router';
 import {v4} from 'uuid';
 import RaisedButton from 'material-ui/RaisedButton';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import FlatButton from 'material-ui/FlatButton';
+import Cookie from 'js-cookie';
+
 import Cookie from 'js-cookie';
 
 // Needed for onTouchTap
@@ -61,6 +67,7 @@ export default React.createClass({
 		}.bind(this));
 		this.refreshCurrentState(new Date());
 	},
+<<<<<<< HEAD
 	refreshCurrentState: function(dateObj, shiftId, clearAll){
 		var departmentId = localStorage.getItem("departmentId");
 		var shiftId = ((shiftId) ? shiftId : this.state.shiftNum);
@@ -73,6 +80,20 @@ export default React.createClass({
 		this.setState({
 			currentDate: newWeekDate
 		})
+=======
+	refreshCurrentState: function(){
+		var departmentId = localStorage.getItem("departmentId");
+		var shiftId = this.state.shiftNum;
+
+		getEmployeeSchedule(year, pythonMonth[month], (date + forward), shiftId, departmentId);
+
+		// console.log('Initial Params', year, pythonMonth[month], (date + forward), addOnEndpoint);
+		getWeekByWeek(year, month, date + forward);
+		console.log("department", departmentId);
+
+		// Get New Date Object to send instead of (date + forward)
+
+>>>>>>> 08de97c22fca98c39e9f063d4f621877bdb6b0cf
 	},
 	nextSchedule: function(){
 		this.handleDateChange(7);
@@ -89,9 +110,18 @@ export default React.createClass({
 		});
 		this.refreshCurrentState(this.state.currentDate);
 	},
+<<<<<<< HEAD
 	filterByShift: function(shiftId, type){
 		this.refreshCurrentState(this.state.currentDate, shiftId)
 		
+=======
+	filterByShift: function(shift, type){
+		var shiftId = shift;
+		var departmentId = localStorage.getItem("departmentId");
+		
+		getEmployeeSchedule(year, pythonMonth[month], (date + forward), shiftId, departmentId);
+		getWeekByWeek(year, month, date + forward);
+>>>>>>> 08de97c22fca98c39e9f063d4f621877bdb6b0cf
 		store.dispatch({
 			type: 'CHANGE_SHIFTBOX',
 			shiftColor: type,
