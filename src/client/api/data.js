@@ -51,7 +51,7 @@ export function checkAdmin(){
 export function createEmployeeInfo(employee, type){
 	employee.nameString = employee.first_name + " " + employee.last_name
 	employee.uniqueId = v4();
-	employee.classInfoTime = type;
+	employee.nameFieldCss = type;
 	
 	return employee
 }
