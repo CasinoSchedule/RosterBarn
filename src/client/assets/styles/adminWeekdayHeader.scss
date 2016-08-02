@@ -1,0 +1,59 @@
+$gradientfrom: #fff;
+$gradientto: #8a8a8a; 
+$gradientfrom2: #00d2ff;
+$gradientto2: #928DAB; 
+$textshadow: #e7e7e7;
+$darkgrey: #605c5b;
+$bordercolor: #3a3a3a;
+$bluetheme: #336eb5;
+$purpletheme: #0A4081;
+$sidepanel: #292E35;
+$selected: #b2b2b2;
+$greyScheme: #404040;
+$cakeBorder: #3665C1;
+$cakeBox: #2656B2;
+$cakeSelected: #302F3F;
+$scheduleHeader: #0E4583;
+
+.weekOf {
+	display: flex;
+	flex-wrap: nowrap;
+						border: 1px solid yellow;
+	width: 100%;
+	padding-left: 3px;
+}
+.weekOf:first-child {
+	background: $greyScheme;
+}
+.weekOfDay {
+	width: 14.3%;
+	height: 20px;
+	line-height: 20px;
+	text-align: center;
+	// border-left: 1px solid red;
+	border-right: 1px solid $darkgrey;
+	// color: white;
+	font-family: Arial;
+	font-size: 12px;
+	font-weight: 600;
+	text-transform: uppercase;
+	background: white;
+}
+.weekOfDay p {
+	font-size: 12px;
+}
+.employee {
+	width: 14.3%;
+	font-size: 14px;
+	display: flex;
+	flex-wrap: nowrap;
+	align-items: center;
+						border: 2px solid orange;
+}
+// .fa-user-plus {
+// 	// margin-left: 65px;
+// 	// position: relative;
+// }
+.fa-user-plus:hover {
+	color: $gradientfrom2;
+}

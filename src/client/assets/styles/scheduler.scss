@@ -30,67 +30,8 @@ $scheduleHeader: #0E4583;
 	left: 0;
 	// size: landscape; 
 }
-.adminHeader {
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 40px;
-	border-bottom: 1px solid $darkgrey;
-	padding-left: 15px;
-	padding-top: 5px;
-	background: $greyScheme;
-	display: flex;
-	justify-content: space-between;
-}
-.adminHeader img {
-	height: 20px;
-	width: auto;
-}
-.roster {
-	font-family: Copperplate;
-	color: white;
-	font-size: 22px;
-	text-shadow: 1px 1px 0 #000;
-}
-.barn {
-	font-family: 'Cooper Black';
-	color: $selected;
-	font-size: 22px;
-	text-shadow: 1px 1px 0 #000;
-}
-.employee {
-	width: 15%;
-}
-.letter {
-	color: $gradientfrom2;
-	font-size: 24px;
-	text-shadow: 1px 1px 0 #000;
-}
-.logout, .settings, .options {
-	cursor: pointer;
-}
-.logout:hover, .settings:hover, .options:hover {
-	color: white;
-}
-.headerOptions {
-	display: flex;
-	justify-content: space-around;
-	width: 380px;
-	height: 40px;
-	line-height: 40px;
-	color: $textshadow;
-	font-family: Copperplate;
-}
-.departmentName {
-	font-size: 24px;
-}
-.fa-cogs, .fa-sign-out, .fa-bars {
-	margin: 0 15px 0 10px;
-}
-.fa-sign-out {
-	margin-right: 5px;
-}
+
+
 .adminContainer {
 	margin: 40px 0 0 0;
 	width: 100%;
@@ -261,41 +202,17 @@ $scheduleHeader: #0E4583;
 // 	display: inline;
 // 	border: 1px solid green;
 // }
-.employee {
-	width: 14.3%;
-	font-size: 14px;
-	// border: 1px solid blue;
-}
+
+// .employee {
+// 	width: 15%;
+// }
+
+
 .schedule {
 	width: 100%;
+	// border: 3px solid yellow;
 }
-.weekOf {
-	display: flex;
-	flex-wrap: nowrap;
-	// border: 1px solid red;
-	width: 100%;
-	padding-left: 3px;
-}
-.weekOf:first-child {
-	background: $greyScheme;
-}
-.weekOfDay {
-	width: 14.3%;
-	height: 20px;
-	line-height: 20px;
-	text-align: center;
-	// border-left: 1px solid red;
-	border-right: 1px solid $darkgrey;
-	// color: white;
-	font-family: Arial;
-	font-size: 12px;
-	font-weight: 600;
-	text-transform: uppercase;
-	background: white;
-}
-.weekOfDay p {
-	font-size: 12px;
-}
+
 .scheduledays {
 	display: flex;
 	flex-wrap: nowrap;
@@ -365,18 +282,13 @@ $scheduleHeader: #0E4583;
 	font-size: 12px;
 	font-family: 'Arial';
 }
-.fa-user-plus {
-	margin-left: 65px;
-	position: relative;
-}
-.fa-user-plus:hover {
-	color: $gradientfrom2;
-}
-.addUser {
-	width: 200px;
-	height: 200px;
-	background: red;
-}
+
+// .addUser {
+// 	width: 200px;
+// 	height: 200px;
+// 	background: red;
+// 				border: 3px solid yellow;
+// }
 .grave {
 	background: #048F40;
 }

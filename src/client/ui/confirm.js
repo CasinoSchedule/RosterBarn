@@ -6,15 +6,13 @@ require('assets/styles/confirm.scss');
 export default React.createClass({
 	close: function(){
 		store.dispatch({
-			type: 'CHANGE_SHOWCONFIRM',
-			showConfirm: false
+			type: 'CHANGE_SHOWCLEARCONFIRM',
+			showClearConfirm: false
 		})
-	},
-	confirmClear: function(){
-		this.props.clearSchedule();
+
 		store.dispatch({
-			type: 'CHANGE_SHOWCONFIRM',
-			showConfirm: false
+			type: 'CHANGE_SHOWDELETECONFIRM',
+			showDeleteConfirm: false
 		})
 	},
 	render: function(){
@@ -22,14 +20,14 @@ export default React.createClass({
 			<div className="confirmBox">
 				<div className="shade"></div>
 				<div className="confirmBox">
-					<div className="confirmHeader">Clear Schedule
+					<div className="confirmHeader">{this.props.header}
 					</div>
 					<div className="confirmMessage">
-						Please confirm to clear schedule.
+						{this.props.message}
 					</div>
 					<div className="confirmButtons">
 						<button onClick={this.close}>Cancel</button>
-						<button onClick={this.confirmClear}>Confirm</button>
+						<button onClick={this.props.confirm}>Confirm</button>
 					</div>
 				</div> 
 				

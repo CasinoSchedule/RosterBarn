@@ -1,6 +1,10 @@
 import React from 'react';
 import store from 'store';
-import { updateEmployee, registerNewEmail } from 'api/data';
+import { updateEmployee, registerNewEmail, deleteEmployee } from 'api/data';
+import FlatButton from 'material-ui/FlatButton';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import Confirm from 'ui/confirm';
+import {v4} from 'uuid';
 
 require('assets/styles/employeeInfoForm.scss');
 
@@ -9,15 +13,21 @@ export default React.createClass({
 		return {
 			phone_number_first: '',
 			phone_number_second: '',
-			phone_number_third: ''
+			phone_number_third: '',
+			showDeleteConfirm: false
 		}
 	},
 	componentWillMount: function(){
-		this.setState({
-			phone_number_first: ((this.props.info.phone_number) ? this.props.info.phone_number.slice(0,3) : ''),
-			phone_number_second: ((this.props.info.phone_number) ? this.props.info.phone_number.slice(3,6) : ''),
-			phone_number_third: ((this.props.info.phone_number) ? this.props.info.phone_number.slice(6,10) : '')
-		})
+		this.unsubscribe = store.subscribe(function(){
+			var currentStore = store.getState();
+			this.setState({
+				phone_number_first: ((this.props.info.phone_number) ? this.props.info.phone_number.slice(0,3) : ''),
+				phone_number_second: ((this.props.info.phone_number) ? this.props.info.phone_number.slice(3,6) : ''),
+				phone_number_third: ((this.props.info.phone_number) ? this.props.info.phone_number.slice(6,10) : ''),
+				showDeleteConfirm: currentStore.showReducer.showDeleteConfirm
+			})
+		}.bind(this));
+		
 	},
 	close: function(){
 		store.dispatch({
@@ -48,6 +58,26 @@ export default React.createClass({
 			showForm: false
 		})
 
+	},
+	confirmDelete: function(){
+		this.setState({
+			showDeleteConfirm: true
+		})
+		
+	},
+	deleteEmployee: function(){
+		deleteEmployee(this.props.info.id);
+		this.props.refreshCurrentState(this.props.currentDate);
+
+		this.setState({
+			showDeleteConfirm: false
+		})
+
+		store.dispatch({
+			type: 'CHANGE_SHOWFORM',
+			showForm: false
+		})
+		
 	},
 	render: function(){
 		return (
@@ -80,11 +110,27 @@ export default React.createClass({
 				</div>
 			</div>
 			<div className="formButtons">
-				<button onClick={this.close}>Cancel</button>
-				<button onClick={this.handleSubmit}>Submit</button>
+				<div>
+					<FlatButton label="Delete" onClick={this.confirmDelete} />
+				</div>
+				<div>
+					<FlatButton label="Cancel" onClick={this.close} />
+					<FlatButton label="Submit" onClick={this.handleSubmit} />
+				</div>
 			</div>
 
 			</div>
+
+			<ReactCSSTransitionGroup transitionName="employeeBox" transitionEnterTimeout={500} transitionLeaveTimeout={300}>
+				{(this.state.showDeleteConfirm) 
+					? <Confirm
+						key={v4()} 
+						confirm={this.deleteEmployee} 
+						message={"Please confirm to delete employee."} 
+						header={"Delete Employee"} /> 
+					: ""}	
+			</ReactCSSTransitionGroup>
+
 			</div>
 		)
 	}

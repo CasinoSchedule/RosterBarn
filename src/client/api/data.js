@@ -28,6 +28,7 @@ export function updateEmployee(id, obj){
 	return api.put('/profiles/employee/update/' + id + "/", obj);
 
 }
+
 export function deleteEmployee(id){
 	return api.delete('/profiles/employee/' + id + "/");
 
@@ -113,7 +114,7 @@ export function getEmployeeSchedule(date, shiftId, departmentId, clearAll){
 					return ""
 				}
 
-				// Split array of objects by employee for flexbox display
+				// Split array of objects by employee 
 				for(let i = 0; i < employees.length; i++){
 					employeeRow.push(scheduledEmployees.splice(0, 8));
 				}

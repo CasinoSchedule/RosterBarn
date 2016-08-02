@@ -14,6 +14,8 @@ import RaisedButton from 'material-ui/RaisedButton';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import FlatButton from 'material-ui/FlatButton';
 import Cookie from 'js-cookie';
+import AdminHeader from 'ui/adminHeader';
+import AdminWeekdayHeader from 'ui/adminWeekdayHeader';
 
 // Needed for onTouchTap
 // http://stackoverflow.com/a/34015469/988941
@@ -43,7 +45,7 @@ export default React.createClass({
 			shiftNum: 0,
 			showForm: false,
 			employeeInfo: {},
-			showConfirm: false
+			showClearConfirm: false
 		})
 	},
 	componentWillMount: function(){
@@ -57,7 +59,7 @@ export default React.createClass({
 				shiftNum: currentStore.cssReducer.shiftNum,
 				showForm: currentStore.showReducer.showForm,
 				employeeInfo: currentStore.employeeReducer.employeeInfo,
-				showConfirm: currentStore.showReducer.showConfirm
+				showClearConfirm: currentStore.showReducer.showClearConfirm
 			})
 		}.bind(this));
 		this.refreshCurrentState(new Date());
@@ -85,7 +87,7 @@ export default React.createClass({
 		addNewEmployee({
 			first_name: "New", 
 			last_name: "Employee",
-			availability: ((this.state.shiftNum) ? [this.state.shiftNum] : [1]),
+			availability: ((this.state.shiftNum) ? [this.state.shiftNum] : [1, 2, 3]),
 			department: localStorage.getItem("departmentId")
 		});
 		this.refreshCurrentState(this.state.currentDate);
@@ -104,12 +106,11 @@ export default React.createClass({
 	},
 	confirmClear: function(){
 		store.dispatch({
-			type: 'CHANGE_SHOWCONFIRM',
-			showConfirm: true
+			type: 'CHANGE_SHOWCLEARCONFIRM',
+			showClearConfirm: true
 		})
 	},
 	clearSchedule: function(){
-		var departmentId = localStorage.getItem("departmentId");
 		var shiftId = this.state.shiftNum;
 		var employees = this.state.employeeWeeklySchedule;
 		var clearAll = [];
@@ -123,8 +124,13 @@ export default React.createClass({
 			}
 		}
 		clearAllSchedule(clearAll);
+		
 		this.refreshCurrentState(this.state.currentDate, shiftId, true);
-		;
+		 
+		 store.dispatch({
+			type: 'CHANGE_SHOWCLEARCONFIRM',
+			showClearConfirm: false
+		})
 	},
 	setColor: function(val){
 		var fieldToChange = val
@@ -164,26 +170,20 @@ export default React.createClass({
 			type: 'USER_LOGOUT'
 		})
 	
-		// browserHistory.push('/')
+		browserHistory.push('/')
 	},
 	render: function(){
 		return (
 			<div className="adminBg">
 
-				<SidePanel dateString={this.state.weeklyCalendar[0].calendar_date} filterByShift={this.filterByShift} setColor={this.setColor} />
+				<SidePanel 
+					dateString={this.state.weeklyCalendar[0].calendar_date} 
+					filterByShift={this.filterByShift} 
+					setColor={this.setColor} />
 
-				<div className="adminHeader">
-					<div>
-					 <span className="roster"><span className="letter">R</span>oster</span><span className="barn"><span className="">B</span>arn</span>
-					</div>
-					<div className="headerOptions"><span className="departmentName">{localStorage.getItem("departmentTitle")}</span></div>
-					<div className="headerOptions">
-						<div className="options"><i className="fa fa-bars" aria-hidden="true"></i>Options</div>
-						<div className="settings"><i className="fa fa-cogs" aria-hidden="true"></i>Settings</div>
-						<div className="logout" onClick={this.logout} ><i className="fa fa-sign-out" aria-hidden="true"></i>Logout</div>
-						
-					</div>
-				</div> 
+				<AdminHeader 
+					logout={this.logout} />
+				
 				<div className="adminContainer">
 
 					<div className="monthLabel">
@@ -215,23 +215,14 @@ export default React.createClass({
 
 				<div className={"scheduleFlex " + this.state.flexbox_size}>
 					
-					<div className="schedule" >
+					<div className="schedule">
 						
 						
-						<div className="weekOf">
-							<div className="roster employee"><span className="letter">R</span>oster<i className="fa fa-user-plus" aria-hidden="true" onClick={this.addEmployee}></i><span className="addUser"></span></div>
-							
-							{this.state.weeklyCalendar.map(function(item, i){
-								return (
-										<div key ={v4()} className="weekOfDay">
-											<p>{item.dayString}<span>&#160;</span> {item.day}</p>
-										</div>
-								)
-							}.bind(this))}  
-							
-						</div>
+						<AdminWeekdayHeader 
+							weeklyCalendar={this.state.weeklyCalendar} />
 						
-						<EmployeeRow employeeWeeklySchedule={this.state.employeeWeeklySchedule} />
+						<EmployeeRow 
+							employeeWeeklySchedule={this.state.employeeWeeklySchedule} />
 							
 					</div>
 				</div>
@@ -244,16 +235,19 @@ export default React.createClass({
 								info={this.state.employeeInfo} 
 								key={this.state.employeeInfo.uniqueId} 
 								refreshCurrentState={this.refreshCurrentState} 
-								currentDate={this.state.currentDate} /> 
+								currentDate={this.state.currentDate}
+								confirmDelete={this.confirmClear} /> 
 							: ""}	
 					</ReactCSSTransitionGroup>
 
 
 					<ReactCSSTransitionGroup transitionName="employeeBox" transitionEnterTimeout={500} transitionLeaveTimeout={300}>
-						{(this.state.showConfirm) 
+						{(this.state.showClearConfirm) 
 							? <Confirm
 								key={v4()} 
-								clearSchedule={this.clearSchedule}/> 
+								confirm={this.clearSchedule} 
+								message={"Please confirm to clear schedule."} 
+								header={"Clear Schedule"} /> 
 							: ""}	
 					</ReactCSSTransitionGroup>
 
