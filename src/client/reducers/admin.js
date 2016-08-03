@@ -14,6 +14,7 @@ export default function(state = adminInitialState, action){
 		case 'USER_LOGOUT':
 		console.log('Admin reducer', adminInitialState);
 		return adminInitialState
+	
 	default:
 		return state;
 

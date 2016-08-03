@@ -1,9 +1,9 @@
 import React from 'react';
 import store from 'store';
-import { setNewSchedule, sendEmployeeShiftObj, addEmployee, updateEmployee } from 'api/data';
+import { setNewSchedule, sendSingleEmployeeShiftObj, addEmployee, updateEmployee } from 'api/data';
 import TimePicker from 'material-ui/TimePicker';
 
-require('assets/styles/employeeToSchedule.scss');
+require('assets/styles/eachEmployeeOnSchedule.scss');
 
 export default React.createClass({
 	getInitialState: function() {
@@ -38,7 +38,7 @@ export default React.createClass({
 		// 	starting_time: this.refs.starting_time.value
 		// });
 		
-		sendEmployeeShiftObj([{
+		sendSingleEmployeeShiftObj([{
 			day: this.props.thing.calendar_date,
 			employee: this.props.thing.id,
 			starting_time: this.refs.starting_time.value
@@ -46,14 +46,14 @@ export default React.createClass({
 			// station: this.refs.station.value
 			
 		}])
-		console.log([{
-			day: this.props.thing.calendar_date,
-			employee: this.props.thing.id,
-			starting_time: this.refs.starting_time.value
-			// ,
-			// station: this.refs.station.value
+		// console.log([{
+		// 	day: this.props.thing.calendar_date,
+		// 	employee: this.props.thing.id,
+		// 	starting_time: this.refs.starting_time.value
+		// 	// ,
+		// 	// station: this.refs.station.value
 			
-		}]);
+		// }]);
 	},
 	handleChange: function(e) {
 		// var value = e.target.value;
@@ -70,10 +70,10 @@ export default React.createClass({
 	},
 	handleNameBlur: function(e){
 		var val = this.refs.nameString.value.split(" ") || "";
-		console.log(this.state.id, {
-				first_name: val[0], 
-				last_name: val[1]
-			});
+		// console.log(this.state.id, {
+		// 		first_name: val[0], 
+		// 		last_name: val[1]
+		// 	});
 		if(this.state.nameString !== this.refs.nameString.value) {
 			updateEmployee(this.state.id, {
 				first_name: val[0], 
@@ -111,7 +111,7 @@ export default React.createClass({
 									? 	<div className="nameImageBox">
 											<div><img src={this.props.thing.photo_url} onClick={this.handleClick} /></div>
 											<div className="nameIdBox">
-												<div><input type="text" ref="nameString" value={this.props.thing.nameString}  onChange={this.handleChange} onBlur={this.handleNameBlur} className={this.props.thing.classInfoName} /></div> 
+												<div className={this.props.thing.nameFieldCss}>{this.props.thing.nameString}</div> 
 												<div className="idNum">{this.props.thing.employee_id}</div>
 											</div>
 										</div>

@@ -6,43 +6,46 @@ import EmployeeToSchedule from 'ui/employeeToSchedule';
 import EmployeeRow from 'ui/employeeRow';
 import EmployeeInfoForm from 'ui/employeeInfoForm';
 import Confirm from 'ui/confirm';
-import { addNewEmployee, getEmployeeSchedule, updateEmployee, sendEmployeeShiftObj, logout } from 'api/data';
+import { addNewEmployee, getEmployeeSchedule, getWeekbyWeek, updateEmployee, clearAllSchedule, logout } from 'api/data';
 import { getWeekByWeek } from 'api/workspace'
 import { browserHistory } from 'react-router';
 import {v4} from 'uuid';
 import RaisedButton from 'material-ui/RaisedButton';
 import injectTapEventPlugin from 'react-tap-event-plugin';
-import FlatButton from 'material-ui/FlatButton';
-
 import Cookie from 'js-cookie';
+import AdminHeader from 'ui/adminHeader';
+import AdminWeekdayHeader from 'ui/adminWeekdayHeader';
+import AdminWeekHeader from 'ui/adminWeekHeader';
 
 // Needed for onTouchTap
 // http://stackoverflow.com/a/34015469/988941
 injectTapEventPlugin();
 
 require("assets/styles/scheduler.scss");
-var image = require("assets/images/logo2.png");
-var month = new Date().getMonth(), 
-	year = new Date().getFullYear(),
-	date = new Date().getDate(),
+
+var image = require("assets/images/logo2.png"),
 	days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"], 
 	day = days[new Date().getDay()], 
-	pythonMonth = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-	months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],  
-	forward = 0
+	months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+
+Date.prototype.addDays = function(days){
+    var dat = new Date(this.valueOf());
+    dat.setDate(dat.getDate() + days);
+    return dat;
+}
 
 export default React.createClass({
 	getInitialState: function() {
 		console.log("hello", Cookie.get('token'));
 		return ({
-			weeklyCalendar: [],
+			currentDate: new Date(),
 			employeeWeeklySchedule: [],
 			flexbox_size: "",
 			shiftColor: "",
 			shiftNum: 0,
 			showForm: false,
 			employeeInfo: {},
-			showConfirm: false
+			showClearConfirm: false
 		})
 	},
 	componentWillMount: function(){
@@ -56,52 +59,47 @@ export default React.createClass({
 				shiftNum: currentStore.cssReducer.shiftNum,
 				showForm: currentStore.showReducer.showForm,
 				employeeInfo: currentStore.employeeReducer.employeeInfo,
-				showConfirm: currentStore.showReducer.showConfirm
+				showClearConfirm: currentStore.showReducer.showClearConfirm
 			})
 		}.bind(this));
-		this.refreshCurrentState();
+		this.refreshCurrentState(new Date());
 	},
-	refreshCurrentState: function(){
+	refreshCurrentState: function(date, shiftId, clearAll){
 		var departmentId = localStorage.getItem("departmentId");
-		var shiftId = this.state.shiftNum;
 
-		getEmployeeSchedule(year, pythonMonth[month], (date + forward), shiftId, departmentId);
-
-		getWeekByWeek(year, month, date + forward);
-		console.log("department", departmentId);
-
-		// Get New Date Object to send instead of (date + forward)
-
+		var shiftId = ((shiftId) ? shiftId : this.state.shiftNum);
+		getEmployeeSchedule(date, shiftId, departmentId, clearAll);
+		getWeekByWeek(date);
+	},
+	handleDateChange: function(next){
+		var newWeekDate = this.state.currentDate.addDays(next);
+		this.refreshCurrentState(newWeekDate);
+		this.setState({
+			currentDate: newWeekDate
+		})
 	},
 	nextSchedule: function(){
-		forward += 7;
-		this.refreshCurrentState();
+		this.handleDateChange(7);
 	},
 	previousSchedule: function(){
-		forward -= 7;
-		this.refreshCurrentState();
+		this.handleDateChange(-7);
 	},
 	addEmployee: function(e){
-		console.log('test',localStorage.getItem("departmentId"))
-		e.preventDefault();
 		addNewEmployee({
-			first_name: "Add", 
+			first_name: "New", 
 			last_name: "Employee",
-			availability: ((this.state.shiftNum) ? [this.state.shiftNum] : [1]),
+			availability: ((this.state.shiftNum) ? [this.state.shiftNum] : [1, 2, 3]),
 			department: localStorage.getItem("departmentId")
 		});
-		this.refreshCurrentState();
+		this.refreshCurrentState(this.state.currentDate);
 	},
-	filterByShift: function(shift, type){
-		var shiftId = shift;
-		var departmentId = localStorage.getItem("departmentId");
+	filterByShift: function(shiftId, type){
+		this.refreshCurrentState(this.state.currentDate, shiftId)
 		
-		getEmployeeSchedule(year, pythonMonth[month], (date + forward), shiftId, departmentId);
-		getWeekByWeek(year, month, date + forward);
 		store.dispatch({
 			type: 'CHANGE_SHIFTBOX',
 			shiftColor: type,
-			shiftNum: ((shift) ? shift : "")
+			shiftNum: ((shiftId) ? shiftId : "")
 		})
 	},
 	printSchedule: function(){
@@ -109,13 +107,14 @@ export default React.createClass({
 	},
 	confirmClear: function(){
 		store.dispatch({
-			type: 'CHANGE_SHOWCONFIRM',
-			showConfirm: true
+			type: 'CHANGE_SHOWCLEARCONFIRM',
+			showClearConfirm: true
 		})
 	},
 	clearSchedule: function(){
-		var clearAll = [];
+		var shiftId = this.state.shiftNum;
 		var employees = this.state.employeeWeeklySchedule;
+		var clearAll = [];
 		for(let i = 0; i < employees.length; i++){
 			for(let j = 0; j < 7; j++){
 				clearAll.push({
@@ -125,8 +124,14 @@ export default React.createClass({
 				})
 			}
 		}
-		sendEmployeeShiftObj(clearAll);
-		this.refreshCurrentState();
+		clearAllSchedule(clearAll);
+		
+		this.refreshCurrentState(this.state.currentDate, shiftId, true);
+		 
+		 store.dispatch({
+			type: 'CHANGE_SHOWCLEARCONFIRM',
+			showClearConfirm: false
+		})
 	},
 	setColor: function(val){
 		var fieldToChange = val
@@ -166,91 +171,72 @@ export default React.createClass({
 			type: 'USER_LOGOUT'
 		})
 	
-		// browserHistory.push('/')
+		browserHistory.push('/')
+	},
+	settings: function(){
+
 	},
 	render: function(){
 		return (
 			<div className="adminBg">
 
-				<SidePanel dateString={this.state.weeklyCalendar[0].calendar_date} filterByShift={this.filterByShift} setColor={this.setColor} />
+				<SidePanel 
+					dateString={this.state.weeklyCalendar[0].calendar_date} 
+					filterByShift={this.filterByShift} 
+					setColor={this.setColor} />
 
-				<div className="adminHeader">
-					<div>
-					 <span className="roster"><span className="letter">R</span>oster</span><span className="barn"><span className="">B</span>arn</span>
-					</div>
-					<div className="headerOptions"><span className="departmentName">{localStorage.getItem("departmentTitle")}</span></div>
-					<div className="headerOptions">
-						<div className="options"><i className="fa fa-bars" aria-hidden="true"></i>Options</div>
-						<div className="settings"><i className="fa fa-cogs" aria-hidden="true"></i>Settings</div>
-						<div className="logout" onClick={this.logout} ><i className="fa fa-sign-out" aria-hidden="true"></i>Logout</div>
-						
-					</div>
-				</div> 
+				<AdminHeader 
+					logout={this.logout} />
+
+				
 				<div className="adminContainer">
 
-					<div className="monthLabel">
-						<div className={"shiftStatus " + this.state.shiftColor}>
-							<div className="shiftTitle">{this.state.shiftColor}</div>
-						</div>
 
-						<div className="navigate">
-							<div className="leftButton" onClick={this.previousSchedule}><i className="fa fa-angle-left" aria-hidden="true"></i></div>
-
-							<div className="weekLabel"> {this.state.weeklyCalendar[0].monthString} {this.state.weeklyCalendar[0].day}, {this.state.weeklyCalendar[0].year}   
-
-									<span className="dash"> - </span> 
-
-								{this.state.weeklyCalendar[6].monthString} {this.state.weeklyCalendar[6].day}, {this.state.weeklyCalendar[6].year}
-							</div> 
-							<div className="rightButton" onClick={this.nextSchedule}><i className="fa fa-angle-right" aria-hidden="true"></i></div>
-						</div>
-
-
-						<div className="printClearButtons">
-							<FlatButton label="Clear" primary={true} onClick={this.confirmClear} />
-							<FlatButton label="Print" primary={true} onClick={this.printSchedule} />
-						</div>
-
-					</div>	
+					<AdminWeekHeader
+						shiftColor={this.state.shiftColor}
+						previousSchedule={this.previousSchedule}
+						weeklyCalendar={this.state.weeklyCalendar}
+						nextSchedule={this.nextSchedule}
+						confirmClear={this.confirmClear}
+						printSchedule={this.printSchedule} />
 
 					
 
-				<div className={"scheduleFlex " + this.state.flexbox_size}>
-					
-					<div className="schedule" >
+					<div className={"scheduleFlex " + this.state.flexbox_size}>
 						
-						
-						<div className="weekOf">
-							<div className="roster employee"><span className="letter">R</span>oster<i className="fa fa-user-plus" aria-hidden="true" onClick={this.addEmployee}></i><span className="addUser"></span></div>
+						<div className="schedule">
 							
-							{this.state.weeklyCalendar.map(function(item, i){
-								return (
-										<div key ={v4()} className="weekOfDay">
-											<p>{item.dayString}<span>&#160;</span> {item.day}</p>
-										</div>
-								)
-							}.bind(this))}  
+							<AdminWeekdayHeader 
+								weeklyCalendar={this.state.weeklyCalendar} />
 							
+							<EmployeeRow 
+								employeeWeeklySchedule={this.state.employeeWeeklySchedule} />
+								
 						</div>
-						
-								<EmployeeRow employeeWeeklySchedule={this.state.employeeWeeklySchedule} />
-							
+
 					</div>
-				</div>
 						
 				</div>	
 
 					<ReactCSSTransitionGroup transitionName="employeeBox" transitionEnterTimeout={500} transitionLeaveTimeout={300}>
 						{(this.state.showForm) 
 							? <EmployeeInfoForm
-								info={this.state.employeeInfo} key={this.state.employeeInfo.uniqueId} /> 
+								info={this.state.employeeInfo} 
+								key={v4()} 
+								refreshCurrentState={this.refreshCurrentState} 
+								currentDate={this.state.currentDate}
+								confirmDelete={this.confirmClear} /> 
 							: ""}	
 					</ReactCSSTransitionGroup>
 
+
 					<ReactCSSTransitionGroup transitionName="employeeBox" transitionEnterTimeout={500} transitionLeaveTimeout={300}>
-						{(this.state.showConfirm) 
+						{(this.state.showClearConfirm) 
 							? <Confirm
-								key={v4()} clearSchedule={this.clearSchedule}/> 
+								key={v4()} 
+								confirm={this.clearSchedule} 
+								message={"Please confirm to clear schedule."} 
+								header={"Clear Schedule"} /> 
 							: ""}	
 					</ReactCSSTransitionGroup>
 

@@ -11,6 +11,8 @@ import CalendarReducer from 'reducers/calendarReducer';
 import AdminReducer from 'reducers/admin';
 import CssReducer from 'reducers/css';
 import signupReducer from 'reducers/signupReducer';
+import MessageReducer from 'reducers/message';
+
 
 
 // Combine Reducers
@@ -20,7 +22,8 @@ var reducers = combineReducers({
 	calendarReducer: CalendarReducer,
 	adminReducer: AdminReducer,
 	cssReducer: CssReducer,
-	signupReducer: signupReducer
+	signupReducer: signupReducer,
+	messageReducer: MessageReducer
   // more...
 });
 

@@ -2,7 +2,7 @@ import React from 'react';
 import store from 'store';
 import { setNewSchedule, sendEmployeeShiftObj } from 'api/data';
 
-require('assets/styles/employeeToSchedule.scss');
+require('assets/styles/eachEmployeeOnSchedule.scss');
 
 export default React.createClass({
 	getInitialState: function() {

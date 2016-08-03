@@ -14,7 +14,7 @@ if (Cookie.get('token')) {
  var token = Cookie.get('token');
  interceptor = instance.interceptors.request.use(function(config){
    config.headers['Authorization'] = 'Token ' + token;
-   console.log("axios api token", token);
+   // console.log("axios api token", token);
    return config;
  });
 }

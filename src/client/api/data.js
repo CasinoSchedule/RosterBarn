@@ -2,6 +2,7 @@ import api from 'api/api';
 import store from 'store';
 import { browserHistory } from 'react-router';
 import Cookie from 'js-cookie';
+import { v4 } from 'uuid';
 
 api.new('https://sheltered-springs-57964.herokuapp.com/');
 // api.new('http://10.68.0.45:8000/');
@@ -27,17 +28,17 @@ export function updateEmployee(id, obj){
 	return api.put('/profiles/employee/update/' + id + "/", obj);
 
 }
+
 export function deleteEmployee(id){
 	return api.delete('/profiles/employee/' + id + "/");
 
 }
 
 export function checkAdmin(){
-	console.log("api", api);
-	console.log("check_admin", Cookie.get('token'));
-
+	// console.log("api", api);
+	// console.log("check_admin", Cookie.get('token'));
 	return api.get('/profiles/check/').then(function(resp){
-		console.log('checkAdmin function', resp.data.type, resp.data.department, resp.data.department_title);
+		// console.log('checkAdmin function', resp.data.type, resp.data.department, resp.data.department_title);
 		if(resp.data.type === "manager"){
 			localStorage.setItem("departmentId", resp.data.department);
 			localStorage.setItem("departmentTitle", resp.data.department_title);
@@ -47,21 +48,34 @@ export function checkAdmin(){
 		}
 	})
 }
-export function getEmployeeSchedule(year, month, day, shiftId, departmentId){
-	console.log("getting schedule");
-	var pythonMonth = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-	var pythonChopDate = new Date(year, month-1, day);
-	year = pythonChopDate.getFullYear();
-	month = pythonMonth[pythonChopDate.getMonth()];
-	day = pythonChopDate.getDate();
-	var workWeekSchedule = [];
-	var employees = [];
-	var pythonBackToJavascriptMonth = month - 1;
-	var scheduledEmployees = [];
-	var weekdays = [];
+
+export function createEmployeeInfo(employee, type){
+	employee.nameString = employee.first_name + " " + employee.last_name
+	employee.uniqueId = v4();
+	employee.nameFieldCss = type;
+	
+	return employee
+}
+
+export function createEmployeeShift(employee, type, currentShift, date){
+	var newItem = {
+		id: employee.id,
+		calendar_date: date,
+		uniqueId: v4(),
+		starting_time: currentShift.time || '',
+		station: currentShift.station || '',
+		classInfoTime: type,
+		position_title: employee.position_title
+	}
+	
+	return newItem
+}
+
+export function getEmployeeSchedule(date, shiftId, departmentId, clearAll){
+	var workWeekSchedule = [], employees = [], scheduledEmployees = [], weekdays = [], employeeRow = [];
 
 	var weekShiftParams = {};
-	weekShiftParams['date'] = year + '-' + month + '-' + day;
+	weekShiftParams['date'] = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
 	weekShiftParams['department'] = departmentId;
 	var shiftQuery = queryStringFromDict(weekShiftParams);
 
@@ -71,61 +85,25 @@ export function getEmployeeSchedule(year, month, day, shiftId, departmentId){
 	var employeeQuery = queryStringFromDict(employeeParams);
 
 	return api.get('/schedules/weekshift/' + shiftQuery).then(function(resp){
-		workWeekSchedule = resp.data;
-		console.log('Weekly Schedules from Back End', resp.data);
+		workWeekSchedule = ((clearAll) ? [] : resp.data);
 
 		return api.get('/profiles/employee/' + employeeQuery).then(function(resp){
 			employees = resp.data;
-			// console.log('Employee List', resp.data)
-			getWeekByWeek(year, pythonBackToJavascriptMonth, day, function(weekdays){
+	
+			getWeekByWeek(date, function(weekdays){
 					weekdays = weekdays;
-
 					for(var i = 0, n = 0; i < employees.length; i++, n++){
-						scheduledEmployees.push({
-								nameString: employees[i].first_name + " " + employees[i].last_name,
-								employee_id: employees[i].employee_id,
-								classInfoName: "nameField",
-								first_name: employees[i].first_name,
-								last_name: employees[i].last_name,
-								id: employees[i].id,
-								photo_url: employees[i].photo_url,
-								availability: employees[i].availability,
-								uniqueId: employees[i].id + '-' + employees[i].employee_id,
-								phone_number: employees[i].phone_number,
-								email: employees[i].email,
-								position_title: employees[i].position_title
-								
-							})
+						scheduledEmployees.push(createEmployeeInfo(employees[i], "nameField"))
 						for(var j = 0; j < 7; j++){
-							// console.log(employees[i].employee_id)
 							var currentShift = checkIfWorking(weekdays[j].calendar_date, employees[i].id);
-							let uniqueId = weekdays[j].calendar_date + '-' + employees[i].id;
-							let obj = {
-								id: employees[i].id,
-								first_name: employees[i].first_name,
-								last_name: employees[i].last_name,
-								name: employees[i].first_name + " " + employees[i].last_name,
-								calendar_date: weekdays[j].calendar_date,
-								employee_id: employees[i].employee_id,
-								starting_time: currentShift.time || '',
-								station: currentShift.station || '',
-								uniqueId: uniqueId,
-								classInfoTime: "timeField",
-								phone_number: employees[i].phone_number,
-								email: employees[i].email,
-								position_title: employees[i].position_title
-							}
-
-							scheduledEmployees.push(obj);
+							scheduledEmployees.push(createEmployeeShift(employees[i], 'timeField', currentShift, weekdays[j].calendar_date));
 						}
 					}
 			})
 				
 				function checkIfWorking(date, id){
-					// console.log('In the function', workWeekSchedule);
 					for(var i = 0; i < workWeekSchedule.length; i++){
 						if(workWeekSchedule[i].calendar_date === date && workWeekSchedule[i].employee.id === id) {
-							
 							return ((workWeekSchedule[i].starting_time) 
 								? {
 									time: workWeekSchedule[i].starting_time.slice(0, 5), 
@@ -136,51 +114,41 @@ export function getEmployeeSchedule(year, month, day, shiftId, departmentId){
 					return ""
 				}
 
-
-				var newarr = [];
+				// Split array of objects by employee 
 				for(let i = 0; i < employees.length; i++){
-					newarr.push(scheduledEmployees.splice(0, 8));
+					employeeRow.push(scheduledEmployees.splice(0, 8));
 				}
 
 				store.dispatch({
 					type: 'GET_EMPLOYEEWEEKLYSCHEDULE',
-					employeeWeeklySchedule: newarr
+					employeeWeeklySchedule: employeeRow
 				})
-
-
-				console.log('employeeWeeklySchedule', newarr);
-				// console.log('scheduledEmployees', scheduledEmployees);	
-				// console.log('Cb', weekdays);
-				// console.log('workWeekSchedule', workWeekSchedule);
-				// console.log('employees', employees);
-
+				
 		})	
 
-		
-		// console.log('From the call', resp.data);
 	})
 }
 
-export function getWeekByWeek(year, month, day, cb){
+export function getWeekByWeek(date, cb){
 		var abbreviatedDayString = ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"];
-		var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-		var dat = new Date(year, month, day);
-		var dayIndex = dat.getDay();
+		var months = ["January", "February", "March", "April", "May", "June", "July", "August", 
+						"September", "October", "November", "December"];
+		var dayIndex = date.getDay();
+		var dumbWay = [-6, 0, -1, -2, -3, -4, -5];
+		var smartWay = (dayIndex + 6) % 7;
+		var daysToNearestMonday = dumbWay[dayIndex];
+		var weekStartDate = date.addDays(daysToNearestMonday);
 		var weekDays = [];
-		var dayIndexArray = [[-6, -5, -4, -3, -2, -1, 0],[0, 1, 2, 3, 4, 5, 6],[-1, 0, 1, 2, 3, 4, 5],[-2, -1, 0, 1, 2, 3, 4],[-3, -2, -1, 0, 1, 2, 3],[-4, -3, -2, -1, 0, 1, 2],[-5, -4, -3, -2, -1, 0, 1]];
-
-
 		
+
 		for(let i = 0; i < 7; i++){
-			let n = dayIndexArray[dayIndex][i]
-			var pythonMonth = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 			weekDays[i] = {
-				year: dat.addDays(n).getFullYear(),
-				monthString: months[dat.addDays(n).getMonth()],
-				dayString: abbreviatedDayString[dat.addDays(n).getDay()],
-				javascriptMonthNum: dat.addDays(n).getMonth(),
-				day: dat.addDays(n).getDate(),
-				calendar_date: dat.addDays(n).getFullYear() + "-" + pythonMonth[dat.addDays(n).getMonth()] + "-" + dat.addDays(n).getDate(),
+				year: weekStartDate.addDays(i).getFullYear(),
+				monthString: months[weekStartDate.addDays(i).getMonth()],
+				dayString: abbreviatedDayString[weekStartDate.addDays(i).getDay()],
+				javascriptMonthNum: weekStartDate.addDays(i).getMonth(),
+				day: weekStartDate.addDays(i).getDate(),
+				calendar_date: weekStartDate.addDays(i).getFullYear() + "-" + (weekStartDate.addDays(i).getMonth() + 1) + "-" + weekStartDate.addDays(i).getDate(),
 				currentClass: ""
 			}
 		}
@@ -232,9 +200,12 @@ export function setNewSchedule(uniqueId, arr, newScheduleItem) {
 	})
 }
 
-export function sendEmployeeShiftObj(obj){
-	console.log('Send Employee Shift Obj', obj);
-	return api.post('/schedules/shift/many/', obj)
+export function clearAllSchedule(array){
+	return api.post('/schedules/shift/many/', array);
+}
+
+export function sendSingleEmployeeShiftObj(obj){
+	return api.post('/schedules/shift/many/', obj);
 }
 
 

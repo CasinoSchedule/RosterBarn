@@ -34,7 +34,7 @@ export function createEmployeeShift(employee, type, currentShift, date){
 	var newItem = {
 		uniqueId: v4(),
 		id: employee.id,
-		calendar_date: weekdays[j].calendar_date,
+		calendar_date: date,
 		starting_time: currentShift.time || '',
 		station: currentShift.station || '',
 		visible: employee.visible,
@@ -44,85 +44,110 @@ export function createEmployeeShift(employee, type, currentShift, date){
 }
 
 export function getEmployeeSchedule(year, month, day, shift){
-	var workWeekSchedule = getShifts(year, month, day)
-	.then(function(response){
-
-	});
 	var shiftFilter = ((shift) ? '/profiles/employee/' + shift : '/profiles/employee/');
-	var employees = getEmployeesByShift(shiftFilter);
+	var workWeekSchedule = [], employees = [], scheduledEmployees = [], weekdays = [];
+	
+
+	// takes year, month and day parameters and converts to valid Python date
+	var pythonChopDate = new Date(year, month-1, day);
+	year = pythonChopDate.getFullYear();
+	month = pythonMonth[pythonChopDate.getMonth()];
+	day = pythonChopDate.getDate();
 	var pythonBackToJavascriptMonth = month - 1;
-	var scheduledEmployees = [];
+	
+	Promise.all([
+		getWeekByWeek(year, pythonBackToJavascriptMonth, day, function(days){
+			weekdays = days;
+			console.log('weekdays', weekdays);
+			console.log(shiftFilter);
+	}), getEmployeesByShift(shiftFilter).then(function(resp){
+			console.log('employees', resp.data);
+			employees = resp.data;
 
-	// var pythonMonth = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-	// var pythonChopDate = new Date(year, month-1, day);
-	// year = pythonChopDate.getFullYear();
-	// month = pythonMonth[pythonChopDate.getMonth()];
-	// day = pythonChopDate.getDate();
-	
-	
-	
-	
+	}), getShifts(year, month, day).then(function(resp){
+			console.log('workWeekSchedule', resp.data)
+			workWeekSchedule = resp.data;
+	})]).then(function(){
 		
-			getWeekByWeek(year, pythonBackToJavascriptMonth, day, function(weekdays){
-					var weekdays = weekdays;
-					console.log('employees', employees)
-					for(let i = 0; i < employees.length; i++){
-						console.log(employees[i]);
-						scheduledEmployees.push(createEmployeeInfo(employees[i], "namefield"))
-						for(let j = 0; j < 7; j++){
-							let currentShift = checkIfWorking(weekdays[j].calendar_date, employees[i].id);
-								scheduledEmployees.push(createEmployeeShift(employees[i], 'timefield', currentShift, weekdays[j].calendar_date));
-						}
-					}
-			})
-
-			console.log(scheduledEmployees);
+			for(let i = 0; i < employees.length; i++){
 				
-				
-				function checkIfWorking(date, id){
-					var check = workWeekSchedule[i];
+				scheduledEmployees.push(createEmployeeInfo(employees[i], "namefield"))
+				for(let j = 0; j < 7; j++){
+					console.log('In for the next for', workWeekSchedule);
+					console.log(weekdays[j].calendar_date, employees[i].id);
+					let currentShift = checkIfWorking(weekdays[j].calendar_date, employees[i].id, workWeekSchedule[i]);
+					console.log('currentShift', currentShift);
+						scheduledEmployees.push(createEmployeeShift(employees[i], 'timefield', currentShift, weekdays[j].calendar_date));
+				}
+			}
+	
+			function checkIfWorking(date, id, workWeekSchedule){
+					var check = workWeekSchedule;
+					console.log('checkIfWorking Hit', check)
+					console.log('length', workWeekSchedule.length)
 					for(var i = 0; i < workWeekSchedule.length; i++){
 						if(check.calendar_date === date && check.employee.id === id) {
-							return ((check.starting_time) 
-								? 	{	time: check.starting_time.slice(0, 5), 
-										station: ((check.station) ? check.station.title : "")} 
-								: "")}
+							return ((check.starting_time) ? {time: check.starting_time.slice(0, 5), station: ((check.station) ? check.station.title : "")} 
+								: "")
 
+						}
+						return ""
 					}
-					return ""
-				}
+			}
 
-
-				var employeeRow = [];
+			var employeeRow = [];
 				for(let i = 0; i < employees.length; i++){
 					employeeRow.push(scheduledEmployees.splice(0, 8));
 				}
-
+				console.log(employeeRow)
 				store.dispatch({
 					type: 'GET_EMPLOYEEWEEKLYSCHEDULE',
 					employeeWeeklySchedule: employeeRow
 				})
+	})
+	
+			
 
+
+	
 }
 
-export function getWeekByWeek(year, month, day, cb){
+export function queryStringFromDict(dict) {
+	// Takes an object of query params and returns a query string.
+	var valuesArray = [];
+	for(var key in dict) {
+		if(dict[key]) {
+			valuesArray.push(String(key) + '=' + String(dict[key]))
+		}
+	}
+	if(valuesArray.length > 0){
+		return '?' + valuesArray.join('&');
+	}
+	else{
+		return '';
+	}
+}
+
+
+export function getWeekByWeek(date, cb){
 		var abbreviatedDayString = ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"];
 		var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-		var dat = new Date(year, month, day);
-		var dayIndex = dat.getDay();
+		var dayIndex = date.getDay();
+		var dumbWay = [-6, 0, -1, -2, -3, -4, -5];
+		var smartWay = (dayIndex + 6) % 7;
+		var daysToNearestMonday = dumbWay[dayIndex];
+		var weekStartDate = date.addDays(daysToNearestMonday);
 		var weekDays = [];
-		var dayIndexArray = [[-6, -5, -4, -3, -2, -1, 0],[0, 1, 2, 3, 4, 5, 6],[-1, 0, 1, 2, 3, 4, 5],[-2, -1, 0, 1, 2, 3, 4],[-3, -2, -1, 0, 1, 2, 3],[-4, -3, -2, -1, 0, 1, 2],[-5, -4, -3, -2, -1, 0, 1]];
 		
+
 		for(let i = 0; i < 7; i++){
-			let n = dayIndexArray[dayIndex][i]
-			var pythonMonth = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 			weekDays[i] = {
-				year: dat.addDays(n).getFullYear(),
-				monthString: months[dat.addDays(n).getMonth()],
-				dayString: abbreviatedDayString[dat.addDays(n).getDay()],
-				javascriptMonthNum: dat.addDays(n).getMonth(),
-				day: dat.addDays(n).getDate(),
-				calendar_date: dat.addDays(n).getFullYear() + "-" + pythonMonth[dat.addDays(n).getMonth()] + "-" + dat.addDays(n).getDate(),
+				year: weekStartDate.addDays(i).getFullYear(),
+				monthString: months[weekStartDate.addDays(i).getMonth()],
+				dayString: abbreviatedDayString[weekStartDate.addDays(i).getDay()],
+				javascriptMonthNum: weekStartDate.addDays(i).getMonth(),
+				day: weekStartDate.addDays(i).getDate(),
+				calendar_date: weekStartDate.addDays(i).getFullYear() + "-" + (weekStartDate.addDays(i).getMonth() + 1) + "-" + weekStartDate.addDays(i).getDate(),
 				currentClass: ""
 			}
 		}
@@ -134,4 +159,8 @@ export function getWeekByWeek(year, month, day, cb){
 			weeklyCalendar: weekDays
 		})
 		: "")
+		
+
+		// console.log('weeklyCalendar', weekDays);
+
 }
