@@ -10,6 +10,7 @@ import EmployeeReducer from 'reducers/employee';
 import CalendarReducer from 'reducers/calendarReducer';
 import AdminReducer from 'reducers/admin';
 import CssReducer from 'reducers/css';
+import signupReducer from 'reducers/signupReducer';
 
 
 // Combine Reducers
@@ -18,7 +19,8 @@ var reducers = combineReducers({
 	employeeReducer: EmployeeReducer,
 	calendarReducer: CalendarReducer,
 	adminReducer: AdminReducer,
-	cssReducer: CssReducer
+	cssReducer: CssReducer,
+	signupReducer: signupReducer
   // more...
 });
 

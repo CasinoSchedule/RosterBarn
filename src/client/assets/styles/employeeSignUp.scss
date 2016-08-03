@@ -1,4 +1,11 @@
+$darkgrey: #605c5b;
+
 #createButton {
-	color: red;
+	color: $darkgrey;
 	text-shadow: 1px 1px 1px #000;
+}
+
+.errorMessage {
+	color: red;
+	margin-top: 10px;
 }
