@@ -1,19 +1,6 @@
-$gradientfrom: #fff;
-$gradientto: #8a8a8a; 
-$gradientfrom2: #00d2ff;
-$gradientto2: #928DAB; 
-$textshadow: #e7e7e7;
-$darkgrey: #605c5b;
-$bordercolor: #3a3a3a;
-$bluetheme: #336eb5;
-$purpletheme: #0A4081;
-$sidepanel: #292E35;
-$selected: #b2b2b2;
-$greyScheme: #404040;
-$cakeBorder: #3665C1;
-$cakeBox: #2656B2;
-$cakeSelected: #302F3F;
-$scheduleHeader: #0E4583;
+@import './variables';
+
+// Side panel is 200px
 
 
 .adminHeader {
@@ -23,34 +10,45 @@ $scheduleHeader: #0E4583;
 	width: 100%;
 	height: 40px;
 	border-bottom: 1px solid $darkgrey;
-	padding-left: 15px;
-	padding-top: 5px;
+	// padding-left: 15px;
+	// padding-top: 5px;
 	background: $greyScheme;
-	// display: flex;
+	display: flex;
+	flex-wrap: nowrap;
 	// justify-content: space-between;
-				// border: 2px solid orange;
+								// border: 2px solid orange;
 	// box-sizing: border-box;
 }
-.adminHeader img {
-	height: 20px;
-	width: auto;
+// .adminHeader img {
+// 	height: 20px;
+// 	width: auto;
+// }
+.logoContainerDiv {
+	width: 200px;
+	height: 40px;
+	line-height: 30px;
+	padding-left: 5px;
+								// border: 2px solid green;
 }
-.titleContainer {
-					// border: 1px solid yellow;
+
+.adminHeaderContainer {
+								// border: 5px solid yellow;
 	width: 100%;
+	height: auto;
 	// display: flex;
 	// justify-content: flex-end;
-	margin-left: 50px;
+	// margin-left: 200px;
 }
 .departmentTitleTag {
 	position: absolute;
 	top: 0;
 	left: 50%;
 	width: auto;
-	// line-height: 40px;
+	height: 40px;
+	line-height: 40px;
 	color: $textshadow;
 	font-family: Copperplate;
-				border: 1px solid red;
+								// border: 3px solid red;
 	font-size: 24px;
 	margin: 0 auto;
 }
@@ -88,7 +86,7 @@ $scheduleHeader: #0E4583;
 	line-height: 40px;
 	color: $textshadow;
 	font-family: Copperplate;
-				// border: 1px solid green;
+								// border: 3px solid blue;
 }
 
 

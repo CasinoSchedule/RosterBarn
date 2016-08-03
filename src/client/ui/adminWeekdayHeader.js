@@ -8,7 +8,8 @@ export default React.createClass({
 		return (
 			<div className="weekOf">
 				<div className="roster employee">
-					<span className="letter">R</span>oster<i className="fa fa-user-plus" aria-hidden="true" onClick={this.addEmployee}></i>
+					<div><span className="letter">R</span>oster</div>
+					<div><i className="fa fa-user-plus" aria-hidden="true" onClick={this.addEmployee}></i></div>
 				</div>
 				
 				{this.props.weeklyCalendar.map(function(item, i){

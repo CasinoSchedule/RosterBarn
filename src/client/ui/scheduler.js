@@ -12,10 +12,10 @@ import { browserHistory } from 'react-router';
 import {v4} from 'uuid';
 import RaisedButton from 'material-ui/RaisedButton';
 import injectTapEventPlugin from 'react-tap-event-plugin';
-import FlatButton from 'material-ui/FlatButton';
 import Cookie from 'js-cookie';
 import AdminHeader from 'ui/adminHeader';
 import AdminWeekdayHeader from 'ui/adminWeekdayHeader';
+import AdminWeekHeader from 'ui/adminWeekHeader';
 
 // Needed for onTouchTap
 // http://stackoverflow.com/a/34015469/988941
@@ -172,6 +172,9 @@ export default React.createClass({
 	
 		browserHistory.push('/')
 	},
+	settings: function(){
+
+	},
 	render: function(){
 		return (
 			<div className="adminBg">
@@ -183,49 +186,34 @@ export default React.createClass({
 
 				<AdminHeader 
 					logout={this.logout} />
+
 				
 				<div className="adminContainer">
 
-					<div className="monthLabel">
-						<div className={"shiftStatus " + this.state.shiftColor}>
-							<div className="shiftTitle">{this.state.shiftColor}</div>
-						</div>
 
-						<div className="navigate">
-							<div className="leftButton" onClick={this.previousSchedule}><i className="fa fa-angle-left" aria-hidden="true"></i></div>
-
-							<div className="weekLabel"> {this.state.weeklyCalendar[0].monthString} {this.state.weeklyCalendar[0].day}, {this.state.weeklyCalendar[0].year}   
-
-									<span className="dash"> - </span> 
-
-								{this.state.weeklyCalendar[6].monthString} {this.state.weeklyCalendar[6].day}, {this.state.weeklyCalendar[6].year}
-							</div> 
-							<div className="rightButton" onClick={this.nextSchedule}><i className="fa fa-angle-right" aria-hidden="true"></i></div>
-						</div>
-
-
-						<div className="printClearButtons">
-							<FlatButton label="Clear" primary={true} onClick={this.confirmClear} />
-							<FlatButton label="Print" primary={true} onClick={this.printSchedule} />
-						</div>
-
-					</div>	
+					<AdminWeekHeader
+						shiftColor={this.state.shiftColor}
+						previousSchedule={this.previousSchedule}
+						weeklyCalendar={this.state.weeklyCalendar}
+						nextSchedule={this.nextSchedule}
+						confirmClear={this.confirmClear}
+						printSchedule={this.printSchedule} />
 
 					
 
-				<div className={"scheduleFlex " + this.state.flexbox_size}>
-					
-					<div className="schedule">
+					<div className={"scheduleFlex " + this.state.flexbox_size}>
 						
-						
-						<AdminWeekdayHeader 
-							weeklyCalendar={this.state.weeklyCalendar} />
-						
-						<EmployeeRow 
-							employeeWeeklySchedule={this.state.employeeWeeklySchedule} />
+						<div className="schedule">
 							
+							<AdminWeekdayHeader 
+								weeklyCalendar={this.state.weeklyCalendar} />
+							
+							<EmployeeRow 
+								employeeWeeklySchedule={this.state.employeeWeeklySchedule} />
+								
+						</div>
+
 					</div>
-				</div>
 						
 				</div>	
 
@@ -233,7 +221,7 @@ export default React.createClass({
 						{(this.state.showForm) 
 							? <EmployeeInfoForm
 								info={this.state.employeeInfo} 
-								key={this.state.employeeInfo.uniqueId} 
+								key={v4()} 
 								refreshCurrentState={this.refreshCurrentState} 
 								currentDate={this.state.currentDate}
 								confirmDelete={this.confirmClear} /> 

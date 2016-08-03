@@ -3,7 +3,7 @@ import store from 'store';
 import { setNewSchedule, sendSingleEmployeeShiftObj, addEmployee, updateEmployee } from 'api/data';
 import TimePicker from 'material-ui/TimePicker';
 
-require('assets/styles/employeeToSchedule.scss');
+require('assets/styles/eachEmployeeOnSchedule.scss');
 
 export default React.createClass({
 	getInitialState: function() {

@@ -1,19 +1,4 @@
-$gradientfrom: #fff;
-$gradientto: #8a8a8a; 
-$gradientfrom2: #00d2ff;
-$gradientto2: #928DAB; 
-$textshadow: #e7e7e7;
-$darkgrey: #605c5b;
-$bordercolor: #3a3a3a;
-$bluetheme: #336eb5;
-$purpletheme: #0A4081;
-$sidepanel: #292E35;
-$selected: #b2b2b2;
-$greyScheme: #404040;
-$cakeBorder: #3665C1;
-$cakeBox: #2656B2;
-$cakeSelected: #302F3F;
-
+@import './variables';
 
 
 .sidePortal {
@@ -178,19 +163,12 @@ $cakeSelected: #302F3F;
 	width: 100%;
 	height: 50px;
 	background: #2B96DD;
-	/* Background Gradient for Analagous Colors */
-    // background-color: #1ED660;
-    /* For WebKit (Safari, Chrome, etc) */
-    // background: #BFEE90 -webkit-gradient(linear, left top, left bottom, from(#90EEA0), to(#BFEE90)) no-repeat;
-    // /* Mozilla,Firefox/Gecko */
-    // background: #BFEE90 -moz-linear-gradient(top, #90EEA0, #BFEE90) no-repeat;
 	border-radius: 2px;
 	text-shadow: 1px 1px black;
 	color: #fff;
 	letter-spacing: 1px;
 	border: none;
 	border-bottom: 4px solid black;
-	// border-right: 1px solid #90EEA0;
 	outline: none;
 	font-size: 18px;
 	font-weight: 700;

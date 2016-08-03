@@ -3,6 +3,7 @@ import store from 'store';
 import { Link, browserHistory } from 'react-router';
 import { calendar, publish, getEmployeeSchedule, getWeekByWeek } from 'api/data';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import DatePicker from 'material-ui/DatePicker';
 
 
 require("assets/styles/sidePanel.scss");

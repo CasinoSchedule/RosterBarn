@@ -1,19 +1,9 @@
-$gradientfrom: #fff;
-$gradientto: #8a8a8a; 
-$gradientfrom2: #00d2ff;
-$gradientto2: #928DAB; 
-$textshadow: #e7e7e7;
-$darkgrey: #605c5b;
-$bordercolor: #3a3a3a;
-$bluetheme: #336eb5;
-$purpletheme: #0A4081;
-$sidepanel: #292E35;
-$selected: #b2b2b2;
-$greyScheme: #404040;
-$cakeBorder: #3665C1;
-$cakeBox: #2656B2;
-$cakeSelected: #302F3F;
+@import './variables';
 
+
+.colorTest {
+	color: red;
+}
 
 .bigFlex {
 	width: 600px;
@@ -63,7 +53,7 @@ $cakeSelected: #302F3F;
 }
 .formBox {
 	width: 280px;
-	height: 360px;
+	height: 500px;
 	display: flex;
 	flex-direction: column;
 		// border: 1px solid green;
@@ -133,4 +123,7 @@ $cakeSelected: #302F3F;
 }
 .phoneNumber > input:last-child {
 	width: 50px;	
+}
+.weekFlex {
+	display: flex;
 }

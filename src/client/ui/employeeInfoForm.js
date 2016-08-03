@@ -5,11 +5,41 @@ import FlatButton from 'material-ui/FlatButton';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import Confirm from 'ui/confirm';
 import {v4} from 'uuid';
+import TextField from 'material-ui/TextField';
+import {orange500, blue500, brown500, indigo500, red500} from 'material-ui/styles/colors';
+import Checkbox from 'material-ui/Checkbox';
+
+
 
 require('assets/styles/employeeInfoForm.scss');
 
+const styles = {
+  errorStyle: {
+    color: orange500,
+  },
+  underlineStyle: {
+    borderColor: brown500,
+    color: orange500,
+  },
+  floatingLabelStyle: {
+    color: indigo500,
+  },
+  floatingLabelFocusStyle: {
+    color: indigo500,
+    borderColor: red500,
+  },
+  block: {
+    maxWidth: 40,
+   	fill: indigo500
+  },
+  checkbox: {
+    marginBottom: 16,
+  },
+};
+
+
 export default React.createClass({
-	getIntitalState: function(){
+	getInitialState: function(){
 		return {
 			phone_number_first: '',
 			phone_number_second: '',
@@ -27,7 +57,7 @@ export default React.createClass({
 				showDeleteConfirm: currentStore.showReducer.showDeleteConfirm
 			})
 		}.bind(this));
-		
+		console.log('phone number', this.props.info.phone_number);
 	},
 	close: function(){
 		store.dispatch({
@@ -38,17 +68,17 @@ export default React.createClass({
 	},
 	handleSubmit: function(e){
 		e.preventDefault();
-		if(this.props.info.email !== this.refs.email.value) {
-			registerNewEmail({email: this.refs.email.value, profile_id: this.props.info.id})
+		if(this.props.info.email !== this.refs.email.getValue()) {
+			registerNewEmail({email: this.refs.email.getValue(), profile_id: this.props.info.id})
 		}
 		
 		updateEmployee(this.props.info.id, {
-			position_title: this.refs.position_title.value || "",
-			first_name: this.refs.first_name.value || "",
-			last_name: this.refs.last_name.value || "",
-			employee_id: this.refs.employee_id.value || "",
-			email: this.refs.email.value || "",
-			phone_number: this.refs.phone_number_1.value + this.refs.phone_number_2.value + this.refs.phone_number_3.value  || ""
+			position_title: this.refs.position_title.getValue() || "",
+			first_name: this.refs.first_name.getValue() || "",
+			last_name: this.refs.last_name.getValue() || "",
+			employee_id: this.refs.employee_id.getValue() || "",
+			email: this.refs.email.getValue() || "",
+			phone_number: this.refs.phone_number_1.getValue() + this.refs.phone_number_2.getValue() + this.refs.phone_number_3.getValue()  || ""
 		});
 
 		this.props.refreshCurrentState(this.props.currentDate);
@@ -89,16 +119,53 @@ export default React.createClass({
 			<div className="employeeInfoFormBox">
 				<div className="fullPic"><img src={this.props.info.photo_url} /></div>
 				<div className="formBox">
-					<label htmlFor="position_title">Position Title</label>
-					<input ref="position_title" placeholder="Position Title" defaultValue={this.props.info.position_title}/>
-					<label htmlFor="first_name">First Name</label>
-					<input ref="first_name" placeholder="First Name" defaultValue={this.props.info.first_name}/>
-					<label htmlFor="last_name">Last Name</label>
-					<input ref="last_name" placeholder="Last Name" defaultValue={this.props.info.last_name}/>
-					<label htmlFor="employee_id">Employee Id</label>
-					<input ref="employee_id" placeholder="Employee Id" defaultValue={this.props.info.employee_id}/>
-					<label htmlFor="email">Email</label>
-					<input ref="email" placeholder="Email" defaultValue={this.props.info.email}/>
+			
+					<TextField 
+						id='position_title' 
+						style={{fontFamily: 'Arial'}} 
+						underlineStyle={styles.underlineStyle} 
+						floatingLabelFocusStyle={styles.floatingLabelFocusStyle} 
+						ref="position_title" 
+						floatingLabelText="Position Title" 
+						defaultValue={this.props.info.position_title}/>
+
+					<TextField 
+						id='first_name' 
+						style={{fontFamily: 'Arial'}} 
+						underlineStyle={styles.underlineStyle} 
+						floatingLabelFocusStyle={styles.floatingLabelFocusStyle} 
+						ref="first_name" 
+						floatingLabelText="First Name" 
+						defaultValue={this.props.info.first_name}/>
+		
+					<TextField 
+						id='last_name' 
+						style={{fontFamily: 'Arial'}} 
+						underlineStyle={styles.underlineStyle} 
+						floatingLabelFocusStyle={styles.floatingLabelFocusStyle} 
+						ref="last_name" 
+						floatingLabelText="Last Name" 
+						defaultValue={this.props.info.last_name}/>
+
+					<TextField 
+						id='employee_id' 
+						style={{fontFamily: 'Arial'}} 
+						underlineStyle={styles.underlineStyle} 
+						floatingLabelFocusStyle={styles.floatingLabelFocusStyle} 
+						ref="employee_id" 
+						floatingLabelText="Employee ID" 
+						defaultValue={this.props.info.employee_id}/>
+					
+					<TextField 
+						id='email' 
+						style={{fontFamily: 'Arial'}} 
+						underlineStyle={styles.underlineStyle} 
+						floatingLabelFocusStyle={styles.floatingLabelFocusStyle} 
+						ref="email" 
+						floatingLabelText="Email" 
+						defaultValue={this.props.info.email}/>
+
+					
 					<label htmlFor="phone_number">Phone Number</label>
 					<div className="phoneNumber">
 						<input ref="phone_number_1" defaultValue={this.state.phone_number_first} maxLength="3"/>&nbsp;
@@ -107,6 +174,12 @@ export default React.createClass({
 					</div>
 					<label htmlFor="regular_days_off">Days Off</label>
 					<input ref="regular_days_off" placeholder="Days Off" defaultValue={this.props.info.regular_days_off}/>
+					<div className="weekFlex">
+						<Checkbox label="Mon" style={styles.block}/>
+						<Checkbox label="Tue" style={styles.block}/>
+						<Checkbox label="Wed" style={styles.block}/>
+					</div>
+
 				</div>
 			</div>
 			<div className="formButtons">
