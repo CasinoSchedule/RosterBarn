@@ -335,11 +335,17 @@ export function addNewEmployeeUser(username, password, profile_id, cb){
     api.login(username, password).then(function(){
        cb();
     }).catch(function(err){
-      console.log(err);
+      console.log('first', err);
     });
   }).catch(function(err){
-    console.log(err);
-  });
+    console.log('second', err.data);
+
+    store.dispatch({
+		type: 'HANDLE_ERROR',
+		errorMessage: err.data
+	});
+   
+  })
 }
 
 export function queryStringFromDict(dict) {

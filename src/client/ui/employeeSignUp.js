@@ -21,9 +21,18 @@ export default React.createClass({
 			username: "",
 			password: "",
 			passwordMatch: "",
-			error: false,
+			errorMessage: ""
 		}
 	},	
+	componentWillMount() {
+		var that = this;
+		store.subscribe(function(){
+			console.log(store.getState())
+			that.setState({
+				errorMessage:store.getState().signupReducer.errorMessage.username[0]
+			})
+		});
+	},
 	handleChange: function(e){
 		if (e.target.id === 'username') {
 			this.setState({
@@ -56,20 +65,27 @@ export default React.createClass({
 			addNewEmployeeUser(this.state.username, this.state.password, that.props.params.splat, function(){
 				browserHistory.push('/calendar');
 			}.bind(this)).catch(function(err){
+				this.setState({
+					username: "",
+					password: "", 
+					passwordMatch: "",
+					errorMessage: "This signup url is no longer valid"
+				})
+				console.log('catch error');
 
 		}.bind(this));
 		} else {
 			this.setState({
-				error: true,
-				username: "",
+				username: this.state.username,
 				password: "", 
-				passwordMatch: ""
+				passwordMatch: "",
+				errorMessage: "Passwords do not match"
 			});
 		}
 	},
 	render: function(){
 		var path = this.getPath;
-		console.log(this.state)
+		
 		return (
 			<div id="homepage">
 				<div id="imageContainer" className="homePageLogo">
@@ -98,10 +114,9 @@ export default React.createClass({
 						<button type="submit">Create Account</button>
 						
 						</div>
+						<div className="errorMessage">{this.state.errorMessage}</div>
+					
 					</form>
-
-					{this.state.error ? <div className='error'>Passwords do not match</div> : ''}
-
 				</div>
 			</div>
 		)

@@ -66,6 +66,7 @@ export default React.createClass({
 	},
 	refreshCurrentState: function(date, shiftId, clearAll){
 		var departmentId = localStorage.getItem("departmentId");
+
 		var shiftId = ((shiftId) ? shiftId : this.state.shiftNum);
 		getEmployeeSchedule(date, shiftId, departmentId, clearAll);
 		getWeekByWeek(date);
