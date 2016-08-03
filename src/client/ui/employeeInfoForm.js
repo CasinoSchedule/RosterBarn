@@ -8,7 +8,8 @@ import {v4} from 'uuid';
 import TextField from 'material-ui/TextField';
 import {orange500, blue500, brown500, indigo500, red500} from 'material-ui/styles/colors';
 import Checkbox from 'material-ui/Checkbox';
-
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
 
 
 require('assets/styles/employeeInfoForm.scss');
@@ -30,13 +31,18 @@ const styles = {
   },
   block: {
     maxWidth: 40,
-   	fill: indigo500
   },
   checkbox: {
     marginBottom: 16,
   },
 };
 
+const items = [
+  <MenuItem key={1} value={1} primaryText="Grave" />,
+  <MenuItem key={2} value={2} primaryText="Day" />,
+  <MenuItem key={3} value={3} primaryText="Swing" />,
+  <MenuItem key={4} value={4} primaryText="Any" />,
+];
 
 export default React.createClass({
 	getInitialState: function(){
@@ -44,7 +50,8 @@ export default React.createClass({
 			phone_number_first: '',
 			phone_number_second: '',
 			phone_number_third: '',
-			showDeleteConfirm: false
+			showDeleteConfirm: false,
+			value: null
 		}
 	},
 	componentWillMount: function(){
@@ -66,6 +73,11 @@ export default React.createClass({
 		})
 
 	},
+	handleChange: function(event, index, value){
+		this.setState({
+			value 
+		})
+	},
 	handleSubmit: function(e){
 		e.preventDefault();
 		if(this.props.info.email !== this.refs.email.getValue()) {
@@ -78,7 +90,18 @@ export default React.createClass({
 			last_name: this.refs.last_name.getValue() || "",
 			employee_id: this.refs.employee_id.getValue() || "",
 			email: this.refs.email.getValue() || "",
-			phone_number: this.refs.phone_number_1.getValue() + this.refs.phone_number_2.getValue() + this.refs.phone_number_3.getValue()  || ""
+			phone_number: this.refs.phone_number_1.getValue() + this.refs.phone_number_2.getValue() + this.refs.phone_number_3.getValue()  || "",
+			availability: this.state.value
+		});
+
+		console.log(this.props.info.id, {
+			position_title: this.refs.position_title.getValue() || "",
+			first_name: this.refs.first_name.getValue() || "",
+			last_name: this.refs.last_name.getValue() || "",
+			employee_id: this.refs.employee_id.getValue() || "",
+			email: this.refs.email.getValue() || "",
+			phone_number: this.refs.phone_number_1.getValue() + this.refs.phone_number_2.getValue() + this.refs.phone_number_3.getValue()  || "",
+			availability: this.state.value
 		});
 
 		this.props.refreshCurrentState(this.props.currentDate);
@@ -122,7 +145,7 @@ export default React.createClass({
 			
 					<TextField 
 						id='position_title' 
-						style={{fontFamily: 'Arial'}} 
+						style={{fontFamily: 'Arial', marginBottom: '-20px'}} 
 						underlineStyle={styles.underlineStyle} 
 						floatingLabelFocusStyle={styles.floatingLabelFocusStyle} 
 						ref="position_title" 
@@ -131,7 +154,7 @@ export default React.createClass({
 
 					<TextField 
 						id='first_name' 
-						style={{fontFamily: 'Arial'}} 
+						style={{fontFamily: 'Arial', marginBottom: '-20px'}} 
 						underlineStyle={styles.underlineStyle} 
 						floatingLabelFocusStyle={styles.floatingLabelFocusStyle} 
 						ref="first_name" 
@@ -140,7 +163,7 @@ export default React.createClass({
 		
 					<TextField 
 						id='last_name' 
-						style={{fontFamily: 'Arial'}} 
+						style={{fontFamily: 'Arial', marginBottom: '-20px'}} 
 						underlineStyle={styles.underlineStyle} 
 						floatingLabelFocusStyle={styles.floatingLabelFocusStyle} 
 						ref="last_name" 
@@ -149,7 +172,7 @@ export default React.createClass({
 
 					<TextField 
 						id='employee_id' 
-						style={{fontFamily: 'Arial'}} 
+						style={{fontFamily: 'Arial', marginBottom: '-20px'}} 
 						underlineStyle={styles.underlineStyle} 
 						floatingLabelFocusStyle={styles.floatingLabelFocusStyle} 
 						ref="employee_id" 
@@ -158,7 +181,7 @@ export default React.createClass({
 					
 					<TextField 
 						id='email' 
-						style={{fontFamily: 'Arial'}} 
+						style={{fontFamily: 'Arial', marginBottom: '-20px'}} 
 						underlineStyle={styles.underlineStyle} 
 						floatingLabelFocusStyle={styles.floatingLabelFocusStyle} 
 						ref="email" 
@@ -166,20 +189,64 @@ export default React.createClass({
 						defaultValue={this.props.info.email}/>
 
 					
-					<label htmlFor="phone_number">Phone Number</label>
 					<div className="phoneNumber">
-						<input ref="phone_number_1" defaultValue={this.state.phone_number_first} maxLength="3"/>&nbsp;
-						<input ref="phone_number_2" defaultValue={this.state.phone_number_second} maxLength="3"/>&nbsp;
-						<input ref="phone_number_3" defaultValue={this.state.phone_number_third} maxLength="4"/>
-					</div>
-					<label htmlFor="regular_days_off">Days Off</label>
-					<input ref="regular_days_off" placeholder="Days Off" defaultValue={this.props.info.regular_days_off}/>
-					<div className="weekFlex">
-						<Checkbox label="Mon" style={styles.block}/>
-						<Checkbox label="Tue" style={styles.block}/>
-						<Checkbox label="Wed" style={styles.block}/>
+						<TextField 
+							id="phone_number_1" 
+							style={{width: '40px', marginBottom: '-20px'}}
+							ref="phone_number_1" 
+							defaultValue={this.props.info.phone_number.slice(0,3) || ''}
+							floatingLabelText="Phone" 
+							maxLength="3"/>&nbsp;
+						
+						<TextField 
+							id="phone_number_2"
+							style={{width: '40px', marginBottom: '-20px'}} 
+							ref="phone_number_2" 
+							defaultValue={this.props.info.phone_number.slice(3,6) || ''}
+							floatingLabelText="." 
+							maxLength="3"/>&nbsp;
+
+						<TextField 
+							id="phone_number_3" 
+							style={{width: '60px', marginBottom: '-20px'}} 
+							ref="phone_number_3" 
+							defaultValue={this.props.info.phone_number.slice(6,10) || ''}
+							floatingLabelText="." 
+							maxLength="4"/>
 					</div>
 
+					<SelectField
+				          value={this.state.value}
+				          onChange={this.handleChange}
+				          floatingLabelText="Shift">
+				    	
+				    	{items}
+			        
+			        </SelectField>
+
+					<label htmlFor="regular_days_off" className="labelColor">Regular Days Off</label>
+					<div className="dayLabel">
+						<div>SUN</div>
+						<div>MON</div>
+						<div>TUE</div>
+						<div>WED</div>
+						<div>THU</div>
+						<div>FRI</div>
+						<div>SAT</div>
+					</div>
+
+					
+					<div className="weekFlex">
+						<Checkbox id='Sun' ref='Sun1' style={styles.block}/>
+						<Checkbox id='Mon' ref='Mon2' style={styles.block}/>
+						<Checkbox id='Tue' ref='Tue3' style={styles.block}/>
+						<Checkbox id='Wed' ref='Wed4' style={styles.block}/>
+						<Checkbox id='Thu' ref='Thu5' style={styles.block}/>
+						<Checkbox id='Fri' ref='Fri6' style={styles.block}/>
+						<Checkbox id='Sat' ref='Sat7' style={styles.block}/>
+					</div>
+
+						
 				</div>
 			</div>
 			<div className="formButtons">

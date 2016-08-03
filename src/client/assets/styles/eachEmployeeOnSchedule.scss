@@ -97,14 +97,15 @@
 }
 .nameImageBox {
 	display: flex;
+	// min-width: 180px;
 	width: 100%;
 	// box-shadow: 1px 1px 1px $darkgrey;
 
 			// border: 2px solid $darkgrey;
-}
+
 // .nameImageBox:first-child {
-// 	overflow: hidden;
-// }
+	overflow: hidden;
+}
 .nameImageBox:first-child img {
 	width: 40px;
 	height: 34px;
