@@ -66,7 +66,8 @@ export function createEmployeeShift(employee, type, currentShift, date){
 		starting_time: currentShift.time || '',
 		station: currentShift.station || '',
 		classInfoTime: type,
-		position_title: employee.position_title
+		position_title: employee.position_title,
+		visible: currentShift.visible
 	}
 	
 	return newItem
@@ -108,19 +109,38 @@ export function getEmployeeSchedule(date, shiftId, departmentId, clearAll){
 							return ((workWeekSchedule[i].starting_time) 
 								? {
 									time: workWeekSchedule[i].starting_time.slice(0, 5), 
-									station: ((workWeekSchedule[i].station) ? workWeekSchedule[i].station.title : "")} 
+									station: ((workWeekSchedule[i].station) ? workWeekSchedule[i].station.title : ""),
+									visible: workWeekSchedule[i].visible} 
 								: "")
 						}
 					}
 					return ""
 				}
 
+				function checkShiftVisibile(shiftData){
+					// Check shift objects to see if any have visible=false
+					var rows = shiftData;
+					for(let i=0; i < rows.length; i++){
+						var row = rows[i];
+						for (let j=0; j < row.length; j++) {
+							if (row[j].visible == false) {
+								return 'publish';
+							}
+						}
+					}
+					return 'noChanges';}
+
 				// Split array of objects by employee 
 				for(let i = 0; i < employees.length; i++){
 					employeeRow.push(scheduledEmployees.splice(0, 8));
 				}
 
-				console.log(employeeRow)
+				var publishStatus = checkShiftVisibile(employeeRow);
+
+				store.dispatch({
+				type: 'CHANGE_PUBLISHBUTTON',
+				publishButton: publishStatus
+				})
 
 				store.dispatch({
 					type: 'GET_EMPLOYEEWEEKLYSCHEDULE',

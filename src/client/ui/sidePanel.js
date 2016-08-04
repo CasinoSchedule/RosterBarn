@@ -96,6 +96,7 @@ export default React.createClass({
 				type: 'CHANGE_PUBLISHBUTTON',
 				publishButton: "noChanges"
 			})
+			console.log('reset button');
 		}
 	},
 	scheduleJump: function(item, e){
