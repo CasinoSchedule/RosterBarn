@@ -53,7 +53,7 @@
 }
 .formBox {
 	width: 280px;
-	height: 500px;
+	height: 450px;
 	display: flex;
 	flex-direction: column;
 		// border: 1px solid green;
@@ -114,6 +114,7 @@
 // }
 .phoneNumber {
 	display: flex;
+	flex-direction: row;
 
 }
 .phoneNumber > input {
@@ -124,6 +125,31 @@
 .phoneNumber > input:last-child {
 	width: 50px;	
 }
+.daysOffContainer {
+		border: 1px solid #3F51B5;
+		margin-right: 10px;
+}
 .weekFlex {
 	display: flex;
+	justify-content: space-around;
+	// border: 2px solid yellow;
+	padding-left: 18px;
+	// border: 1px solid #3F51B5;
+}
+.dayLabel {
+	display: flex;
+	justify-content: space-around;
+	width: 100%;
+	height: auto;
+	// border: 1px solid blue;
+	color: #3F51B5;
+	margin-top: 5px;
+}
+.dayLabel > div {
+		font-size: 9px;
+}
+.labelColor {
+	color: #3F51B5;
+	font-size: 10px !important;
+	padding-right: 3px !important;
 }

@@ -88,7 +88,6 @@ export default React.createClass({
 		addNewEmployee({
 			first_name: "New", 
 			last_name: "Employee",
-			availability: ((this.state.shiftNum) ? [this.state.shiftNum] : [1, 2, 3]),
 			department: localStorage.getItem("departmentId")
 		});
 		this.refreshCurrentState(this.state.currentDate);
@@ -207,7 +206,8 @@ export default React.createClass({
 						<div className="schedule">
 							
 							<AdminWeekdayHeader 
-								weeklyCalendar={this.state.weeklyCalendar} />
+								weeklyCalendar={this.state.weeklyCalendar} 
+								addEmployee={this.addEmployee} />
 							
 							<EmployeeRow 
 								employeeWeeklySchedule={this.state.employeeWeeklySchedule} />

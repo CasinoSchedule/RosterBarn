@@ -9,7 +9,7 @@ export default React.createClass({
 			<div className="weekOf">
 				<div className="roster employee">
 					<div><span className="letter">R</span>oster</div>
-					<div><i className="fa fa-user-plus" aria-hidden="true" onClick={this.addEmployee}></i></div>
+					<div><i className="fa fa-user-plus" aria-hidden="true" onClick={this.props.addEmployee}></i></div>
 				</div>
 				
 				{this.props.weeklyCalendar.map(function(item, i){

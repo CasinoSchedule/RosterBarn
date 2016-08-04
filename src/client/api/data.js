@@ -120,6 +120,8 @@ export function getEmployeeSchedule(date, shiftId, departmentId, clearAll){
 					employeeRow.push(scheduledEmployees.splice(0, 8));
 				}
 
+				console.log(employeeRow)
+
 				store.dispatch({
 					type: 'GET_EMPLOYEEWEEKLYSCHEDULE',
 					employeeWeeklySchedule: employeeRow
