@@ -68,7 +68,6 @@ export default React.createClass({
 	},
 	refreshCurrentState: function(date, shiftId, clearAll){
 		var departmentId = localStorage.getItem("departmentId");
-
 		var shiftId = ((shiftId) ? shiftId : this.state.shiftNum);
 		getEmployeeSchedule(date, shiftId, departmentId, clearAll);
 		getWeekByWeek(date);
@@ -175,14 +174,13 @@ export default React.createClass({
 	
 		browserHistory.push('/')
 	},
-	settings: function(){
-
-	},
 	render: function(){
+
 		return (
 			<div className="adminBg">
 
-				<SidePanel 
+				<SidePanel
+					
 					dateString={this.state.weeklyCalendar[0].calendar_date} 
 					filterByShift={this.filterByShift} 
 					setColor={this.setColor} />
@@ -212,9 +210,11 @@ export default React.createClass({
 								weeklyCalendar={this.state.weeklyCalendar} 
 								addEmployee={this.addEmployee} />
 							
+
 							<EmployeeRow 
 								employeeWeeklySchedule={this.state.employeeWeeklySchedule} 
 								areas={this.state.areas} />
+
 								
 						</div>
 

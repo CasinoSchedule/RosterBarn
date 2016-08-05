@@ -48,7 +48,8 @@ export function checkAdmin(){
 	// console.log("api", api);
 	// console.log("check_admin", Cookie.get('token'));
 	return api.get('/profiles/check/').then(function(resp){
-		// console.log('checkAdmin function', resp.data.type, resp.data.department, resp.data.department_title);
+		// console.log("After api.get", Cookie.get('token'));
+		console.log('checkAdmin function', resp.data.type, resp.data.department, resp.data.department_title);
 		if(resp.data.type === "manager"){
 			localStorage.setItem("departmentId", resp.data.department);
 			localStorage.setItem("departmentTitle", resp.data.department_title);
@@ -76,7 +77,8 @@ export function createEmployeeShift(employee, type, currentShift, date){
 		starting_time: currentShift.time || '',
 		station: currentShift.station || '',
 		classInfoTime: type,
-		position_title: employee.position_title
+		position_title: employee.position_title,
+		visible: currentShift.visible
 	}
 	
 	return newItem
@@ -119,19 +121,39 @@ export function getEmployeeSchedule(date, shiftId, departmentId, clearAll){
 								? {
 									time: workWeekSchedule[i].starting_time.slice(0, 5),
 									epoch_milliseconds: workWeekSchedule[i].epoch_milliseconds, 
-									station: ((workWeekSchedule[i].station) ? workWeekSchedule[i].station.title : "")} 
+									station: ((workWeekSchedule[i].station) ? workWeekSchedule[i].station.title : ""),
+									visible: workWeekSchedule[i].visible} 
+
 								: "")
 						}
 					}
 					return ""
 				}
 
+				function checkShiftVisibile(shiftData){
+					// Check shift objects to see if any have visible=false
+					var rows = shiftData;
+					for(let i=0; i < rows.length; i++){
+						var row = rows[i];
+						for (let j=0; j < row.length; j++) {
+							if (row[j].visible == false) {
+								return 'publish';
+							}
+						}
+					}
+					return 'noChanges';}
+
 				// Split array of objects by employee 
 				for(let i = 0; i < employees.length; i++){
 					employeeRow.push(scheduledEmployees.splice(0, 8));
 				}
 
-				console.log(employeeRow)
+				var publishStatus = checkShiftVisibile(employeeRow);
+
+				store.dispatch({
+				type: 'CHANGE_PUBLISHBUTTON',
+				publishButton: publishStatus
+				})
 
 				store.dispatch({
 					type: 'GET_EMPLOYEEWEEKLYSCHEDULE',

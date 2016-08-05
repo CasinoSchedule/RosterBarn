@@ -24,6 +24,7 @@ instance.login = function(user, pass) {
    .then(function(resp){
      var token = resp.data.token;
      console.log("token", token);
+     Cookie.remove('token');
      Cookie.set('token', token);
      interceptor = this.interceptors.request.use(function(config){
        config.headers['Authorization'] = 'Token ' + token;
