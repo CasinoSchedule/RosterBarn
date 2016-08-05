@@ -115,8 +115,8 @@ export default React.createClass({
 											<TimePicker
 												id="time"
 												format="ampm" 
-												style={{height: '30px', lineHeight: '30px', width: '120px'}}
-												textFieldStyle={{height: '40px', lineHeight: '40px', width: '120px', fontSize: '13px', top: '-8px', fontWeight: '500', paddingLeft: '10px'}}
+												style={{height: '30px', lineHeight: '30px', width: '100px'}}
+												textFieldStyle={{height: '40px', lineHeight: '40px', width: '100px', fontSize: '13px', top: '-8px', fontWeight: '500', paddingLeft: '10px'}}
 												value={this.state.timevalue}
 												defaultTime={this.state.default}
           										onChange={this.handleChangeTimePicker}  
@@ -126,9 +126,9 @@ export default React.createClass({
           										value={this.state.value} 
           										hintText={this.state.station}
           										onChange={this.handleSelectChange} 
-          										style={{height: '45px', top: '-18px', width: '120px', fontSize: '13px', fontWeight: '600', letterSpacing: '1px', whiteSpace: 'nowrap', paddingLeft: '10px'}}
+          										style={{height: '45px', top: '-18px', width: '100px', fontSize: '13px', fontWeight: '600', letterSpacing: '1px', whiteSpace: 'nowrap', paddingLeft: '10px'}}
           										labelStyle={{lineHeight: '35px', top: '10px'}}
-          										menuStyle={{width: '150px'}}>
+          										menuStyle={{width: '130px'}}>
 
           										{this.props.areas.map(function(item, i){
           											return (
