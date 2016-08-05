@@ -2,12 +2,14 @@
 
 
 .eachDay {
+	min-width: 150px;
 	width: 14.3%;
-	height: 40px;
+	height: 70px;
 	// line-height: 30px;
 	border: 1px solid #f4f4f4;
-	text-align: center;
-
+	// text-align: center;
+	padding-left: 10px;
+							// border: 2px solid green;
 }
 
 .eachDay input {
@@ -26,67 +28,30 @@
 .employeeFlex {
 	display: flex;
 	flex-wrap: nowrap;
-	border: 1px solid red;
+			border: 1px solid red;
 	width: 1000px;
 	height: 50px;
 	margin: 50px auto;
 }
-// .testbox {
-// 	width: 120px;
-// 	height: 50px;
-// 	border: 1px solid blue;
-// }
-// .testbox1 {
-// 	width: 160px;
-// 	height: 50px;
-// 	border: 1px solid blue;
-// }
-// .testbox input {
-// 	visibility: hidden;
-// }
 
-.testColor {
-	background: yellow;
-}
-
-#test input {
-	text-align: center;
-	width: 100%;
-	// border-bottom: 1px solid $darkgrey;
-	// overflow-x: scroll;
- //    overflow-y: hidden;
-    			// border: 1px solid blue;
-}
-// :not(:first-child)
-
-#test {
-	// border: 1px solid blue;
-	// display: flex;
-	// flex-direction: column;
-	// justify-content: center;
-	padding: 3px;
-}
-.nameField {					// Each Name On Schedule  *****   nameFeildCss   ******
-	// background: $teal;
-	// color: $khaki;
-	// text-shadow:0px -1px 0 #fff;
-	text-align: left;
-	padding-left: 3px;
-	font-size: 12px;
+.nameField {					// Each Name On Schedule  *****   nameFieldCss   ******
+	font-size: 16px;
 	font-family: Arial;
-	// overflow-x: scroll;
- //    overflow-y: hidden;
-    white-space: nowrap;
-	// border: 1px solid red;;
-	// width: 100%;
+    // white-space: nowrap;
+	padding-left: 10px;
+	margin-top: 5px;
+	// border: 1px solid yellow;
 }
 .idNum {
-	font-size: 11px;
+	font-size: 14px;
+	font-weight: 700;
 	// border: 1px solid red;
 	// padding-left: 5px;
 	color: $darkgrey;
-	text-align: center;
+	padding-left: 10px;
+	margin-top: 5px;
 }
+
 .idNum:before {
 	content: "#"
 }
@@ -97,18 +62,13 @@
 }
 .nameImageBox {
 	display: flex;
-	// min-width: 180px;
 	width: 100%;
-	// box-shadow: 1px 1px 1px $darkgrey;
-
-			// border: 2px solid $darkgrey;
-
-// .nameImageBox:first-child {
 	overflow: hidden;
+	padding-top: 5px;
 }
 .nameImageBox:first-child img {
-	width: 40px;
-	height: 34px;
+	width: 60px;
+	height: 50px;
 	border-radius: 5px;
 	// border-right: 1px solid $darkgrey;
 }
@@ -118,15 +78,17 @@
 	box-shadow: 2px 2px 2px $darkgrey;
 }
 .timeLocationBox {
-	display: flex;
-	flex-direction: column;
-	// border: 1px solid red;
-	// align-items: center;
+	width: 130px;
+	height: 50px;
+	border-left: 5px inset $lightBlue;	
+	// border: 3px inset $lightBlue;
+	// border-radius: 5px;
+	padding-left: 10px; 
+	padding-bottom: 10px;
+	box-sizing: border-box;
+	margin: 10px 0 10px 0;
 }
-.timeLocationBox > * {
 
-	// border: 1px solid green;
-}
 .nameIdBox {
 	display: flex;
 	flex-direction: column;
@@ -137,4 +99,7 @@
 	font-size: 10px;
 	color: $purpletheme;
 	font-weight: 600;
+}
+.timeField {
+	// border: 4px solid red;
 }

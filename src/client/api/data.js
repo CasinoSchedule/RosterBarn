@@ -29,6 +29,16 @@ export function updateEmployee(id, obj){
 
 }
 
+export function getAreas(){
+	return api.get('/schedules/area/').then(function(resp){
+		console.log('areas', resp.data)
+		store.dispatch({
+			type: 'GET_AREAS',
+			areas: resp.data
+		})
+	})
+}
+
 export function deleteEmployee(id){
 	return api.delete('/profiles/employee/' + id + "/");
 
@@ -61,6 +71,7 @@ export function createEmployeeShift(employee, type, currentShift, date){
 	var newItem = {
 		id: employee.id,
 		calendar_date: date,
+		epoch_milliseconds: currentShift.epoch_milliseconds || null,
 		uniqueId: v4(),
 		starting_time: currentShift.time || '',
 		station: currentShift.station || '',
@@ -106,7 +117,8 @@ export function getEmployeeSchedule(date, shiftId, departmentId, clearAll){
 						if(workWeekSchedule[i].calendar_date === date && workWeekSchedule[i].employee.id === id) {
 							return ((workWeekSchedule[i].starting_time) 
 								? {
-									time: workWeekSchedule[i].starting_time.slice(0, 5), 
+									time: workWeekSchedule[i].starting_time.slice(0, 5),
+									epoch_milliseconds: workWeekSchedule[i].epoch_milliseconds, 
 									station: ((workWeekSchedule[i].station) ? workWeekSchedule[i].station.title : "")} 
 								: "")
 						}

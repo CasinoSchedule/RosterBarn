@@ -9,7 +9,7 @@ export default React.createClass({
 			<div className="eachRowContainer">
 				{this.props.employeeWeeklySchedule.map(function(item, i){
 					return (
-							<EmployeeToSchedule key={i}  item={item} />
+							<EmployeeToSchedule key={i}  item={item} areas={this.props.areas} />
 						)
 				}.bind(this))}
 			</div>

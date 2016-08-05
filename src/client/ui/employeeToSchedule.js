@@ -13,7 +13,8 @@ export default React.createClass({
 							return (
 								<EachEmployeeOnSchedule 
 									key={thing.uniqueId} 
-									thing={thing} />
+									thing={thing} 
+									areas={this.props.areas} />
 							)
 						}.bind(this))}
 					</div>		

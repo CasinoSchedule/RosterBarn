@@ -1,5 +1,6 @@
 import React from 'react';
 import store from 'store';
+import RaisedButton from 'material-ui/FlatButton';
 
 require('assets/styles/confirm.scss');
 
@@ -26,8 +27,8 @@ export default React.createClass({
 						{this.props.message}
 					</div>
 					<div className="confirmButtons">
-						<button onClick={this.close}>Cancel</button>
-						<button onClick={this.props.confirm}>Confirm</button>
+						<RaisedButton onClick={this.close} primary={true} label="Cancel" style={{backgroundColor: '#0E4583', color: '#ddd'}}/>
+						<RaisedButton onClick={this.props.confirm} primary={true} label="Confirm" style={{backgroundColor: '#0E4583', color: '#ddd'}} />
 					</div>
 				</div> 
 				

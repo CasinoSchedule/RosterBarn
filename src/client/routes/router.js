@@ -28,7 +28,7 @@ const muiTheme = getMuiTheme({
     canvasColor: white,
     borderColor: grey300,
     disabledColor: fade(darkBlack, 0.3),
-    pickerHeaderColor: pinkA200,
+    pickerHeaderColor: indigo500,
     clockCircleColor: fade(darkBlack, 0.07),
     shadowColor: fullBlack,
   },

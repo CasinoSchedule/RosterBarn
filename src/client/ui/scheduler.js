@@ -6,7 +6,7 @@ import EmployeeToSchedule from 'ui/employeeToSchedule';
 import EmployeeRow from 'ui/employeeRow';
 import EmployeeInfoForm from 'ui/employeeInfoForm';
 import Confirm from 'ui/confirm';
-import { addNewEmployee, getEmployeeSchedule, getWeekbyWeek, updateEmployee, clearAllSchedule, logout } from 'api/data';
+import { addNewEmployee, getEmployeeSchedule, getWeekbyWeek, updateEmployee, clearAllSchedule, logout, getAreas } from 'api/data';
 import { getWeekByWeek } from 'api/workspace'
 import { browserHistory } from 'react-router';
 import {v4} from 'uuid';
@@ -45,7 +45,8 @@ export default React.createClass({
 			shiftNum: 0,
 			showForm: false,
 			employeeInfo: {},
-			showClearConfirm: false
+			showClearConfirm: false,
+			areas: []
 		})
 	},
 	componentWillMount: function(){
@@ -59,7 +60,8 @@ export default React.createClass({
 				shiftNum: currentStore.cssReducer.shiftNum,
 				showForm: currentStore.showReducer.showForm,
 				employeeInfo: currentStore.employeeReducer.employeeInfo,
-				showClearConfirm: currentStore.showReducer.showClearConfirm
+				showClearConfirm: currentStore.showReducer.showClearConfirm,
+				areas: currentStore.adminReducer.areas
 			})
 		}.bind(this));
 		this.refreshCurrentState(new Date());
@@ -70,6 +72,7 @@ export default React.createClass({
 		var shiftId = ((shiftId) ? shiftId : this.state.shiftNum);
 		getEmployeeSchedule(date, shiftId, departmentId, clearAll);
 		getWeekByWeek(date);
+		getAreas();
 	},
 	handleDateChange: function(next){
 		var newWeekDate = this.state.currentDate.addDays(next);
@@ -210,7 +213,8 @@ export default React.createClass({
 								addEmployee={this.addEmployee} />
 							
 							<EmployeeRow 
-								employeeWeeklySchedule={this.state.employeeWeeklySchedule} />
+								employeeWeeklySchedule={this.state.employeeWeeklySchedule} 
+								areas={this.state.areas} />
 								
 						</div>
 
