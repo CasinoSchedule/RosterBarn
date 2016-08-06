@@ -15,11 +15,11 @@ const dataSource1 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 const dataSource2 = ['Poker', 'Bacc', 'Main'];
 const ampm = ['am', 'pm'];
 const shiftTimes = [
-						{title: '12am to 8am', starting_time: '00:00'}, 
-						{title: '12:45am to 8:45am', starting_time: '00:45'}, 
-						{title: '1am to 9am', starting_time: '01:00'},
-						{title: '1:15am to 9:15am',  starting_time: '01:15'}, 
-						{title: '1:30am to 9:30am', starting_time: '01:30'}
+						{title: '8am to 4pm', starting_time: '08:00'}, 
+						{title: '9am to 5pm', starting_time: '09:00'}, 
+						{title: '10am to 6pm', starting_time: '10:00'},
+						{title: '11am to 7pm',  starting_time: '11:00'}, 
+						{title: '12pm to 8pm', starting_time: '12:00'}
 						];
 
 export default React.createClass({
@@ -31,6 +31,7 @@ export default React.createClass({
 				thing: this.props.thing,
 				starting_time: this.props.thing.starting_time,
 				nameString: this.props.thing.nameString,
+				shiftString: this.props.thing.shiftString,
 				id: this.props.thing.id,
 				photo_url: this.props.thing.photo_url,
 				availability: this.props.thing.availability,
@@ -80,7 +81,7 @@ export default React.createClass({
 	},
 	handleTimeChange: function(e, index, value){
 		this.setState({
-			timeValue: value
+			starting_time: value
 		})
 	},
 	handleClick: function(e){
@@ -109,6 +110,7 @@ export default React.createClass({
 		console.log('args', arguments)
 	},	
 	render: function(){
+		console.log(this.state.starting_time);
 		return (
 				
 					<div className="eachDay">
@@ -171,9 +173,9 @@ export default React.createClass({
 
           									<SelectField
           										fullWidth={true} 
-          										value={this.state.timeValue} 
+          										value={this.state.starting_time} 
           										onChange={this.handleTimeChange} 
-          										style={{height: '42px', top: '-3px', fontSize: '13px', fontWeight: '600', letterSpacing: '1px', whiteSpace: 'nowrap', paddingLeft: '10px'}}
+          										style={{height: '42px', top: '-3px', fontSize: '12px', fontWeight: '600', whiteSpace: 'nowrap', paddingLeft: '10px'}}
           										labelStyle={{lineHeight: '25px', top: '10px'}}>
           										
 
@@ -182,7 +184,8 @@ export default React.createClass({
           												<MenuItem key={v4()} value={item.starting_time} primaryText={item.title} />
           											)
           										}.bind(this))}
-										
+												
+												<MenuItem key={v4()} value={4} primaryText="New Shift" />
 
 									        </SelectField> 
 
@@ -191,14 +194,16 @@ export default React.createClass({
           										value={this.state.station} 
           										hintText={this.state.station}
           										onChange={this.handleStationChange} 
-          										style={{height: '42px', top: '-15px', fontSize: '13px', fontWeight: '600', letterSpacing: '1px', whiteSpace: 'nowrap', paddingLeft: '10px'}}
+          										style={{height: '42px', top: '-15px', fontSize: '12px', fontWeight: '600', whiteSpace: 'nowrap', paddingLeft: '10px'}}
           										labelStyle={{lineHeight: '25px', top: '10px'}}>
+
 
           										{this.props.areas.map(function(item, i){
           											return (
           												<MenuItem key={v4()} value={item.title} primaryText={item.title} />
           											)
           										}.bind(this))}
+
 										
 
 									        </SelectField> 

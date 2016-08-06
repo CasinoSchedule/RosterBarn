@@ -44,6 +44,15 @@ export function deleteEmployee(id){
 
 }
 
+// hour am/pm to minute am/pm
+export function createShiftString(time, length){
+	const h = time.slice(0,2);
+	const m = time.slice(2,5);
+	const t = ((h == '00') ? ('12' + m + 'am') : (h >= 12) ? ((h - 12) + m + 'pm') : (h + m + 'am'));
+
+	return t + ' to '
+}
+
 export function checkAdmin(){
 	// console.log("api", api);
 	// console.log("check_admin", Cookie.get('token'));
@@ -120,6 +129,7 @@ export function getEmployeeSchedule(date, shiftId, departmentId, clearAll){
 							return ((workWeekSchedule[i].starting_time) 
 								? {
 									time: workWeekSchedule[i].starting_time.slice(0, 5),
+									shiftString: createShiftString(workWeekSchedule[i].starting_time, workWeekSchedule[i].length),
 									epoch_milliseconds: workWeekSchedule[i].epoch_milliseconds, 
 									station: ((workWeekSchedule[i].station) ? workWeekSchedule[i].station.title : ""),
 									visible: workWeekSchedule[i].visible} 

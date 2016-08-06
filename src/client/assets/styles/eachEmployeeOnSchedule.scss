@@ -2,28 +2,15 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto:400,300,500);
 
 .eachDay {
-	min-width: 120px;
+	min-width: 130px;
 	width: 14.3%;
-	height: 90px;
+	height: 80px;
 	// line-height: 30px;
 	border: 1px solid #f4f4f4;
 	overflow: hidden;
 	padding-left: 10px;
 							// border: 2px solid green;
 }
-
-// .eachDay input {
-// 	// width: 50px;
-// 	border: none;
-// 	outline: none;
-// 	background:transparent;
-// 	// border: 1px solid red;
-// }
-
-// .eachDay input:only-of-type {
-// 	font-size: 12px;
-// 	font-family: 'Arial';
-// }
 
 .employeeFlex {
 	display: flex;
@@ -35,7 +22,7 @@
 }
 
 .nameField {					// Each Name On Schedule  *****   nameFieldCss   ******
-	font-size: 16px;
+	font-size: 12px;
 	font-family: Arial;
     // white-space: nowrap;
 	padding-left: 10px;
@@ -43,7 +30,7 @@
 	// border: 1px solid yellow;
 }
 .idNum {
-	font-size: 14px;
+	font-size: 12px;
 	font-weight: 700;
 	// border: 1px solid red;
 	// padding-left: 5px;
@@ -55,11 +42,7 @@
 .idNum:before {
 	content: "#"
 }
-// .nameField input[type=text] {
-// 	// width: 200px;
-// 	// border: 2px solid blue;
-// 	// background: yellow;
-// }
+
 .nameImageBox {
 	display: flex;
 	width: 100%;
