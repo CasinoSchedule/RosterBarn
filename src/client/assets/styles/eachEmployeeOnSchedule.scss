@@ -1,29 +1,29 @@
 @import './variables';
-
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,300,500);
 
 .eachDay {
 	min-width: 120px;
 	width: 14.3%;
-	height: 70px;
+	height: 90px;
 	// line-height: 30px;
 	border: 1px solid #f4f4f4;
-	// text-align: center;
+	overflow: hidden;
 	padding-left: 10px;
 							// border: 2px solid green;
 }
 
-.eachDay input {
-	// width: 50px;
-	border: none;
-	outline: none;
-	background:transparent;
-	// border: 1px solid red;
-}
+// .eachDay input {
+// 	// width: 50px;
+// 	border: none;
+// 	outline: none;
+// 	background:transparent;
+// 	// border: 1px solid red;
+// }
 
-.eachDay input:only-of-type {
-	font-size: 12px;
-	font-family: 'Arial';
-}
+// .eachDay input:only-of-type {
+// 	font-size: 12px;
+// 	font-family: 'Arial';
+// }
 
 .employeeFlex {
 	display: flex;
@@ -55,16 +55,17 @@
 .idNum:before {
 	content: "#"
 }
-.nameField input[type=text] {
-	// width: 200px;
-	// border: 2px solid blue;
-	// background: yellow;
-}
+// .nameField input[type=text] {
+// 	// width: 200px;
+// 	// border: 2px solid blue;
+// 	// background: yellow;
+// }
 .nameImageBox {
 	display: flex;
 	width: 100%;
 	overflow: hidden;
 	padding-top: 5px;
+	font-family: Roboto
 }
 .nameImageBox:first-child img {
 	width: 60px;
@@ -77,17 +78,18 @@
 	height: 36px;
 	box-shadow: 2px 2px 2px $darkgrey;
 }
-.timeLocationBox {
-	width: 100px;
-	height: 50px;
-	border-left: 5px inset $lightBlue;	
-	// border: 3px inset $lightBlue;
-	// border-radius: 5px;
-	padding-left: 10px; 
-	padding-bottom: 10px;
-	box-sizing: border-box;
-	margin: 10px 0 10px 0;
-}
+// .timeLocationBox {
+// 	width: 95%;
+// 	height: 100%;
+// 	// border-left: 5px inset $lightBlue;	
+// 									border: 3px inset $lightBlue;
+// 	// border-radius: 5px;
+// 	// padding-left: 10px; 
+// 	// padding-bottom: 10px;
+// 	// box-sizing: border-box;
+// 	// margin: 10px 0 10px 0;
+// 	margin: 0 auto;
+// }
 
 .nameIdBox {
 	display: flex;
@@ -102,4 +104,7 @@
 }
 .timeField {
 	// border: 4px solid red;
+}
+#timeInputField {
+ 	// margin: 0 10px 0 10px;
 }

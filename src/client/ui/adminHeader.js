@@ -1,4 +1,5 @@
 import React from 'react';
+import Options from 'ui/options';
 
 require("assets/styles/adminHeader.scss");
 
@@ -12,7 +13,7 @@ export default React.createClass({
 				<div className="adminHeaderContainer">
 					<div className="departmentTitleTag">{localStorage.getItem("departmentTitle")}</div>
 					<div className="headerOptions">
-						<div className="options"><i className="fa fa-bars" aria-hidden="true"></i>Options</div>
+						<Options />
 						<div className="settings"><i className="fa fa-cogs" aria-hidden="true" onClick={this.props.settings}></i>Settings</div>
 						<div className="logout" onClick={this.props.logout} ><i className="fa fa-sign-out" aria-hidden="true"></i>Logout</div>
 					</div>

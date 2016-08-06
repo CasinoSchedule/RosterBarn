@@ -2,15 +2,25 @@ import React from 'react';
 import store from 'store';
 import { setNewSchedule, sendSingleEmployeeShiftObj} from 'api/data';
 import TimePicker from 'material-ui/TimePicker';
-import AutoComplete from 'material-ui/AutoComplete';
 import MenuItem from 'material-ui/MenuItem';
 import SelectField from 'material-ui/SelectField';
+import TextField from 'material-ui/TextField';
+import AutoComplete from 'material-ui/AutoComplete';
+import {v4} from 'uuid';
 
 
 require('assets/styles/eachEmployeeOnSchedule.scss');
 
-
+const dataSource1 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 const dataSource2 = ['Poker', 'Bacc', 'Main'];
+const ampm = ['am', 'pm'];
+const shiftTimes = [
+						{title: '12am to 8am', starting_time: '00:00'}, 
+						{title: '12:45am to 8:45am', starting_time: '00:45'}, 
+						{title: '1am to 9am', starting_time: '01:00'},
+						{title: '1:15am to 9:15am',  starting_time: '01:15'}, 
+						{title: '1:30am to 9:30am', starting_time: '01:30'}
+						];
 
 export default React.createClass({
 	getInitialState: function() {
@@ -28,7 +38,8 @@ export default React.createClass({
 				val: this.props.thing.val || "",
 				value: this.props.thing.station,
 				default: shiftTime,
-				areas: this.props.areas
+				areas: this.props.areas,
+				shifts: shiftTimes
 			}
 	},
 	handleBlur: function(e){
@@ -62,12 +73,16 @@ export default React.createClass({
 			publishButton: "publish"
 		})
 	},
-	handleSelectChange: function(e, index, value){
+	handleStationChange: function(e, index, value){
 		this.setState({
-			value
+			station: value
 		})
 	},
-	
+	handleTimeChange: function(e, index, value){
+		this.setState({
+			timeValue: value
+		})
+	},
 	handleClick: function(e){
 		store.dispatch({
 			type: 'CHANGE_SHOWFORM',
@@ -110,9 +125,40 @@ export default React.createClass({
 									: ""}
 								{!(this.props.thing.nameString) 
 									? 	<div className={"timeLocationBox " + this.props.thing.val}>     {/* this.props.thing.val is 'timefield' in stylesheet */}
-											{/* <div><input onChange={this.handleChange} onBlur={this.handleBlur} ref="starting_time" defaultValue={this.props.thing.starting_time} /></div> */}
 
-											<TimePicker
+											{/* <div id='timeInputField' style={{display: 'flex', height: '35px'}}>
+												<TextField 
+													id='hour'
+													hintText="hh"
+													maxLength='2' 
+													value={this.state.hour}
+													style={{width: '22px', paddingLeft: '3px'}}
+													inputStyle={{textAlign: 'right'}}
+	          										onChange={this.handleTimeChange} />
+													
+												<span style={{paddingTop: '15px'}}>:</span>
+												<TextField 
+													id='minute'
+													hintText="mm"
+													maxLength='2' 
+													style={{width: '22px', paddingLeft: '2px'}}
+													value={this.state.minute}
+	          										onChange={this.handleTimeChange} />
+	          									<div style={{width: '45px', overflow: 'hidden', height: '30px', lineHeight: '30px'}}>
+		          									<AutoComplete
+		          										hintText="am"
+												      floatingLabelText="ampm"
+												      filter={AutoComplete.noFilter}
+												      openOnFocus={true}
+												      dataSource={ampm}
+												      style={{paddingLeft: '2px'}}
+												    />
+											    </div>
+											  </div>
+
+											<div><input onChange={this.handleChange} onBlur={this.handleBlur} ref="starting_time" defaultValue={this.props.thing.starting_time} /></div> */}
+
+											{/* <TimePicker
 												id="time"
 												format="ampm" 
 												style={{height: '30px', lineHeight: '30px', width: '100px'}}
@@ -120,27 +166,42 @@ export default React.createClass({
 												value={this.state.timevalue}
 												defaultTime={this.state.default}
           										onChange={this.handleChangeTimePicker}  
-          										onShow={this.handleFocus} />
+          										onShow={this.handleFocus} /> */}
 
-          									<SelectField 
-          										value={this.state.value} 
+
+          									<SelectField
+          										fullWidth={true} 
+          										value={this.state.timeValue} 
+          										onChange={this.handleTimeChange} 
+          										style={{height: '42px', top: '-3px', fontSize: '13px', fontWeight: '600', letterSpacing: '1px', whiteSpace: 'nowrap', paddingLeft: '10px'}}
+          										labelStyle={{lineHeight: '25px', top: '10px'}}>
+          										
+
+          										{this.state.shifts.map(function(item, i){
+          											return (
+          												<MenuItem key={v4()} value={item.starting_time} primaryText={item.title} />
+          											)
+          										}.bind(this))}
+										
+
+									        </SelectField> 
+
+          									 <SelectField 
+          									 	fullWidth={true}
+          										value={this.state.station} 
           										hintText={this.state.station}
-          										onChange={this.handleSelectChange} 
-          										style={{height: '45px', top: '-18px', width: '100px', fontSize: '13px', fontWeight: '600', letterSpacing: '1px', whiteSpace: 'nowrap', paddingLeft: '10px'}}
-          										labelStyle={{lineHeight: '35px', top: '10px'}}
-          										menuStyle={{width: '130px'}}>
+          										onChange={this.handleStationChange} 
+          										style={{height: '42px', top: '-15px', fontSize: '13px', fontWeight: '600', letterSpacing: '1px', whiteSpace: 'nowrap', paddingLeft: '10px'}}
+          										labelStyle={{lineHeight: '25px', top: '10px'}}>
 
           										{this.props.areas.map(function(item, i){
           											return (
-          												<MenuItem key={i} value={item.id} primaryText={item.title} />
+          												<MenuItem key={v4()} value={item.title} primaryText={item.title} />
           											)
           										}.bind(this))}
-										   		
-										   		
+										
 
-
-
-									        </SelectField>
+									        </SelectField> 
 
 											{/* <div><input onChange={this.handleChange} onBlur={this.handleBlur} ref="station" defaultValue={this.props.thing.station} className="locationStyle "/></div> */}
 										</div>
