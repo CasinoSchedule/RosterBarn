@@ -29,6 +29,16 @@ export function updateEmployee(id, obj){
 
 }
 
+export function deleteEmployee(id){
+	return api.delete('/profiles/employee/' + id + "/");
+
+}
+
+
+
+
+// 			*******     Area and Stations     *******
+
 export function getAreas(){
 	return api.get('/schedules/area/').then(function(resp){
 		console.log('areas', resp.data)
@@ -38,20 +48,43 @@ export function getAreas(){
 		})
 	})
 }
-
-export function deleteEmployee(id){
-	return api.delete('/profiles/employee/' + id + "/");
+// promise (.then) refreshes state
+export function deleteArea(id){
+	return api.delete('/schedules/area/' + id + '/').then(function(){
+		getAreas();
+	});
 
 }
-
-// hour am/pm to minute am/pm
-export function createShiftString(time, length){
-	const h = time.slice(0,2);
-	const m = time.slice(2,5);
-	const t = ((h == '00') ? ('12' + m + 'am') : (h >= 12) ? ((h - 12) + m + 'pm') : (h + m + 'am'));
-
-	return t + ' to '
+// promise (.then) refreshes state
+export function addArea(obj){
+	return api.post('/schedules/area/', obj).then(function(){
+		getAreas();
+	});
+	
 }
+// 		***************************************************
+
+
+
+
+
+
+// convert hour and minute to 12 hour format with am or pm string attached (preceding hour zeros not currently filtered)
+// Just string generator. No error checks
+export function ampm(h, m){
+	return ((h == '00') ? ('12:' + m + 'am') : (h >= 12) ? ((h - 12) + ':' + m + 'pm') : (h + ':' + m + 'am'));
+}
+
+// creates shift string ('12pm to 8pm') for display and provides an associated value of start time (12:00)
+export function createShiftString(start, end){
+	const startTime = ampm(start.slice(0,2), start.slice(3,5)), endTime = ampm(end.slice(0,2), end.slice(3,5));
+	
+	return {
+			shiftString: startTime + ' to ' + endTime,
+			value: start
+		} 
+}
+
 
 export function checkAdmin(){
 	// console.log("api", api);
@@ -108,7 +141,7 @@ export function getEmployeeSchedule(date, shiftId, departmentId, clearAll){
 
 	return api.get('/schedules/weekshift/' + shiftQuery).then(function(resp){
 		workWeekSchedule = ((clearAll) ? [] : resp.data);
-
+			
 		return api.get('/profiles/employee/' + employeeQuery).then(function(resp){
 			employees = resp.data;
 	
@@ -129,7 +162,7 @@ export function getEmployeeSchedule(date, shiftId, departmentId, clearAll){
 							return ((workWeekSchedule[i].starting_time) 
 								? {
 									time: workWeekSchedule[i].starting_time.slice(0, 5),
-									shiftString: createShiftString(workWeekSchedule[i].starting_time, workWeekSchedule[i].length),
+									shiftString: createShiftString(workWeekSchedule[i].starting_time, workWeekSchedule[i].end_time),
 									epoch_milliseconds: workWeekSchedule[i].epoch_milliseconds, 
 									station: ((workWeekSchedule[i].station) ? workWeekSchedule[i].station.title : ""),
 									visible: workWeekSchedule[i].visible} 
@@ -344,6 +377,9 @@ export function calendar(month, year, monthdate, employee){
 				// console.log('scheduleInfo', scheduleInfo);
 
 				console.log("Working Today From Calendar Function:", working);
+
+
+				// ampm function can be used here. Try out when employee side is refactored. 
 
 				function checkSchedule(check){
 					var hour_time_check = 0;

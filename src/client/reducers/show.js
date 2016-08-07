@@ -2,7 +2,8 @@ const showInitialState = {
 	showCallIn: false,
 	showForm: false,
 	showClearConfirm: false,
-	showDeleteConfirm: false
+	showDeleteConfirm: false,
+	showSettings: false
 
 }
 
@@ -12,34 +13,32 @@ export default function(state = showInitialState, action){
 
 		case 'CHANGE_SHOWCALLIN':
 			return {
-				showCallIn: action.showCallIn,
-				showForm: state.showForm,
-				showClearConfirm: state.showClearConfirm,
-				showDeleteConfirm: state.showDeleteConfirm
+				...state,
+				showCallIn: action.showCallIn
 			}
 
 		case 'CHANGE_SHOWFORM':
 			return {
-				showCallIn: state.showCallIn,
-				showForm: action.showForm,
-				showClearConfirm: state.showClearConfirm,
-				showDeleteConfirm: state.showDeleteConfirm
+				...state,
+				showForm: action.showForm
 			}
 
 		case 'CHANGE_SHOWCLEARCONFIRM':
 			return {
-				showCallIn: state.showCallIn,
-				showForm: state.showForm,
-				showClearConfirm: action.showClearConfirm,
-				showDeleteConfirm: state.showDeleteConfirm
+				...state,
+				showClearConfirm: action.showClearConfirm
 			}
 
 		case 'CHANGE_SHOWDELETECONFIRM':
 			return {
-				showCallIn: state.showCallIn,
-				showForm: state.showForm,
-				showClearConfirm: state.showClearConfirm,
+				...state,
 				showDeleteConfirm: action.showDeleteConfirm
+			}
+
+		case 'SHOW_SETTINGS':
+			return {
+				...state,
+				showSettings: action.showSettings
 			}
 
 	default:

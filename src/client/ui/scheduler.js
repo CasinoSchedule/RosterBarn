@@ -6,6 +6,7 @@ import EmployeeToSchedule from 'ui/employeeToSchedule';
 import EmployeeRow from 'ui/employeeRow';
 import EmployeeInfoForm from 'ui/employeeInfoForm';
 import Confirm from 'ui/confirm';
+import Settings from 'ui/settings';
 import { addNewEmployee, getEmployeeSchedule, getWeekbyWeek, updateEmployee, clearAllSchedule, logout, getAreas } from 'api/data';
 import { getWeekByWeek } from 'api/workspace'
 import { browserHistory } from 'react-router';
@@ -47,6 +48,7 @@ export default React.createClass({
 			showForm: false,
 			employeeInfo: {},
 			showClearConfirm: false,
+			showSettings: false,
 			areas: []
 		})
 	},
@@ -62,6 +64,7 @@ export default React.createClass({
 				showForm: currentStore.showReducer.showForm,
 				employeeInfo: currentStore.employeeReducer.employeeInfo,
 				showClearConfirm: currentStore.showReducer.showClearConfirm,
+				showSettings: currentStore.showReducer.showSettings,
 				areas: currentStore.adminReducer.areas
 			})
 		}.bind(this));
@@ -111,6 +114,14 @@ export default React.createClass({
 		store.dispatch({
 			type: 'CHANGE_SHOWCLEARCONFIRM',
 			showClearConfirm: true
+		})
+	},
+	showSettingsPanel: function(){
+		console.log('hit in scheduler');
+
+		store.dispatch({
+			type: 'SHOW_SETTINGS',
+			showSettings: true
 		})
 	},
 	clearSchedule: function(){
@@ -187,7 +198,8 @@ export default React.createClass({
 					setColor={this.setColor} />
 
 				<AdminHeader 
-					logout={this.logout} />
+					logout={this.logout} 
+					showSettingsPanel={this.showSettingsPanel} />
 
 				
 				<div className="adminContainer">
@@ -242,6 +254,14 @@ export default React.createClass({
 								confirm={this.clearSchedule} 
 								message={"Please confirm to clear schedule."} 
 								header={"Clear Schedule"} /> 
+							: ""}	
+					</ReactCSSTransitionGroup>
+
+					<ReactCSSTransitionGroup transitionName="employeeBox" transitionEnterTimeout={500} transitionLeaveTimeout={300}>
+						{(this.state.showSettings) 
+							? <Settings
+								key={v4()} 
+								areas={this.state.areas} /> 
 							: ""}	
 					</ReactCSSTransitionGroup>
 

@@ -14,7 +14,7 @@ export default React.createClass({
 					<div className="departmentTitleTag">{localStorage.getItem("departmentTitle")}</div>
 					<div className="headerOptions">
 						<Options />
-						<div className="settings"><i className="fa fa-cogs" aria-hidden="true" onClick={this.props.settings}></i>Settings</div>
+						<div className="settings" onClick={this.props.showSettingsPanel} ><i className="fa fa-cogs" aria-hidden="true" ></i>Settings</div>
 						<div className="logout" onClick={this.props.logout} ><i className="fa fa-sign-out" aria-hidden="true"></i>Logout</div>
 					</div>
 				</div>

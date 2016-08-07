@@ -1,0 +1,104 @@
+@import './variables';
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,300,500);
+
+.settingsBox {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	left: 0;
+
+	margin: auto;
+	width: 650px;
+	height: 800px;
+	background: white;
+
+				border: 1px solid $textshadow;
+
+	display: flex;
+	flex-direction: column;
+	// justify-content: space-between;
+	-webkit-box-shadow: -4px 4px 5px 0px rgba(226,226,226,1);
+	-moz-box-shadow: -4px 4px 5px 0px rgba(226,226,226,1);
+	box-shadow: -4px 4px 5px 0px rgba(226,226,226,1);
+
+	box-sizing: border-box;
+}
+
+.settingsHeader {
+	width: 100%;
+	height: 60px;
+	line-height: 60px;
+	font-size: 22px;
+	font-family: 'Roboto';
+	text-align: center;
+	background: $scheduleHeader;
+	color: white;
+	text-shadow: 1px 1px 0 #000;
+				border: 1px solid $darkgrey;
+
+}
+.settingsContainer {
+	width: 600px;
+	height: 700px;
+	overflow-x: scroll;
+    overflow-y: hidden;
+	margin: 0 auto;
+				border: 2px solid $textshadow;
+	-webkit-box-shadow: -4px 4px 5px 0px rgba(226,226,226,1);
+	-moz-box-shadow: -4px 4px 5px 0px rgba(226,226,226,1);
+	box-shadow: -4px 4px 5px 0px rgba(226,226,226,1);
+}
+.shiftAdds {
+	width: 100%;
+	height: 40px;
+				border: 1px solid $textshadow;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	font-size: 16px;
+	font-family: 'Roboto';
+	padding: 0 10px 0 10px;
+}
+
+.material-icons.hoverAdd:hover {
+	font-size: 33px;
+	cursor: pointer;
+}
+.shiftString {
+	display: flex;
+}
+.bridgeText {
+	height: 40px;
+	line-height: 40px;
+	font-size: 14px;
+	font-family: 'Roboto';
+				// border: 1px solid red;
+	margin-top: 15px;
+}
+.inputBoxes {
+	width: 65px;
+	overflow: hidden;
+	// height: 50px; 
+	// line-height: 50px; 
+				// border: 1px solid green;
+}
+.areaAdds {
+	margin-top: 20px;
+}
+.eachLocation {
+	width: 100%;
+	height: 40px;
+	line-height: 40px;
+	font-size: 14px;
+	font-family: 'Roboto';
+	padding-left: 15px;
+	padding-right: 5px;
+	// border: 1px solid red;
+	display: flex;
+	justify-content: space-between;
+	margin: 5px 0 8px 0;
+	-webkit-box-shadow: -4px 7px 5px 0px rgba(226,226,226,1);
+	-moz-box-shadow: -4px 7px 5px 0px rgba(226,226,226,1);
+	box-shadow: -4px 7px 5px 0px rgba(226,226,226,1);
+}
