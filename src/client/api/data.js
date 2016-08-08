@@ -400,3 +400,16 @@ export function queryStringFromDict(dict) {
 	}
 }
 
+export function autoPopulateSchedule(date, departmentId, method) {
+	var obj = {
+		"date": date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate(),
+		"department": departmentId,
+		"method": method
+	}
+	return api.post('schedules/auto/', obj);
+}
+
+
+
+
+

@@ -6,11 +6,13 @@ import EmployeeToSchedule from 'ui/employeeToSchedule';
 import EmployeeRow from 'ui/employeeRow';
 import EmployeeInfoForm from 'ui/employeeInfoForm';
 import Confirm from 'ui/confirm';
-import { addNewEmployee, getEmployeeSchedule, getWeekbyWeek, updateEmployee, clearAllSchedule, logout, getAreas } from 'api/data';
+import { addNewEmployee, getEmployeeSchedule, getWeekbyWeek, updateEmployee, clearAllSchedule, logout, getAreas, autoPopulateSchedule } from 'api/data';
 import { getWeekByWeek } from 'api/workspace'
 import { browserHistory } from 'react-router';
 import {v4} from 'uuid';
+
 import RaisedButton from 'material-ui/RaisedButton';
+
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import Cookie from 'js-cookie';
 import AdminHeader from 'ui/adminHeader';
@@ -174,6 +176,14 @@ export default React.createClass({
 	
 		browserHistory.push('/')
 	},
+	autoPopulate: function(method){
+		autoPopulateSchedule(
+			this.state.currentDate,
+		 	localStorage.getItem("departmentId"),
+		 	method
+		 	);
+		this.refreshCurrentState(this.state.currentDate);
+	},
 	render: function(){
 
 		return (
@@ -193,6 +203,7 @@ export default React.createClass({
 
 
 					<AdminWeekHeader
+						autoPopulate={this.autoPopulate}
 						shiftColor={this.state.shiftColor}
 						previousSchedule={this.previousSchedule}
 						weeklyCalendar={this.state.weeklyCalendar}
@@ -207,6 +218,7 @@ export default React.createClass({
 						<div className="schedule">
 							
 							<AdminWeekdayHeader 
+								
 								weeklyCalendar={this.state.weeklyCalendar} 
 								addEmployee={this.addEmployee} />
 							
