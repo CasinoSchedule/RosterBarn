@@ -80,8 +80,8 @@ export default React.createClass({
 			          onRequestClose={this.handleRequestClose}
 			        >
 			        <Menu>
-			            <MenuItem primaryText="Previous Week" onTouchTap={this.duplicate}/>
-			            <MenuItem primaryText="Random Stations" onTouchTap={this.stationPopulate} />
+			            <div className="autoPop"> <MenuItem primaryText="Previous Week" onTouchTap={this.duplicate}/> </div>
+			            <div className="autoPop"><MenuItem primaryText="Random Stations" onTouchTap={this.stationPopulate} /> </div>
 			          </Menu>
 			        </Popover>
 			        

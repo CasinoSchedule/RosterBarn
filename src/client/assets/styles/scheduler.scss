@@ -97,6 +97,7 @@
 	text-shadow: 1px 1px 1px $textshadow;
 }
 
+
 @media print {
 	.sidePortal, .headerOptions, .printClearButtons, .rightButton, .leftButton, .nameImageBox img, .fa-user-plus {
 		visibility: hidden;

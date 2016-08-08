@@ -7,6 +7,7 @@ import EmployeeRow from 'ui/employeeRow';
 import EmployeeInfoForm from 'ui/employeeInfoForm';
 import Confirm from 'ui/confirm';
 import { addNewEmployee, getEmployeeSchedule, getWeekbyWeek, updateEmployee, clearAllSchedule, logout, getAreas, autoPopulateSchedule } from 'api/data';
+import Settings from 'ui/settings';
 import { getWeekByWeek } from 'api/workspace'
 import { browserHistory } from 'react-router';
 import {v4} from 'uuid';
@@ -18,6 +19,7 @@ import Cookie from 'js-cookie';
 import AdminHeader from 'ui/adminHeader';
 import AdminWeekdayHeader from 'ui/adminWeekdayHeader';
 import AdminWeekHeader from 'ui/adminWeekHeader';
+
 
 // Needed for onTouchTap
 // http://stackoverflow.com/a/34015469/988941
@@ -48,6 +50,7 @@ export default React.createClass({
 			showForm: false,
 			employeeInfo: {},
 			showClearConfirm: false,
+			showSettings: false,
 			areas: []
 		})
 	},
@@ -63,6 +66,7 @@ export default React.createClass({
 				showForm: currentStore.showReducer.showForm,
 				employeeInfo: currentStore.employeeReducer.employeeInfo,
 				showClearConfirm: currentStore.showReducer.showClearConfirm,
+				showSettings: currentStore.showReducer.showSettings,
 				areas: currentStore.adminReducer.areas
 			})
 		}.bind(this));
@@ -112,6 +116,14 @@ export default React.createClass({
 		store.dispatch({
 			type: 'CHANGE_SHOWCLEARCONFIRM',
 			showClearConfirm: true
+		})
+	},
+	showSettingsPanel: function(){
+		console.log('hit in scheduler');
+
+		store.dispatch({
+			type: 'SHOW_SETTINGS',
+			showSettings: true
 		})
 	},
 	clearSchedule: function(){
@@ -196,7 +208,8 @@ export default React.createClass({
 					setColor={this.setColor} />
 
 				<AdminHeader 
-					logout={this.logout} />
+					logout={this.logout} 
+					showSettingsPanel={this.showSettingsPanel} />
 
 				
 				<div className="adminContainer">
@@ -253,6 +266,14 @@ export default React.createClass({
 								confirm={this.clearSchedule} 
 								message={"Please confirm to clear schedule."} 
 								header={"Clear Schedule"} /> 
+							: ""}	
+					</ReactCSSTransitionGroup>
+
+					<ReactCSSTransitionGroup transitionName="employeeBox" transitionEnterTimeout={500} transitionLeaveTimeout={300}>
+						{(this.state.showSettings) 
+							? <Settings
+								key={v4()} 
+								areas={this.state.areas} /> 
 							: ""}	
 					</ReactCSSTransitionGroup>
 

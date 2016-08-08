@@ -1,6 +1,7 @@
 const adminInitialState = {
 	employeeWeeklySchedule: [],
-	areas: []
+	areas: [],
+	shiftStrings: []
 }
 
 export default function(state = adminInitialState, action){
@@ -21,6 +22,12 @@ export default function(state = adminInitialState, action){
 			return {
 				...state,
 				areas: action.areas
+			}
+
+		case 'GET_SHIFTSTRINGS':
+			return {
+				...state,
+				shiftStrings: action.shiftStrings
 			}
 	
 	default:
