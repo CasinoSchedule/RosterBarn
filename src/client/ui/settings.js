@@ -7,7 +7,7 @@ import AutoComplete from 'material-ui/AutoComplete';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import Divider from 'material-ui/Divider';
-import { getAreas, deleteArea, addArea } from 'api/data';
+import { getAreas, deleteArea, addArea, twelveToTwentyFour } from 'api/data';
 import FontIcon from 'material-ui/FontIcon';
 import ActionDelete from 'material-ui/svg-icons/action/delete';
 import IconButton from 'material-ui/IconButton';
@@ -91,7 +91,19 @@ export default React.createClass({
 		})
 	},
 	addNewShift: function(){
+		const starthour = this.state.startHour.toString();
+		const startminute = this.state.startMinute.toString();
+		const ampm = this.state.ampm;
+		const endhour = this.state.endHour;
+		const endminute = this.state.endMinute;
+		const pmam = this.state.ampm;
+		const fullStartTime = twelveToTwentyFour(starthour, startminute, ampm);
 
+
+
+
+		console.log('add', starthour, startminute, ampm, endhour, endminute, pmam)
+		console.log('Full', fullStartTime);
 	},
 	addNewArea: function(){
 		var newAreaTitle = this.refs.newAreaToAdd.getValue();
@@ -114,8 +126,12 @@ export default React.createClass({
 		})
 	},
 	render: function(){
+		console.log('shiftStrings', this.props.shiftStrings);
 		return (
+			<div>
+				<div className='shade'></div>
 			<div className='settingsBox'>
+
 				<div className='settingsHeader'> Settings</div>
 				<div className='settingsContainer'>
 					<div className='shiftAdds'>
@@ -285,6 +301,7 @@ export default React.createClass({
 				    	</div>
 				</div>
 				<RaisedButton label='Close' onClick={this.closeSettings} />
+			</div>
 			</div>
 		)
 	}

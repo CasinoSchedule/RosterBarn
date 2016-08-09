@@ -112,7 +112,6 @@ export default React.createClass({
 		return (
 				
 					<div className="eachDay">
-						
 							<div className={this.props.thing.classInfoName}>
 								{(this.props.thing.nameString) 
 									? 	<div className="nameImageBox">

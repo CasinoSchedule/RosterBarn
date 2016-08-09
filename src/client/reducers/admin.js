@@ -1,7 +1,9 @@
 const adminInitialState = {
 	employeeWeeklySchedule: [],
 	areas: [],
-	shiftStrings: []
+	shiftStrings: [],
+	weekShifts: [],
+	employees: []
 }
 
 export default function(state = adminInitialState, action){
@@ -14,10 +16,6 @@ export default function(state = adminInitialState, action){
 				employeeWeeklySchedule: action.employeeWeeklySchedule
 			}
 
-		case 'USER_LOGOUT':
-		console.log('Admin reducer', adminInitialState);
-		return adminInitialState
-
 		case 'GET_AREAS':
 			return {
 				...state,
@@ -29,7 +27,23 @@ export default function(state = adminInitialState, action){
 				...state,
 				shiftStrings: action.shiftStrings
 			}
-	
+
+		case 'GET_WEEKSHIFTS':
+			return {
+				...state,
+				weekShifts: action.weekShifts
+			}
+
+		case 'GET_EMPLOYEES':
+			return {
+				...state,
+				employees: action.employees
+			}
+		
+		case 'USER_LOGOUT':
+			return adminInitialState
+			
+
 	default:
 		return state;
 

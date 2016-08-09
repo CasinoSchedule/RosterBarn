@@ -4,7 +4,7 @@
 .eachDay {
 	min-width: 130px;
 	width: 14.3%;
-	height: 80px;
+	height: 110px;
 	// line-height: 30px;
 	border: 1px solid #f4f4f4;
 	overflow: hidden;
@@ -57,8 +57,8 @@
 	// border-right: 1px solid $darkgrey;
 }
 .nameImageBox:first-child img:hover {
-	width: 44px;
-	height: 36px;
+	width: 70px;
+	height: 60px;
 	box-shadow: 2px 2px 2px $darkgrey;
 }
 // .timeLocationBox {

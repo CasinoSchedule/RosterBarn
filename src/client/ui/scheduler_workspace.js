@@ -7,7 +7,8 @@ import EmployeeRow from 'ui/employeeRow';
 import EmployeeInfoForm from 'ui/employeeInfoForm';
 import Confirm from 'ui/confirm';
 import Settings from 'ui/settings';
-import { addNewEmployee, getEmployeeSchedule, updateEmployee, clearAllSchedule, logout, getAreas, getShiftStrings } from 'api/data';
+import { addNewEmployee, getEmployeeSchedule, updateEmployee, clearAllSchedule, logout, getAreas } from 'api/data';
+import { getWeekByWeek, getShifts, getEmployeesByShift } from 'api/data_workspace'
 import { browserHistory } from 'react-router';
 import {v4} from 'uuid';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -16,13 +17,11 @@ import Cookie from 'js-cookie';
 import AdminHeader from 'ui/adminHeader';
 import AdminWeekdayHeader from 'ui/adminWeekdayHeader';
 import AdminWeekHeader from 'ui/adminWeekHeader';
-import { getWeekByWeek, getShifts, getEmployeesByShift } from 'api/data_workspace';
-import Workday from 'ui/workday';
 
 
 // Needed for onTouchTap
 // http://stackoverflow.com/a/34015469/988941
-injectTapEventPlugin();
+// injectTapEventPlugin();
 
 require("assets/styles/scheduler.scss");
 
@@ -51,7 +50,6 @@ export default React.createClass({
 			showClearConfirm: false,
 			showSettings: false,
 			areas: [],
-			shiftStrings: [],
 			employees: [],
 			weekShifts: []
 		})
@@ -71,22 +69,23 @@ export default React.createClass({
 				showSettings: currentStore.showReducer.showSettings,
 				areas: currentStore.adminReducer.areas,
 				employees: currentStore.adminReducer.employees,
-				weekShifts: currentStore.adminReducer.weekShifts,
-				shiftStrings: currentStore.adminReducer.shiftStrings
+				weekShifts: currentStore.adminReducer.weekShifts
 			})
 		}.bind(this));
-		this.refreshCurrentState(new Date());
+		this.refreshCurrentState(new Date(2016, 7, 8));
 	},
-	refreshCurrentState: function(date, shiftId){
+	refreshCurrentState: function(date, shiftId, clearAll){
 		var departmentId = localStorage.getItem("departmentId");
 		var shiftId = ((shiftId) ? shiftId : this.state.shiftNum);
 		// getEmployeeSchedule(date, shiftId, departmentId, clearAll);
-		getWeekByWeek(date);
+		
 		getEmployeesByShift(shiftId, departmentId)
 		getShifts(date, departmentId);
-		getShiftStrings();
+		getWeekByWeek(date);
 		getAreas();
 
+
+		// getWeekByWeek, getShifts, getEmployeesByShift
 	},
 	handleDateChange: function(next){
 		var newWeekDate = this.state.currentDate.addDays(next);
@@ -136,19 +135,21 @@ export default React.createClass({
 		})
 	},
 	clearSchedule: function(){
-		const shiftId = this.state.shiftNum;
-		const week = this.state.weekShifts;
-		const clearAll = [];
-		for(let i = 0; i < week.length; i++){
+		var shiftId = this.state.shiftNum;
+		var employees = this.state.employeeWeeklySchedule;
+		var clearAll = [];
+		for(let i = 0; i < employees.length; i++){
+			for(let j = 0; j < 7; j++){
 				clearAll.push({
-					day: week[i].calendar_date,
-					employee: week[i].employee.id,
+					day: this.state.weeklyCalendar[j].calendar_date,
+					employee: employees[i][j].id,
 					starting_time: ""
 				})
+			}
 		}
 		clearAllSchedule(clearAll);
 		
-		this.refreshCurrentState(this.state.currentDate, shiftId);
+		this.refreshCurrentState(this.state.currentDate, shiftId, true);
 		 
 		 store.dispatch({
 			type: 'CHANGE_SHOWCLEARCONFIRM',
@@ -195,124 +196,36 @@ export default React.createClass({
 	
 		browserHistory.push('/')
 	},
-	handleClick: function(item){
-		store.dispatch({
-			type: 'CHANGE_SHOWFORM',
-			showForm: true
-		})
-
-		store.dispatch({
-			type: 'THROW_EMPLOYEEINFO',
-			employeeInfo: item
-		})
-	},
 	render: function(){
 
 		return (
 			<div className="adminBg">
 
-				<SidePanel	
-					dateString={this.state.weeklyCalendar[0].calendar_date} 
-					filterByShift={this.filterByShift} 
-					setColor={this.setColor} />
-
-				<AdminHeader 
-					logout={this.logout} 
-					showSettingsPanel={this.showSettingsPanel} />
-
 				
-				<div className="adminContainer">
-
-
-					<AdminWeekHeader
-						shiftColor={this.state.shiftColor}
-						previousSchedule={this.previousSchedule}
-						weeklyCalendar={this.state.weeklyCalendar}
-						nextSchedule={this.nextSchedule}
-						confirmClear={this.confirmClear}
-						printSchedule={this.printSchedule} />
-
-					
-
-					<div className={"scheduleFlex " + this.state.flexbox_size}>
-						
-						<div className="schedule">
 							
-							<AdminWeekdayHeader 
-								weeklyCalendar={this.state.weeklyCalendar} 
-								addEmployee={this.addEmployee} />
-
-							 {/* <EmployeeRow 
-								employees={this.state.employees} 
-								areas={this.state.areas} 
-								weeklyCalendar={this.state.weeklyCalendar}
-								weekShifts={this.state.weekShifts} 
-								handleClick={this.handleClick} />	*/}	
-
-
-							 {this.state.employees.map(function(employee, index){
+							{this.state.employees.map(function(employee, index){
 								return (
-										<div key={v4()} className='eachRowNew'>
-											
-											<div className='eachDay'>
-											<div className="nameImageBox">
-												<div><img src={employee.photo_url} onClick={this.handleClick.bind(this, employee)} /></div>
-												<div className="nameIdBox">
-													<div className='nameField'>{employee.first_name} {employee.last_name}</div> 
-													<div className="idNum">{employee.employee_id}</div>
-												</div>
-											</div>
-										</div>
-										
-										<Workday
-											key={index}
-											employee={employee} 
-											weeklyCalendar={this.state.weeklyCalendar} 
-											weekShifts={this.state.weekShifts} 
-											areas={this.state.areas} 
-											shiftStrings={this.state.shiftStrings}/>
+										<div key={index} style={{display: 'flex'}}>
+											<div style={{width: '150px', height: '90px', border: '1px solid red'}}> {employee.first_name} </div>
+
+											{this.state.weeklyCalendar.map(function(day, i){
+												return(
+													<div key={i} style={{width: '150px', height: '90px', border: '1px solid blue'}}>
+														<div id='datatest'>{day.calendar_date}</div>
+														{this.state.weekShifts.map(function(shift, num){
+															if(day.calendar_date === shift.calendar_date && employee.id === shift.employee.id){
+															return(
+																shift.starting_time
+																)
+														} 
+														}.bind(this))}
+													</div>
+													)
+											}.bind(this))}
 
 										</div>
 								)
-							}.bind(this))} 
-
-								
-						</div>
-
-					</div>
-						
-				</div>	
-
-					<ReactCSSTransitionGroup transitionName="employeeBox" transitionEnterTimeout={500} transitionLeaveTimeout={300}>
-						{(this.state.showForm) 
-							? <EmployeeInfoForm
-								info={this.state.employeeInfo} 
-								key={v4()} 
-								refreshCurrentState={this.refreshCurrentState} 
-								currentDate={this.state.currentDate}
-								confirmDelete={this.confirmClear} /> 
-							: ""}	
-					</ReactCSSTransitionGroup>
-
-
-					<ReactCSSTransitionGroup transitionName="employeeBox" transitionEnterTimeout={500} transitionLeaveTimeout={300}>
-						{(this.state.showClearConfirm) 
-							? <Confirm
-								key={v4()} 
-								confirm={this.clearSchedule} 
-								message={"Please confirm to clear schedule."} 
-								header={"Clear Schedule"} /> 
-							: ""}	
-					</ReactCSSTransitionGroup>
-
-					<ReactCSSTransitionGroup transitionName="employeeBox" transitionEnterTimeout={500} transitionLeaveTimeout={300}>
-						{(this.state.showSettings) 
-							? <Settings
-								key={v4()} 
-								areas={this.state.areas} 
-								shiftStrings={this.state.shiftStrings} /> 
-							: ""}	
-					</ReactCSSTransitionGroup>
+							}.bind(this))}
 
 			</div>
 		)

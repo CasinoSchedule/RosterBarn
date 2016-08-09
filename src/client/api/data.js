@@ -20,6 +20,11 @@ export function registerNewEmail(obj){
 	return api.post('/profiles/notify/employee/', obj);
 
 }
+
+
+
+// 			*******     Employee Updates     *******
+
 export function addNewEmployee(obj){
 	return api.post('/profiles/employee/', obj);
 }
@@ -33,6 +38,8 @@ export function deleteEmployee(id){
 	return api.delete('/profiles/employee/' + id + "/");
 
 }
+// 		*****************************************
+
 
 
 
@@ -62,18 +69,65 @@ export function addArea(obj){
 	});
 	
 }
-// 		***************************************************
+// 		*****************************************
 
 
 
+
+
+
+
+// 			*******     Shift Strings     *******
+
+export function getShiftStrings(){
+	return api.get('/schedules/shift/template/').then(function(resp){
+		console.log('Shift Strings', resp.data)
+		store.dispatch({
+			type: 'GET_SHIFTSTRINGS',
+			shiftStrings: resp.data
+		})
+	})
+}
+// promise (.then) refreshes state
+export function deleteShiftString(id){
+	return api.delete('/schedules/area/' + id + '/').then(function(){
+		getShiftStrings();
+	});
+
+}
+// promise (.then) refreshes state
+export function addShiftString(obj){
+	return api.post('/schedules/area/', obj).then(function(){
+		getShiftStrings();
+	});
+	
+}
+// 		*****************************************
 
 
 
 // convert hour and minute to 12 hour format with am or pm string attached (preceding hour zeros not currently filtered)
-// Just string generator. No error checks
+// String generator. No error checks
 export function ampm(h, m){
 	return ((h == '00') ? ('12:' + m + 'am') : (h >= 12) ? ((h - 12) + ':' + m + 'pm') : (h + ':' + m + 'am'));
 }
+
+//convert 12 hour time format to 24 hour format
+export function twelveToTwentyFour(hour, minute, ampm){
+	var hourConverted = '';
+	var minuteConverted = ((minute.length === 1) ? '0' + minute.toString() : minute);
+	
+	if(hour == '12' && ampm == 'am'){
+		hourConverted = '00';
+	} else if(ampm == 'pm' && hour != '12'){
+		hourConverted = parseInt(hour) + 12
+	} else {
+		hourConverted = ((hour.length === 1) ? '0' + hour : hour)
+	}
+
+	return (hourConverted.toString() + ':' + minuteConverted);
+}
+
 
 // creates shift string ('12pm to 8pm') for display and provides an associated value of start time (12:00)
 export function createShiftString(start, end){

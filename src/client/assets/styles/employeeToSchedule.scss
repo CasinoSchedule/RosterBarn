@@ -4,13 +4,14 @@
 
 .namesAcross {
 	display: flex;
-	flex-wrap: nowrap;
+	width: 100%;
+	// flex-wrap: nowrap;
 	// flex-direction: column;
-	border: 1px solid black;
-	font-family: Arial;
+				border: 1px solid red;
+	// font-family: Arial;
 }
 
-.namesAcross:nth-child(even) {           
-	background: #eee;
-}
+// .namesAcross:nth-child(even) {           
+// 	background: #eee;
+// }
 

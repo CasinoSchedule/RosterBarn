@@ -46,7 +46,7 @@ import Calendar from 'ui/calendar';
 import Scheduler from 'ui/scheduler';
 import LandingPage from 'ui/landingPage';
 import employeeSignUp from 'ui/employeeSignUp';
-import Settings from 'ui/settings';
+import SchedulerNew from 'ui/scheduler_workspace';
 
 
 
@@ -56,7 +56,7 @@ export default (
     <Router history={browserHistory}>
       <Route component={App}>
       	<Route path='/landingPage' component={LandingPage} />
-        <Route path='/settings' component={Settings} />
+        <Route path='/scheduler_workspace' component={SchedulerNew} />
       	<Route path='/' component={Home} />
       	<Route path='/calendar' component={Calendar} />
       	<Route path='/scheduler' component={Scheduler} />
