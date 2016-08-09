@@ -7,7 +7,7 @@ import EmployeeRow from 'ui/employeeRow';
 import EmployeeInfoForm from 'ui/employeeInfoForm';
 import Confirm from 'ui/confirm';
 import Settings from 'ui/settings';
-import { addNewEmployee, getEmployeeSchedule, updateEmployee, clearAllSchedule, logout, getAreas, getShiftStrings } from 'api/data';
+import { addNewEmployee, getEmployeeSchedule, updateEmployee, clearAllSchedule, logout, getAreas, getShiftStrings, autoPopulateSchedule } from 'api/data';
 import { browserHistory } from 'react-router';
 import {v4} from 'uuid';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -206,6 +206,14 @@ export default React.createClass({
 			employeeInfo: item
 		})
 	},
+	autoPopulate: function(method){
+		autoPopulateSchedule(
+			this.state.currentDate,
+		 	localStorage.getItem("departmentId"),
+		 	method
+		 	);
+		this.refreshCurrentState(this.state.currentDate);
+	},
 	render: function(){
 
 		return (
@@ -225,6 +233,7 @@ export default React.createClass({
 
 
 					<AdminWeekHeader
+						autoPopulate={this.autoPopulate}
 						shiftColor={this.state.shiftColor}
 						previousSchedule={this.previousSchedule}
 						weeklyCalendar={this.state.weeklyCalendar}
@@ -239,6 +248,7 @@ export default React.createClass({
 						<div className="schedule">
 							
 							<AdminWeekdayHeader 
+								
 								weeklyCalendar={this.state.weeklyCalendar} 
 								addEmployee={this.addEmployee} />
 
