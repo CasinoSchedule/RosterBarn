@@ -10,13 +10,17 @@
 
 	margin: auto;
 	width: 650px;
-	height: 800px;
+	height: 600px;
 	background: white;
 
 				border: 1px solid $textshadow;
 
 	display: flex;
 	flex-direction: column;
+
+	overflow-x: hidden;
+    overflow-y: scroll;
+
 	// justify-content: space-between;
 	// -webkit-box-shadow: -4px 4px 5px 0px rgba(226,226,226,1);
 	// -moz-box-shadow: -4px 4px 5px 0px rgba(226,226,226,1);
@@ -41,8 +45,8 @@
 .settingsContainer {
 	width: 600px;
 	height: 700px;
-	overflow-x: scroll;
-    overflow-y: hidden;
+	overflow-x: hidden;
+    overflow-y: scroll;
 	margin: 0 auto;
 				border: 2px solid $textshadow;
 	-webkit-box-shadow: -4px 4px 5px 0px rgba(226,226,226,1);

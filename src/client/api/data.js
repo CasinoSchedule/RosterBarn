@@ -70,7 +70,7 @@ export function getEmployeesByShift(shiftId, departmentId){
 
 export function getAreas(){
 	return api.get('/schedules/area/').then(function(resp){
-		// console.log('areas', resp.data)
+		console.log('areas', resp.data)
 		store.dispatch({
 			type: 'GET_AREAS',
 			areas: resp.data
@@ -103,10 +103,19 @@ export function addArea(obj){
 
 export function getShiftStrings(){
 	return api.get('/schedules/shift/template/').then(function(resp){
-		// console.log('Shift Strings', resp.data)
+		var sortedStrings = resp.data.sort(function(a, b){
+			if (parseInt(a.starting_time) > parseInt(b.starting_time)) {
+			    return 1;
+			  }
+			  if (parseInt(a.starting_time) < parseInt(b.starting_time)) {
+			    return -1;
+			  }
+			  // a must be equal to b
+			  return 0;
+		});
 		store.dispatch({
 			type: 'GET_SHIFTSTRINGS',
-			shiftStrings: resp.data
+			shiftStrings: sortedStrings
 		})
 	})
 }

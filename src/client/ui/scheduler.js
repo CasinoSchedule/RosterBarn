@@ -22,7 +22,7 @@ import Workday from 'ui/workday';
 
 // Needed for onTouchTap
 // http://stackoverflow.com/a/34015469/988941
-injectTapEventPlugin();
+// injectTapEventPlugin();
 
 require("assets/styles/scheduler.scss");
 
@@ -151,18 +151,8 @@ export default React.createClass({
 				 starting_time: ''}
 				 )
 		}
-		
-		// console.log('clearAll should be 20 objects', clearAll)
-		// for(let i = 0; i < week.length; i++){
-		// 		clearAll.push({
-		// 			day: week[i].calendar_date,
-		// 			employee: week[i].employee.id,
-		// 			starting_time: ""
-		// 		})
-		// }
+
 		clearAllSchedule(clearAll, this.state.currentDate, this.state.departmentId);
-		
-		// this.refreshCurrentState(this.state.currentDate, shiftId);
 		 
 		 store.dispatch({
 			type: 'CHANGE_SHOWCLEARCONFIRM',
