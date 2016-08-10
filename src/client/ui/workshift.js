@@ -9,24 +9,37 @@ import { sendSingleEmployeeShiftObj } from 'api/data'
 export default React.createClass({
 	getInitialState: function(){
 		return {
-			station: '',
+			area: this.props.shift.area || '',
 			shifts: this.props.shiftStrings,
-			starting_time: this.props.starting_time.starting_time || ''
+			starting_time: this.props.shift.starting_time || ''
 		}
 	},
 	componentDidMount: function(){
 		// console.log(this.props.starting_time)
 	}, 
-	handleStationChange: function(e, index, value){
+	handleAreaChange: function(e, index, value){
 		if(value !== 1001) {
 			this.setState({
-				station: value
+				area: value
 			})
 		} else {
 			store.dispatch({
 				type: 'SHOW_SETTINGS',
 				showSettings: true
 			})
+		}
+		
+
+
+		if(value !== 1001 && (this.state.starting_time)){
+			
+			sendSingleEmployeeShiftObj([{
+				day: this.props.day.calendar_date,
+				employee: this.props.employee.id,
+				starting_time: this.state.starting_time,
+				area: value
+				
+			}])
 		}
 	},
 	handleTimeChange: function(component, index, value){
@@ -47,9 +60,8 @@ export default React.createClass({
 		sendSingleEmployeeShiftObj([{
 			day: this.props.day.calendar_date,
 			employee: this.props.employee.id,
-			starting_time: value
-		// 	// ,
-		// 	// station: this.refs.station.value
+			starting_time: value,
+			area: this.state.area || ''
 			
 		}])
 	},
@@ -83,8 +95,8 @@ export default React.createClass({
 					<SelectField 
 						key={v4()}
 					 	fullWidth={true}
-						value={this.state.station} 
-						onChange={this.handleStationChange} 
+						value={this.state.area} 
+						onChange={this.handleAreaChange} 
 						menuStyle={{width: '130px'}}
 						style={{height: '42px', top: '-15px', fontSize: '12px', fontWeight: '600', whiteSpace: 'nowrap', paddingLeft: '10px'}}
 						labelStyle={{lineHeight: '25px', top: '10px'}}>

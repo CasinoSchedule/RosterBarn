@@ -22,7 +22,7 @@ export default React.createClass({
 								day={day}
 								weekShifts={this.props.weekShifts} 
 								shiftStrings={this.props.shiftStrings} 
-								starting_time={this.props.weekShifts[idToCheck] || 'monkey'} />
+								shift={this.props.weekShifts[idToCheck] || 'monkey'} />
 
 						</div>
 						)
@@ -32,36 +32,5 @@ export default React.createClass({
 		)
 	}
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-{/*	<Workshift 
-								key={i}
-								areas={this.props.areas}
-								employee={this.props.employee}
-								day={day}
-								weekShifts={this.props.weekShifts} 
-								shiftStrings={this.props.shiftStrings} />   */}
-
-
-
 
 

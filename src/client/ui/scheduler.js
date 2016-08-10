@@ -39,7 +39,7 @@ Date.prototype.addDays = function(days){
 
 export default React.createClass({
 	getInitialState: function() {
-		console.log("hello", Cookie.get('token'));
+		// console.log("hello", Cookie.get('token'));
 		return ({
 			currentDate: new Date(),
 			employeeWeeklySchedule: [],
