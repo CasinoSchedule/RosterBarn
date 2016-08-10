@@ -7,7 +7,7 @@ import EmployeeRow from 'ui/employeeRow';
 import EmployeeInfoForm from 'ui/employeeInfoForm';
 import Confirm from 'ui/confirm';
 import Settings from 'ui/settings';
-import { addNewEmployee, getEmployeeSchedule, updateEmployee, clearAllSchedule, logout, getAreas, getShiftStrings, autoPopulateSchedule } from 'api/data';
+import { addNewEmployee, deleteEmployee, getEmployeeSchedule, updateEmployee, clearAllSchedule, logout, getAreas, getShiftStrings, autoPopulateSchedule } from 'api/data';
 import { browserHistory } from 'react-router';
 import {v4} from 'uuid';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -53,7 +53,8 @@ export default React.createClass({
 			areas: [],
 			shiftStrings: [],
 			employees: [],
-			weekShifts: []
+			weekShifts: {},
+			departmentId: localStorage.getItem("departmentId")
 		})
 	},
 	componentWillMount: function(){
@@ -105,9 +106,12 @@ export default React.createClass({
 		addNewEmployee({
 			first_name: "New", 
 			last_name: "Employee",
-			department: localStorage.getItem("departmentId")
-		});
-		this.refreshCurrentState(this.state.currentDate);
+			department: this.state.departmentId
+		}, this.state.shiftNum, this.state.departmentId);
+	},
+	deleteEmployee: function(id){
+		deleteEmployee(id, this.state.shiftNum, this.state.departmentId);
+		
 	},
 	filterByShift: function(shiftId, type){
 		this.refreshCurrentState(this.state.currentDate, shiftId)
@@ -139,16 +143,26 @@ export default React.createClass({
 		const shiftId = this.state.shiftNum;
 		const week = this.state.weekShifts;
 		const clearAll = [];
-		for(let i = 0; i < week.length; i++){
-				clearAll.push({
-					day: week[i].calendar_date,
-					employee: week[i].employee.id,
-					starting_time: ""
-				})
+
+		for(var key in week){
+			clearAll.push(
+				{day: week[key].calendar_date, 
+				 employee: week[key].employee.id, 
+				 starting_time: ''}
+				 )
 		}
-		clearAllSchedule(clearAll);
 		
-		this.refreshCurrentState(this.state.currentDate, shiftId);
+		// console.log('clearAll should be 20 objects', clearAll)
+		// for(let i = 0; i < week.length; i++){
+		// 		clearAll.push({
+		// 			day: week[i].calendar_date,
+		// 			employee: week[i].employee.id,
+		// 			starting_time: ""
+		// 		})
+		// }
+		clearAllSchedule(clearAll, this.state.currentDate, this.state.departmentId);
+		
+		// this.refreshCurrentState(this.state.currentDate, shiftId);
 		 
 		 store.dispatch({
 			type: 'CHANGE_SHOWCLEARCONFIRM',
@@ -300,7 +314,10 @@ export default React.createClass({
 								key={v4()} 
 								refreshCurrentState={this.refreshCurrentState} 
 								currentDate={this.state.currentDate}
-								confirmDelete={this.confirmClear} /> 
+								confirmDelete={this.confirmClear} 
+								deleteEmployee={this.deleteEmployee} 
+								shiftNum={this.state.shiftNum}
+								departmentId={this.state.departmentId} /> 
 							: ""}	
 					</ReactCSSTransitionGroup>
 
@@ -320,7 +337,8 @@ export default React.createClass({
 							? <Settings
 								key={v4()} 
 								areas={this.state.areas} 
-								shiftStrings={this.state.shiftStrings} /> 
+								shiftStrings={this.state.shiftStrings} 
+								shiftNum={this.state.shiftNum} /> 
 							: ""}	
 					</ReactCSSTransitionGroup>
 

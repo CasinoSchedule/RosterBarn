@@ -2,7 +2,7 @@ const adminInitialState = {
 	employeeWeeklySchedule: [],
 	areas: [],
 	shiftStrings: [],
-	weekShifts: [],
+	weekShifts: {},
 	employees: []
 }
 

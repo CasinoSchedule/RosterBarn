@@ -27,9 +27,14 @@ export function getShifts(date, departmentId){
 
 	return api.get('/schedules/weekshift/' + shiftQuery).then(function(resp){
 		console.log('Shifts', resp.data)
+		var allShifts = resp.data.reduce(function(o, v, i) {
+			  o['date_' + v.calendar_date + '_employee_id_' + v.employee.id] = v;
+			  return o;
+			}, {});
+		console.log('All Shifts Object', allShifts)
 		store.dispatch({
 			type: 'GET_WEEKSHIFTS',
-			weekShifts: resp.data
+			weekShifts: allShifts
 		})
 	})
 }

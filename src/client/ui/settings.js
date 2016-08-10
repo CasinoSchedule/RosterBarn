@@ -7,7 +7,7 @@ import AutoComplete from 'material-ui/AutoComplete';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import Divider from 'material-ui/Divider';
-import { getAreas, deleteArea, addArea, twelveToTwentyFour } from 'api/data';
+import { getAreas, deleteArea, addArea, twelveToTwentyFour, addShiftString, deleteShiftString } from 'api/data';
 import FontIcon from 'material-ui/FontIcon';
 import ActionDelete from 'material-ui/svg-icons/action/delete';
 import IconButton from 'material-ui/IconButton';
@@ -45,7 +45,8 @@ export default React.createClass({
 			ampm: '',
 			pmam: '',
 			areas: [],
-			newArea: ''
+			newArea: '',
+			shift: this.props.shiftNum || 0
 		}
 	},
 	
@@ -79,6 +80,11 @@ export default React.createClass({
 			pmam: value
 		})
 	},
+	handleShiftChange: function(event, key, value){
+		this.setState({
+			shift: value
+		})
+	},
 	onEnterPress: function(e){
 		if(e.keyCode === 13) {
 			this.addNewArea();
@@ -94,32 +100,51 @@ export default React.createClass({
 		const starthour = this.state.startHour.toString();
 		const startminute = this.state.startMinute.toString();
 		const ampm = this.state.ampm;
-		const endhour = this.state.endHour;
-		const endminute = this.state.endMinute;
-		const pmam = this.state.ampm;
+		const endhour = this.state.endHour.toString();
+		const endminute = this.state.endMinute.toString();
+		const pmam = this.state.pmam;
 		const fullStartTime = twelveToTwentyFour(starthour, startminute, ampm);
+		const fullEndTime = twelveToTwentyFour(endhour, endminute, pmam)
+		const shift = this.state.shift;
+		// function here to error check length
 
-
-
-
-		console.log('add', starthour, startminute, ampm, endhour, endminute, pmam)
-		console.log('Full', fullStartTime);
+		addShiftString(
+			{starting_time: fullStartTime, 
+			 shift_category: ((this.state.shift) ? this.state.shift : 1)}
+			 );	
+		this.setState({
+			startHour: '',
+			startMinute: '',
+			endHour: '',
+			endMinute: '',
+			ampm: '',
+			pmam: '',
+			shift: 0
+		})
 	},
 	addNewArea: function(){
 		var newAreaTitle = this.refs.newAreaToAdd.getValue();
+
+		// component updates in function
 		addArea({title: newAreaTitle, department: localStorage.getItem("departmentId")}); 
 
 		this.setState({
 			newArea: ''
 		})
 		
+
 	},
 	deleteAreaEntry: function(item){
+		// component updates in function
 		deleteArea(item.id);
 		
 	},
+	deleteShiftEntry: function(item){
+		// component updates in function
+		deleteShiftString(item.id);
+		
+	},
 	closeSettings: function(){
-
 		store.dispatch({
 			type: 'SHOW_SETTINGS',
 			showSettings: false
@@ -137,7 +162,23 @@ export default React.createClass({
 					<div className='shiftAdds'>
 						<div>SHIFT TIMES</div>
 					</div>
+					{this.props.shiftStrings.map(function(item, i){
+						return(
+							<div key={v4()} className='eachLocation'>
+								<div>{item.string_rep}</div>
+								<div>
+									<IconButton
+								      iconClassName="material-icons"
+								      tooltip="Delete Area"
+								      onClick={this.deleteShiftEntry.bind(this, item)}
+								     >
+								      delete
+								    </IconButton>
 
+								</div>
+							</div>
+						)
+					}.bind(this))}
 					<div className='shiftString'>
 						<div className='inputBoxes'>
 							<SelectField 
@@ -243,12 +284,30 @@ export default React.createClass({
 				        	</SelectField> 
 			        	</div>
 			        	
+			        	<div className='inputBoxes'>
+							<SelectField 
+								id='shift'
+							 	fullWidth={true}
+								value={this.state.shift} 
+								hintText='shift'
+								onChange={this.handleShiftChange} 
+								style={styles.general}
+								labelStyle={styles.label}>
+
+
+								<MenuItem key={v4()} value={1} primaryText='GRAVE' />
+								<MenuItem key={v4()} value={2} primaryText='DAY' />
+								<MenuItem key={v4()} value={3} primaryText='SWING' />
+
+				        	</SelectField> 
+			        	</div>
+
 			        	<div>
 			        		<IconButton
 						      iconClassName="material-icons"
 						      tooltip="Add Shift Time"
 						      onClick={this.addNewShift}
-						      style={{paddingLeft: '133px', marginTop: '15px'}}
+						      style={{paddingLeft: '65px', marginTop: '15px'}}
 						     >
 						      add
 						    </IconButton>

@@ -25,18 +25,40 @@ export function registerNewEmail(obj){
 
 // 			*******     Employee Updates     *******
 
-export function addNewEmployee(obj){
-	return api.post('/profiles/employee/', obj);
+// promise (.then) refreshes state
+export function addNewEmployee(obj, shiftId, departmentId){
+	return api.post('/profiles/employee/', obj).then(function(){
+		getEmployeesByShift(shiftId, departmentId);
+	});
+}
+// promise (.then) refreshes state
+export function updateEmployee(id, obj, shiftId, departmentId){
+	return api.put('/profiles/employee/update/' + id + "/", obj).then(function(){
+		getEmployeesByShift(shiftId, departmentId);
+	});
+
+}
+// promise (.then) refreshes state
+export function deleteEmployee(id, shiftId, departmentId){
+	return api.delete('/profiles/employee/' + id + "/").then(function(){
+		getEmployeesByShift(shiftId, departmentId);
+	});
+
 }
 
-export function updateEmployee(id, obj){
-	return api.put('/profiles/employee/update/' + id + "/", obj);
+export function getEmployeesByShift(shiftId, departmentId){
+	var employeeParams = {};
+	employeeParams['shift_title'] = shiftId;
+	employeeParams['department'] = departmentId;
+	var employeeQuery = queryStringFromDict(employeeParams);
 
-}
-
-export function deleteEmployee(id){
-	return api.delete('/profiles/employee/' + id + "/");
-
+	return api.get('/profiles/employee/' + employeeQuery).then(function(resp){
+		console.log('Employees', resp.data)
+		store.dispatch({
+			type: 'GET_EMPLOYEES',
+			employees: resp.data
+		})
+	})
 }
 // 		*****************************************
 
@@ -48,7 +70,7 @@ export function deleteEmployee(id){
 
 export function getAreas(){
 	return api.get('/schedules/area/').then(function(resp){
-		console.log('areas', resp.data)
+		// console.log('areas', resp.data)
 		store.dispatch({
 			type: 'GET_AREAS',
 			areas: resp.data
@@ -81,7 +103,7 @@ export function addArea(obj){
 
 export function getShiftStrings(){
 	return api.get('/schedules/shift/template/').then(function(resp){
-		console.log('Shift Strings', resp.data)
+		// console.log('Shift Strings', resp.data)
 		store.dispatch({
 			type: 'GET_SHIFTSTRINGS',
 			shiftStrings: resp.data
@@ -90,14 +112,14 @@ export function getShiftStrings(){
 }
 // promise (.then) refreshes state
 export function deleteShiftString(id){
-	return api.delete('/schedules/area/' + id + '/').then(function(){
+	return api.delete('/schedules/shift/template/' + id + '/').then(function(){
 		getShiftStrings();
 	});
 
 }
 // promise (.then) refreshes state
 export function addShiftString(obj){
-	return api.post('/schedules/area/', obj).then(function(){
+	return api.post('/schedules/shift/template/', obj).then(function(){
 		getShiftStrings();
 	});
 	
@@ -180,87 +202,7 @@ export function createEmployeeShift(employee, type, currentShift, date){
 	return newItem
 }
 
-export function getEmployeeSchedule(date, shiftId, departmentId, clearAll){
-	var workWeekSchedule = [], employees = [], scheduledEmployees = [], weekdays = [], employeeRow = [];
 
-	var weekShiftParams = {};
-	weekShiftParams['date'] = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
-	weekShiftParams['department'] = departmentId;
-	var shiftQuery = queryStringFromDict(weekShiftParams);
-
-	var employeeParams = {};
-	employeeParams['shift_title'] = shiftId;
-	employeeParams['department'] = departmentId;
-	var employeeQuery = queryStringFromDict(employeeParams);
-
-	return api.get('/schedules/weekshift/' + shiftQuery).then(function(resp){
-		workWeekSchedule = ((clearAll) ? [] : resp.data);
-			
-		return api.get('/profiles/employee/' + employeeQuery).then(function(resp){
-			employees = resp.data;
-	
-			getWeekByWeek(date, function(weekdays){
-					weekdays = weekdays;
-					for(var i = 0, n = 0; i < employees.length; i++, n++){
-						scheduledEmployees.push(createEmployeeInfo(employees[i], "nameField"))
-						for(var j = 0; j < 7; j++){
-							var currentShift = checkIfWorking(weekdays[j].calendar_date, employees[i].id);
-							scheduledEmployees.push(createEmployeeShift(employees[i], 'timeField', currentShift, weekdays[j].calendar_date));
-						}
-					}
-			})
-				
-				function checkIfWorking(date, id){
-					for(var i = 0; i < workWeekSchedule.length; i++){
-						if(workWeekSchedule[i].calendar_date === date && workWeekSchedule[i].employee.id === id) {
-							return ((workWeekSchedule[i].starting_time) 
-								? {
-									time: workWeekSchedule[i].starting_time.slice(0, 5),
-									shiftString: createShiftString(workWeekSchedule[i].starting_time, workWeekSchedule[i].end_time),
-									epoch_milliseconds: workWeekSchedule[i].epoch_milliseconds, 
-									station: ((workWeekSchedule[i].station) ? workWeekSchedule[i].station.title : ""),
-									visible: workWeekSchedule[i].visible} 
-
-								: "")
-						}
-					}
-					return ""
-				}
-
-				function checkShiftVisibile(shiftData){
-					// Check shift objects to see if any have visible=false
-					var rows = shiftData;
-					for(let i=0; i < rows.length; i++){
-						var row = rows[i];
-						for (let j=0; j < row.length; j++) {
-							if (row[j].visible == false) {
-								return 'publish';
-							}
-						}
-					}
-					return 'noChanges';}
-
-				// Split array of objects by employee 
-				for(let i = 0; i < employees.length; i++){
-					employeeRow.push(scheduledEmployees.splice(0, 8));
-				}
-
-				var publishStatus = checkShiftVisibile(employeeRow);
-
-				store.dispatch({
-				type: 'CHANGE_PUBLISHBUTTON',
-				publishButton: publishStatus
-				})
-
-				store.dispatch({
-					type: 'GET_EMPLOYEEWEEKLYSCHEDULE',
-					employeeWeeklySchedule: employeeRow
-				})
-				
-		})	
-
-	})
-}
 
 export function getWeekByWeek(date, cb){
 		var abbreviatedDayString = ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"];
@@ -333,9 +275,32 @@ export function setNewSchedule(uniqueId, arr, newScheduleItem) {
 	})
 }
 
-export function clearAllSchedule(array){
-	return api.post('/schedules/shift/many/', array);
+export function clearAllSchedule(array, date, departmentId){
+	return api.post('/schedules/shift/many/', array).then(function(){
+		getShifts(date, departmentId);
+	});
 }
+
+export function getShifts(date, departmentId){
+	var weekShiftParams = {};
+	weekShiftParams['date'] = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+	weekShiftParams['department'] = departmentId;
+	var shiftQuery = queryStringFromDict(weekShiftParams);
+
+	return api.get('/schedules/weekshift/' + shiftQuery).then(function(resp){
+		console.log('Shifts', resp.data)
+		var allShifts = resp.data.reduce(function(o, v, i) {
+			  o['date_' + v.calendar_date + '_employee_id_' + v.employee.id] = v;
+			  return o;
+			}, {});
+		console.log('All Shifts Object', allShifts)
+		store.dispatch({
+			type: 'GET_WEEKSHIFTS',
+			weekShifts: allShifts
+		})
+	})
+}
+
 
 export function sendSingleEmployeeShiftObj(obj){
 	return api.post('/schedules/shift/many/', obj);
@@ -512,4 +477,97 @@ export function autoPopulateSchedule(date, departmentId, method) {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+// export function getEmployeeSchedule(date, shiftId, departmentId, clearAll){
+// 	var workWeekSchedule = [], employees = [], scheduledEmployees = [], weekdays = [], employeeRow = [];
+
+// 	var weekShiftParams = {};
+// 	weekShiftParams['date'] = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+// 	weekShiftParams['department'] = departmentId;
+// 	var shiftQuery = queryStringFromDict(weekShiftParams);
+
+// 	var employeeParams = {};
+// 	employeeParams['shift_title'] = shiftId;
+// 	employeeParams['department'] = departmentId;
+// 	var employeeQuery = queryStringFromDict(employeeParams);
+
+// 	return api.get('/schedules/weekshift/' + shiftQuery).then(function(resp){
+// 		workWeekSchedule = ((clearAll) ? [] : resp.data);
+			
+// 		return api.get('/profiles/employee/' + employeeQuery).then(function(resp){
+// 			employees = resp.data;
+	
+// 			getWeekByWeek(date, function(weekdays){
+// 					weekdays = weekdays;
+// 					for(var i = 0, n = 0; i < employees.length; i++, n++){
+// 						scheduledEmployees.push(createEmployeeInfo(employees[i], "nameField"))
+// 						for(var j = 0; j < 7; j++){
+// 							var currentShift = checkIfWorking(weekdays[j].calendar_date, employees[i].id);
+// 							scheduledEmployees.push(createEmployeeShift(employees[i], 'timeField', currentShift, weekdays[j].calendar_date));
+// 						}
+// 					}
+// 			})
+				
+// 				function checkIfWorking(date, id){
+// 					for(var i = 0; i < workWeekSchedule.length; i++){
+// 						if(workWeekSchedule[i].calendar_date === date && workWeekSchedule[i].employee.id === id) {
+// 							return ((workWeekSchedule[i].starting_time) 
+// 								? {
+// 									time: workWeekSchedule[i].starting_time.slice(0, 5),
+// 									shiftString: createShiftString(workWeekSchedule[i].starting_time, workWeekSchedule[i].end_time),
+// 									epoch_milliseconds: workWeekSchedule[i].epoch_milliseconds, 
+// 									station: ((workWeekSchedule[i].station) ? workWeekSchedule[i].station.title : ""),
+// 									visible: workWeekSchedule[i].visible} 
+
+// 								: "")
+// 						}
+// 					}
+// 					return ""
+// 				}
+
+// 				function checkShiftVisibile(shiftData){
+// 					// Check shift objects to see if any have visible=false
+// 					var rows = shiftData;
+// 					for(let i=0; i < rows.length; i++){
+// 						var row = rows[i];
+// 						for (let j=0; j < row.length; j++) {
+// 							if (row[j].visible == false) {
+// 								return 'publish';
+// 							}
+// 						}
+// 					}
+// 					return 'noChanges';}
+
+// 				// Split array of objects by employee 
+// 				for(let i = 0; i < employees.length; i++){
+// 					employeeRow.push(scheduledEmployees.splice(0, 8));
+// 				}
+
+// 				var publishStatus = checkShiftVisibile(employeeRow);
+
+// 				store.dispatch({
+// 				type: 'CHANGE_PUBLISHBUTTON',
+// 				publishButton: publishStatus
+// 				})
+
+// 				store.dispatch({
+// 					type: 'GET_EMPLOYEEWEEKLYSCHEDULE',
+// 					employeeWeeklySchedule: employeeRow
+// 				})
+				
+// 		})	
+
+// 	})
+// }
 
