@@ -2,7 +2,7 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto:400,300,500);
 
 .eachDay {
-	min-width: 130px;
+	min-width: 100px;
 	width: 14.3%;
 	height: 84px;
 	// line-height: 30px;
@@ -45,10 +45,13 @@
 
 .nameImageBox {
 	display: flex;
+	min-width: 100px;
 	width: 100%;
 	overflow: hidden;
 	padding-top: 5px;
-	font-family: Roboto
+	font-family: 'Roboto', Arial;
+							// border: 1px solid red;
+
 }
 .nameImageBox:first-child img {
 	width: 60px;

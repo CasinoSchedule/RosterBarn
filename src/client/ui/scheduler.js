@@ -2,8 +2,6 @@ import React from 'react';
 import store from 'store';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import SidePanel from 'ui/sidePanel';
-import EmployeeToSchedule from 'ui/employeeToSchedule';
-import EmployeeRow from 'ui/employeeRow';
 import EmployeeInfoForm from 'ui/employeeInfoForm';
 import Confirm from 'ui/confirm';
 import Settings from 'ui/settings';
@@ -148,7 +146,8 @@ export default React.createClass({
 			clearAll.push(
 				{day: week[key].calendar_date, 
 				 employee: week[key].employee.id, 
-				 starting_time: ''}
+				 starting_time: '',
+				 area: null}
 				 )
 		}
 
@@ -216,7 +215,7 @@ export default React.createClass({
 		 	localStorage.getItem("departmentId"),
 		 	method
 		 	);
-		this.refreshCurrentState(this.state.currentDate);
+		// this.refreshCurrentState(this.state.currentDate);
 	},
 	render: function(){
 

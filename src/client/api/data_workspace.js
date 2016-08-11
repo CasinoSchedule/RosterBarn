@@ -73,6 +73,7 @@ export function getWeekByWeek(date){
 				dayString: abbreviatedDayString[weekStartDate.addDays(i).getDay()],
 				javascriptMonthNum: weekStartDate.addDays(i).getMonth(),
 				day: weekStartDate.addDays(i).getDate(),
+				dayIndex: weekStartDate.addDays(i).getDay() + 1,   // Python Index
 				calendar_date: weekStartDate.addDays(i).getFullYear() + "-" + (weekStartDate.addDays(i).getMonth() + 1) + "-" + weekStartDate.addDays(i).getDate(),
 				currentClass: ""
 			}

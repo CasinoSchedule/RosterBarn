@@ -12,7 +12,7 @@
 	background: $greyScheme;
 }
 .weekOfDay {
-	min-width: 120px;
+	min-width: 100px;
 	width: 14.3%;
 	height: 30px;
 	line-height: 30px;
@@ -20,7 +20,7 @@
 	// border-left: 1px solid red;
 	border-right: 1px solid $darkgrey;
 	// color: white;
-	font-family: Arial;
+	font-family: 'Roboto', Arial;
 	font-size: 12px;
 	font-weight: 600;
 	text-transform: uppercase;
@@ -30,7 +30,7 @@
 	font-size: 12px;
 }
 .employee {
-	min-width: 120px;
+	min-width: 100px;
 	width: 14.3%;
 	font-size: 14px;
 	display: flex;

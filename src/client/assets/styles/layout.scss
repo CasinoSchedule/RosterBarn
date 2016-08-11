@@ -51,3 +51,6 @@ html, body, #app, #app > div {
 button {
 	outline: none;
 }
+html {
+	box-sizing: border-box;     // added on 8/10/16
+}
