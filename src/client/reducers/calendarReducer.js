@@ -5,12 +5,20 @@ const calendarInitialState = {
 	collection: [],
 	weeklyCalendar: [],
 	flexbox_size: "",
-	working_today: {}
+	working_today: {},
+	monthlyCalendar: []
 }
 
 export default function(state = calendarInitialState, action){
 
 	switch (action.type) {
+
+		case 'GET_MONTHLYCALENDAR':
+		console.log('hit');
+			return {
+				...state,
+				monthlyCalendar: action.monthlyCalendar
+			}
 
 		case 'GET_CALENDAR':
 			return {

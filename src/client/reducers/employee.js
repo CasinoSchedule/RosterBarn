@@ -1,5 +1,5 @@
 const employeeInitialState = {
-	employeeMonthlySchedule: [],
+	employeeMonthlySchedule: {},
 	employeeInfo: {}
 }
 
