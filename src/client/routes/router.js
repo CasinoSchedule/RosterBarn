@@ -43,6 +43,7 @@ import App from 'layouts/app';
 // import Homepage from 'ui/home';
 import Home from 'ui/home';
 import Calendar from 'ui/calendar';
+import MobileCalendar from 'ui/mobile_calendar';
 import Scheduler from 'ui/scheduler';
 import LandingPage from 'ui/landingPage';
 import employeeSignUp from 'ui/employeeSignUp';
@@ -57,6 +58,7 @@ export default (
       	<Route path='/landingPage' component={LandingPage} />
       	<Route path='/' component={Home} />
       	<Route path='/calendar' component={Calendar} />
+        <Route path='/mobile_calendar' component={MobileCalendar} />
       	<Route path='/scheduler' component={Scheduler} />
         <Route path='/employee/*' component={employeeSignUp} />	
       </Route>

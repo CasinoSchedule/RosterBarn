@@ -4,7 +4,7 @@ import SidePanel from 'ui/sidePanel';
 import EmployeeToSchedule from 'ui/employeeToSchedule';
 import EmployeeInfoForm from 'ui/employeeInfoForm';
 import Confirm from 'ui/confirm';
-import { calendar, getWeekByWeek, getEmployeeSchedule, caltest, addNewEmployee, updateEmployee, sendEmployeeShiftObj } from 'api/data';
+import { calendar, createWeeklyCalendar, getEmployeeSchedule, caltest, addNewEmployee, updateEmployee, sendEmployeeShiftObj } from 'api/data';
 import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import store from 'store';
@@ -25,7 +25,7 @@ const Scheduler = React.createClass({
 	refreshCurrentState: function(){
 		var addOnEndpoint = ((this.props.shiftNum) ? "?shift_title=" + this.props.shiftNum : "");
 		getEmployeeSchedule(year, pythonMonth[month], (date + forward), addOnEndpoint);
-		getWeekByWeek(year, month, date + forward);
+		createWeeklyCalendar(year, month, date + forward);
 	},
 	componentWillMount: function () {
 		this.refreshCurrentState();
@@ -50,7 +50,7 @@ const Scheduler = React.createClass({
 	filterByShift: function(shift, type){
 		var addOnEndpoint = ((shift) ? "?shift_title=" + shift : "");
 		getEmployeeSchedule(year, pythonMonth[month], (date + forward), addOnEndpoint);
-		getWeekByWeek(year, month, date + forward);
+		createWeeklyCalendar(year, month, date + forward);
 		store.dispatch({
 			type: 'CHANGE_SHIFTBOX',
 			shiftColor: type,

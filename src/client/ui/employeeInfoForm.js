@@ -118,16 +118,16 @@ export default React.createClass({
 			regular_days_off: this.state.daysOff || []
 		}, this.props.shiftNum, this.props.departmentId);
 
-		console.log(this.props.info.id, {
-			position_title: this.refs.position_title.getValue() || "",
-			first_name: this.refs.first_name.getValue() || "",
-			last_name: this.refs.last_name.getValue() || "",
-			employee_id: this.refs.employee_id.getValue() || "",
-			email: this.refs.email.getValue() || "",
-			phone_number: this.refs.phone_number_1.getValue() + this.refs.phone_number_2.getValue() + this.refs.phone_number_3.getValue()  || "",
-			availability: [this.state.shift],
-			regular_days_off: this.state.daysOff || []
-		}, this.props.shiftNum, this.props.departmentId);
+		// console.log(this.props.info.id, {
+		// 	position_title: this.refs.position_title.getValue() || "",
+		// 	first_name: this.refs.first_name.getValue() || "",
+		// 	last_name: this.refs.last_name.getValue() || "",
+		// 	employee_id: this.refs.employee_id.getValue() || "",
+		// 	email: this.refs.email.getValue() || "",
+		// 	phone_number: this.refs.phone_number_1.getValue() + this.refs.phone_number_2.getValue() + this.refs.phone_number_3.getValue()  || "",
+		// 	availability: [this.state.shift],
+		// 	regular_days_off: this.state.daysOff || []
+		// }, this.props.shiftNum, this.props.departmentId);
 
 		store.dispatch({
 			type: 'CHANGE_SHOWFORM',

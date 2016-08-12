@@ -4,12 +4,12 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import CallIn from 'ui/callIn';
 import SidePanel from 'ui/sidePanel';
 import {Link, browserHistory} from 'react-router';
-import { getEmployeeSchedule, calendar, logout } from 'api/data';
+import { calendar, logout } from 'api/data';
 import Cookie from 'js-cookie';
 
 
 require("assets/styles/calendar.scss");
-var image = require("assets/images/ariawhite.png");
+// var image = require("assets/images/ariawhite.png");
 require('font-awesome-webpack');
 var $ = require('jquery');
 
@@ -39,7 +39,8 @@ export default React.createClass({
 			working: false,
 			working_bool: true,
 			starting_time: "",
-			request: ""
+			request: "",
+			message: ''
 		})
 	},
 	componentWillMount: function(){
@@ -173,13 +174,13 @@ export default React.createClass({
 					 	<span className="roster"><span className="letter">R</span>oster</span><span className="barn"><span className="">B</span>arn</span>
 					</div>
 					<div id="imageContainer">
-						<img src={image}/>
+						{/* <img src={image}/>     // Was Aria Logo   */}
 					</div>
 					<div className="employeeLogout" onClick={this.logout}>
 						Logout
 					</div>
 				</div>
-				<div className="calenderFlex">
+				<div className="calendarFlex">
 
 					<div className="cal">
 						<div className="header">
@@ -202,6 +203,7 @@ export default React.createClass({
 									<div key ={i} className={"box " + item.currentClass} id={"box" + i} onClick={this.selectDay.bind(this, item, i)}>
 										<p>{item.day}</p>
 										<p id="startTime">{item.starting_time}</p>
+									
 									</div>
 								)
 							}.bind(this))} 	
@@ -223,10 +225,10 @@ export default React.createClass({
 						</div>
 						<div className="divider"></div>
 						<div className="dayOptions">
-							<a href="" onClick={this.callIn} id="call_in">Call In</a>
-							<a href="" onClick={this.callIn} id="early_out">Early Out</a>
-							<a href="" onClick={this.callIn} id="switch_shift">Shift Switch</a>
-							<a href="" onClick={this.callIn} id="shift_giveaway">Shift Giveaway</a>
+							<div><a href="" onClick={this.callIn} id="call_in">Call In</a></div>
+							<div><a href="" onClick={this.callIn} id="early_out">Early Out</a></div>
+							<div><a href="" onClick={this.callIn} id="switch_shift">Shift Switch</a></div>
+							<div><a href="" onClick={this.callIn} id="shift_giveaway">Shift Giveaway</a></div>
 						</div>
 					</div>
 				</div>

@@ -143,7 +143,7 @@ export function getShifts(date, departmentId){
 			  o['date_' + v.calendar_date + '_employee_id_' + v.employee.id] = v;
 			  return o;
 			}, {});
-		console.log('All Shifts Object', allShifts)
+		// console.log('All Shifts Object', allShifts)
 		store.dispatch({
 			type: 'GET_WEEKSHIFTS',
 			weekShifts: allShifts
@@ -213,7 +213,7 @@ export function addShiftString(obj){
 
 // 			**********     Build Calendars     **********
 
-export function getWeekByWeek(date){
+export function createWeeklyCalendar(date){
 		var abbreviatedDayString = ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"];
 		var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 		var dayIndex = date.getDay();
@@ -347,7 +347,7 @@ export function calendar(month, year, monthdate, employee){
 				collection.push(collectionDate(start_day.addDays(i), 'inactiveMonth'));
 			}
 			else{
-				collection.push(collectionDate(start_day.addDays(i), ""));
+				collection.push(collectionDate(start_day.addDays(i), "activeMonth"));
 			}
 		}
 

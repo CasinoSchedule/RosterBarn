@@ -27,12 +27,13 @@ $peach: #EB7260;
 	// border: 3px solid yellow;
 }
 
-.calenderFlex {
+.calendarFlex {
 	display: flex;
-	flex-wrap: nowrap;
+	// flex-wrap: nowrap;
 	width: 80%;
+	height: 80%;
 	margin: 15px 15%;  
-	// border: 1px solid red;
+										 // border: 2px solid red;
 	// margin-top: 5%;
 	// margin-left: 25%;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -80,7 +81,11 @@ $peach: #EB7260;
 	display: flex;
 	flex-direction: column;
 	width: 70%;
+	height: auto;
+	overflow-x: auto;
+	overflow-y: scroll;
 	border: 1px solid $darkgrey;
+										// border: 3px solid yellow;
 }
 .header, .days {
 	display: flex;
@@ -131,16 +136,20 @@ $peach: #EB7260;
 	height: 40px;
 	line-height: 40px;
 	justify-content: space-around;
+										// border: 3px solid blue;
+
 }
 .days > * {
 	// border-right: 1px solid black;
 	width: 14.3%;
 	text-align: center;
+										// border: 3px solid blue;
 }
 .date {
 	width: 100%;
 	min-height: 200px;
-	// border: 3px solid red;
+	height: 100%;
+										// border: 3px solid green;
 	display: flex;
 	flex-wrap: wrap;
 	cursor: pointer;
@@ -150,7 +159,8 @@ $peach: #EB7260;
 	flex-direction: column;
 	justify-content: space-between;
 	width: 30%;
-	// border: 1px solid green;
+	height: 100%;
+										// border: 3px solid orange;
 }
 .headerDay {
 	// border: 1px solid pink;
@@ -167,7 +177,7 @@ $peach: #EB7260;
 .currentDay {
 	height: 180px;
 	
-	// border: 1px solid orange;
+										// border: 1px solid orange;
 	
 	text-align: center;
 	
@@ -199,32 +209,37 @@ $peach: #EB7260;
 	// border: 1px solid black;
 	padding-left: 55px;
 }
-.dayOptions > * {
+.dayOptions > div > a {
 	text-decoration: none;
 	display: block;
 	margin-top: 15px;
 	color: $bluetheme;
 }
-.dayOptions > *:hover {
+.dayOptions > div > a:hover {
 	
 	color: $purpletheme;
 }
-.dayOptions > *:before {
+.dayOptions > div > a:before {
 	
 	content: "> ";
 }
 .box {
 	width: 14.285%;
-	height: 80px;
+	min-height: 60px;
+	height: 20%;
 	border-right: 1px solid $darkgrey;
 	border-top: 1px solid $darkgrey;
 	color: $bluetheme;
 	padding: 5px;
+											// border: 1px solid orange;
 }
 .box p:nth-child(2) {
 	color: $darkgrey;
+	width: 100%;
 	font-size: 12px;
-	margin: 5px 0 0 30px;
+	// margin: 5px 0 0 30px;
+	text-align: center;
+	margin-top: 10px;
 }
 .divider {
 	width: 80%;
@@ -233,7 +248,7 @@ $peach: #EB7260;
 }
 .status {
 	height: 80px;
-	// border: 1px solid red;
+								// border: 1px solid red;
 	text-align: center;
 	font-size: 16px;
 	font-family: Arial;
@@ -251,6 +266,95 @@ $peach: #EB7260;
 	// text-shadow:1px 1px 0 #000;
 	font-size: 10px;
 }
+.activeMonth {
+	background: #f9f9f9;
+}
 #startTime {
 	color: $purpletheme;
+}
+
+@media screen and (max-height: 635px), screen and (max-width: 1000px) {
+	body {
+		background: url('../images/bluebg.jpg') no-repeat center center fixed;
+		background-size: cover;
+		height: 100%;
+		width: 100%;
+	}
+	.scheduleBg {
+		height: auto;
+	}
+	.calendarFlex {
+		display: block;
+		width: 95%;
+		margin: 0 auto;
+	}
+	.cal {
+		width: 100%;
+	}
+	.header, .headerDay {
+		height: 50px;
+		line-height: 50px;
+		font-size: 18px;
+	}
+	 
+	.dayOf {
+		width: 100%;
+		background: #f9f9f9;
+		height: 350px;
+								// border: 1px solid red;
+	}
+	.dayOptions {
+		display: flex;
+		justify-content: space-around;
+		height: 40px;
+	}
+	.dayOptions > div > a {
+		text-decoration: none;
+		font-size: 12px;
+		display: block;
+		margin-top: 15px;
+		color: $bluetheme;
+	}
+	.currentDay {
+		height: 60px;
+
+							// border: 1px solid orange;
+	}
+	.currentDay p {
+		font-size: 34px;
+		color: #336eb5;
+		height: 40px;
+		line-height: 40px;
+		padding-top: 10px;
+	}
+	.currentDay p:nth-child(2) {
+		font-size: 18px;
+		color: #336eb5;
+		height: 20px;
+		line-height: 20px;
+	}
+	.currentDay p:nth-child(3) {
+		margin: 5px 0 0 0;
+		font-size: 14px;
+		height: 20px;
+		line-height: 20px;
+		color: $darkgrey;
+		
+	}
+	.status {
+		height: 20px;
+	}
+	.box {
+		height: 40px;
+		font-size: 10px;
+	}
+	.box p:nth-child(2) {
+		color: $darkgrey;
+		width: 100%;
+		font-size: 11px;
+		// margin: 5px 0 0 30px;
+		text-align: center;
+		margin-top: 10px;
+	}
+
 }

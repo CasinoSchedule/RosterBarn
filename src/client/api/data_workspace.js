@@ -3,87 +3,166 @@ import store from 'store';
 import { v4 } from 'uuid';
 
 
-export function queryStringFromDict(dict) {
-	// Takes an object of query params and returns a query string.
-	var valuesArray = [];
-	for(var key in dict) {
-		if(dict[key]) {
-			valuesArray.push(String(key) + '=' + String(dict[key]))
+// var day = function createCalendarDays(date){
+// 	let day = {
+// 		this.calendar_date: 
+// 	}
+// }
+
+export function createMonthlyCalendar(date){
+	let month = date.getMonth();
+	let year = date.getFullYear();
+	let daysInMonth = new Date(year, month, 0).getDate();
+	let firstDayOfMonth = new Date(year, month, 1).getDay();
+	let lastDayOfMonth = new Date(year, month, daysInMonth).getDay();
+	let calendarStartDay = ((firstDayOfMonth) ? -(firstDayOfMonth) : 0);
+	let endDay = 5 - lastDayOfMonth;
+	let totalCalendarDays = Math.abs(calendarStartDay) + daysInMonth + endDay;
+	let startDate = new Date(year, month, 1);
+	let calendarDays = [];
+	
+
+	for(let i = calendarStartDay, n = 0; i < totalCalendarDays; i++, n++){
+		calendarDays[n] = {
+			calendar_date: startDate.addDays(i).getFullYear() + "-" + (startDate.addDays(i).getMonth() + 1) + "-" + startDate.addDays(i).getDate(),
+			days: startDate.addDays(i),
+			currentClass: ((i < 0 || i >= daysInMonth) ? 'inactiveMonth' : 'activeMonth')
 		}
 	}
-	if(valuesArray.length > 0){
-		return '?' + valuesArray.join('&');
-	}
-	else{
-		return '';
-	}
+
+	console.log(calendarDays);
 }
 
-export function getShifts(date, departmentId){
-	var weekShiftParams = {};
-	weekShiftParams['date'] = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
-	weekShiftParams['department'] = departmentId;
-	var shiftQuery = queryStringFromDict(weekShiftParams);
+export function getEmployeeMonthlySchedule(date){
+	let month = date.getMonth() + 1;
+	let year = date.getFullYear();
+	return api.get('/schedules/employeemonth/?month=' + month + '&year=' + year).then(function(resp){
+		console.log(resp.data)
+	});
+}
 
-	return api.get('/schedules/weekshift/' + shiftQuery).then(function(resp){
-		console.log('Shifts', resp.data)
-		var allShifts = resp.data.reduce(function(o, v, i) {
-			  o['date_' + v.calendar_date + '_employee_id_' + v.employee.id] = v;
-			  return o;
-			}, {});
-		console.log('All Shifts Object', allShifts)
-		store.dispatch({
-			type: 'GET_WEEKSHIFTS',
-			weekShifts: allShifts
-		})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+export function stringDate(date) {
+	return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+}
+
+export function working_today(scheduleInfo){
+	var start_time = ""
+	scheduleInfo.forEach(function(item, i){
+		if(item.day === new Date().getDate() && item.javascriptMonthNum === new Date().getMonth()){
+			start_time = item.starting_time
+		}
 	})
+	return start_time || ""
 }
 
-export function getEmployeesByShift(shiftId, departmentId){
-	var employeeParams = {};
-	employeeParams['shift_title'] = shiftId;
-	employeeParams['department'] = departmentId;
-	var employeeQuery = queryStringFromDict(employeeParams);
-
-	return api.get('/profiles/employee/' + employeeQuery).then(function(resp){
-		console.log('Employees', resp.data)
-		store.dispatch({
-			type: 'GET_EMPLOYEES',
-			employees: resp.data
-		})
-	})
-}
-
-export function getWeekByWeek(date){
-		var abbreviatedDayString = ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"];
+export function calendar(month, year, monthdate, employee){
+	console.log('Init', month, year, monthdate);
+	
 		var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-		var dayIndex = date.getDay();
-		var dumbWay = [-6, 0, -1, -2, -3, -4, -5];
-		var smartWay = (dayIndex + 6) % 7;
-		var daysToNearestMonday = dumbWay[dayIndex];
-		var weekStartDate = date.addDays(daysToNearestMonday);
-		var weekDays = [];
-		
+		var month = monthdate - 1;
+		var preceding_days = new Date(year, month, 1).getDay();
+		var	month_count = new Date(year, month+1, 0).getDate();
+		var	trailing_days = 42 - month_count - preceding_days;
+		var start_day = new Date(year, month, 1).subtractDays(preceding_days);
+		var collection = [];
 
-		for(let i = 0; i < 7; i++){
-			weekDays[i] = {
-				uniqueId: v4(),
-				year: weekStartDate.addDays(i).getFullYear(),
-				monthString: months[weekStartDate.addDays(i).getMonth()],
-				dayString: abbreviatedDayString[weekStartDate.addDays(i).getDay()],
-				javascriptMonthNum: weekStartDate.addDays(i).getMonth(),
-				day: weekStartDate.addDays(i).getDate(),
-				dayIndex: weekStartDate.addDays(i).getDay() + 1,   // Python Index
-				calendar_date: weekStartDate.addDays(i).getFullYear() + "-" + (weekStartDate.addDays(i).getMonth() + 1) + "-" + weekStartDate.addDays(i).getDate(),
-				currentClass: ""
+		function collectionDate(date, type) {
+			var newItem = {
+				calendar_date: stringDate(date),
+				currentClass: type,
+				day: date.getDate(),
+				month: months[date.getMonth()],
+				year: date.getFullYear(),
+				javascriptMonthNum: date.getMonth()
+			};
+			return newItem;
+		}
+
+		for(var i=0; i < 42; i++) {
+			if(i < preceding_days || i >= 42 - trailing_days){
+				collection.push(collectionDate(start_day.addDays(i), 'inactiveMonth'));
+			}
+			else{
+				collection.push(collectionDate(start_day.addDays(i), "activeMonth"));
 			}
 		}
 
-		store.dispatch({
-			type: 'GET_WEEKLYCALENDAR',
-			weeklyCalendar: weekDays
-		})
-		console.log('weeklyCalendar', weekDays)
+		// console.log('collection', collection);
 
+		if (employee){
+
+		 return api.get('/schedules/employeemonth/?month=' + monthdate + '&year=' + year).then(function(resp){
+
+		 	var data = resp.data;
+
+			var scheduleInfo = collection.map(function(item, i){
+					return ({
+						year: item.year,
+						month: item.month,
+						day: item.day,
+						calendar_date: item.calendar_date,
+						currentClass: item.currentClass,
+						javascriptMonthNum: item.javascriptMonthNum,
+						starting_time: checkSchedule(item.calendar_date)
+					})
+				})
+
+			var working = working_today(scheduleInfo);
+
+				store.dispatch({
+					type: 'GET_DATEOBJECTS',
+					collection: scheduleInfo,
+					working_today: working
+				})
+
+				// console.log('scheduleInfo', scheduleInfo);
+
+				console.log("Working Today From Calendar Function:", working);
+
+
+				// ampm function can be used here. Try out when employee side is refactored. 
+
+				function checkSchedule(check){
+					var hour_time_check = 0;
+					for(var i = 0; i < data.length; i++){
+						if(data[i].calendar_date === check) {
+							if(data[i].starting_time){
+								hour_time_check = parseInt(data[i].starting_time.slice(0, 2));
+								if(hour_time_check === 12){
+									return data[i].starting_time.slice(0, 5) + "pm";
+								} else if(hour_time_check < 12) {
+									return data[i].starting_time.slice(0, 5) + "am"
+								} else {
+									hour_time_check = hour_time_check - 12
+									return hour_time_check + ":" + data[i].starting_time.slice(3, 5) + "pm"
+								}
+							}
+							else {
+								return ""
+							}
+						}
+					}
+				}
+		
+		})} else { 
+
+			store.dispatch({
+				type: 'GET_DATEOBJECTS',
+				collection: collection
+			})}
 }
 

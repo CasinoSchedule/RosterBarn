@@ -5,7 +5,9 @@ import SidePanel from 'ui/sidePanel';
 import EmployeeInfoForm from 'ui/employeeInfoForm';
 import Confirm from 'ui/confirm';
 import Settings from 'ui/settings';
-import { addNewEmployee, deleteEmployee, getEmployeeSchedule, updateEmployee, clearAllSchedule, logout, getAreas, getShiftStrings, autoPopulateSchedule } from 'api/data';
+import { addNewEmployee, deleteEmployee, getEmployeeSchedule, updateEmployee, 
+		clearAllSchedule, logout, getAreas, getShiftStrings, autoPopulateSchedule, 
+		getWeekByWeek, getShifts, getEmployeesByShift } from 'api/data';
 import { browserHistory } from 'react-router';
 import {v4} from 'uuid';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -14,7 +16,7 @@ import Cookie from 'js-cookie';
 import AdminHeader from 'ui/adminHeader';
 import AdminWeekdayHeader from 'ui/adminWeekdayHeader';
 import AdminWeekHeader from 'ui/adminWeekHeader';
-import { getWeekByWeek, getShifts, getEmployeesByShift } from 'api/data_workspace';
+// import { getWeekByWeek, getShifts, getEmployeesByShift } from 'api/data_workspace';
 import Workday from 'ui/workday';
 
 

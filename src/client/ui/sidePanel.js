@@ -1,7 +1,7 @@
 import React from 'react';
 import store from 'store';
 import { Link, browserHistory } from 'react-router';
-import { calendar, publish, getEmployeeSchedule, getWeekByWeek } from 'api/data';
+import { calendar, publish, getEmployeeSchedule, createWeeklyCalendar } from 'api/data';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import DatePicker from 'material-ui/DatePicker';
 
@@ -104,7 +104,7 @@ export default React.createClass({
 		var date = new Date(item.year, item.javascriptMonthNum, item.day)
 		console.log(date);
 		getEmployeeSchedule(date);
-		getWeekByWeek(date);
+		createWeeklyCalendar(date);
 	},
 	shiftFilter: function(e){
 		var val = e.target.id[1];
