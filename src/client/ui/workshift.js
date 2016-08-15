@@ -51,6 +51,14 @@ export default React.createClass({
 				area: this.state.area || ''
 			
 			}])
+
+			console.log([{
+				day: this.props.eachday.calendar_date,
+				employee: this.props.employee.id,
+				starting_time: value,
+				area: this.state.area || ''
+			
+			}])
 		}
 	},
 	handleAreaChange: function(e, index, value){
@@ -119,7 +127,7 @@ export default React.createClass({
 							)
 						}.bind(this))}
 
-						<MenuItem key={v4()} value={1001} primaryText="Add Location" />
+						<MenuItem key={v4()} value={1001} primaryText="Add/Delete Location" />
 
 		        	</SelectField> 
 	        	</div>

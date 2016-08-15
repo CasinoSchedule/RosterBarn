@@ -66,7 +66,7 @@ export default React.createClass({
 
 				<div className="printClearContainer">
 
-				<FlatButton
+					<FlatButton
 			          onTouchTap={this.handleTouchTap}
 			          label="Auto-populate"
 			          primary={true}

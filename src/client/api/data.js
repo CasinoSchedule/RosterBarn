@@ -20,7 +20,9 @@ Date.prototype.subtractDays = function(days){
     return dat;
 }
 
-
+const abbreviatedDayString = ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"];
+const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+		
 
 export function login(user, pass) {
   return api.login(user, pass);
@@ -246,6 +248,39 @@ export function createWeeklyCalendar(date){
 
 }
 
+export function createMonthlyCalendar(date){
+	let month = date.getMonth();
+	let year = date.getFullYear();
+	let daysInMonth = new Date(year, month, 0).getDate();
+	let firstDayOfMonth = new Date(year, month, 1).getDay();
+	let lastDayOfMonth = new Date(year, month, daysInMonth).getDay();
+	let calendarStartDay = ((firstDayOfMonth) ? -(firstDayOfMonth) : 0);
+	let endDay = 6 - lastDayOfMonth;
+	let totalCalendarDays = Math.abs(calendarStartDay) + daysInMonth + endDay;
+	let startDate = new Date(year, month, 1);
+	let calendarDays = [];
+
+	for(let i = calendarStartDay, n = 0; n < totalCalendarDays; i++, n++){
+		calendarDays[n] = {
+			calendar_date: startDate.addDays(i).getFullYear() + "-" + (startDate.addDays(i).getMonth() + 1) + "-" + startDate.addDays(i).getDate(),
+			days: startDate.addDays(i),
+			year: startDate.addDays(i).getFullYear(),
+			month: startDate.addDays(i).getMonth(),
+			day: startDate.addDays(i).getDate(),
+			currentClass: ((i < 0 || i >= daysInMonth) ? 'inactiveMonth' : 'activeMonth'),
+			fullDateString: months[startDate.addDays(i).getMonth()] + ' ' + startDate.addDays(i).getDate() + ', ' + startDate.addDays(i).getFullYear()
+		}
+	}
+
+	store.dispatch({
+		type: 'GET_MONTHLYCALENDAR',
+		monthlyCalendar: calendarDays
+	})
+
+	console.log(calendarDays);
+}
+
+
 // 			*****************************************
 
 
@@ -457,7 +492,9 @@ export function autoPopulateSchedule(date, departmentId, method) {
 		"department": departmentId,
 		"method": method
 	}
-	return api.post('schedules/auto/', obj);
+	return api.post('schedules/auto/', obj).then(function(){
+		getShifts(date, departmentId);
+	});
 }
 
 

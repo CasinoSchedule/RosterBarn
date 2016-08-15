@@ -11,13 +11,12 @@ export function createMonthlyCalendar(date){
 	let firstDayOfMonth = new Date(year, month, 1).getDay();
 	let lastDayOfMonth = new Date(year, month, daysInMonth).getDay();
 	let calendarStartDay = ((firstDayOfMonth) ? -(firstDayOfMonth) : 0);
-	let endDay = 5 - lastDayOfMonth;
+	let endDay = 6 - lastDayOfMonth;
 	let totalCalendarDays = Math.abs(calendarStartDay) + daysInMonth + endDay;
 	let startDate = new Date(year, month, 1);
 	let calendarDays = [];
-	
 
-	for(let i = calendarStartDay, n = 0; i < totalCalendarDays; i++, n++){
+	for(let i = calendarStartDay, n = 0; n < totalCalendarDays; i++, n++){
 		calendarDays[n] = {
 			calendar_date: startDate.addDays(i).getFullYear() + "-" + (startDate.addDays(i).getMonth() + 1) + "-" + startDate.addDays(i).getDate(),
 			days: startDate.addDays(i),

@@ -1,23 +1,40 @@
-const calendarInitialState = {
-	year: new Date().getFullYear(),
-	month: new Date().getMonth(),
-	calendarDays: [],
-	collection: [],
-	weeklyCalendar: [],
-	flexbox_size: "",
-	working_today: {},
-	monthlyCalendar: []
+var year = new Date().getFullYear(), month = new Date().getMonth(), day = new Date().getDate()
+
+var calendarInitialState = {
+	// year: year,
+	// month: month,
+	// calendarDays: [],
+	// collection: [],
+	// weeklyCalendar: [],
+	// flexbox_size: "",
+	// working_today: {},
+	monthlyCalendar: [],
+	message: '',
+	selected: year + '-' + (month + 1) + '-' + day
 }
 
 export default function(state = calendarInitialState, action){
 
 	switch (action.type) {
 
+		
+
 		case 'GET_MONTHLYCALENDAR':
-		console.log('hit');
 			return {
 				...state,
 				monthlyCalendar: action.monthlyCalendar
+			}
+
+		case 'CHANGE_MESSAGE':
+			return {
+				...state,
+				message: action.message
+			}
+
+		case 'SELECTED':
+			return {
+				...state,
+				selected: action.selected
 			}
 
 		case 'GET_CALENDAR':
@@ -76,7 +93,6 @@ export default function(state = calendarInitialState, action){
 				working_today: state.working_today
 			}
 		case 'USER_LOGOUTS':
-		console.log('Calendar reducer', calendarInitialState);
 			return calendarInitialState
 
 	default:

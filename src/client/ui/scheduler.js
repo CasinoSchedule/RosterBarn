@@ -7,7 +7,7 @@ import Confirm from 'ui/confirm';
 import Settings from 'ui/settings';
 import { addNewEmployee, deleteEmployee, getEmployeeSchedule, updateEmployee, 
 		clearAllSchedule, logout, getAreas, getShiftStrings, autoPopulateSchedule, 
-		getWeekByWeek, getShifts, getEmployeesByShift } from 'api/data';
+		createWeeklyCalendar, getShifts, getEmployeesByShift } from 'api/data';
 import { browserHistory } from 'react-router';
 import {v4} from 'uuid';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -82,7 +82,7 @@ export default React.createClass({
 		var departmentId = localStorage.getItem("departmentId");
 		var shiftId = ((shiftId) ? shiftId : this.state.shiftNum);
 		// getEmployeeSchedule(date, shiftId, departmentId, clearAll);
-		getWeekByWeek(date);
+		createWeeklyCalendar(date);
 		getEmployeesByShift(shiftId, departmentId)
 		getShifts(date, departmentId);
 		getShiftStrings();
@@ -217,6 +217,11 @@ export default React.createClass({
 		 	localStorage.getItem("departmentId"),
 		 	method
 		 	);
+
+			store.dispatch({
+				type: 'CHANGE_PUBLISHBUTTON',
+				publishButton: "publish"
+			})
 		// this.refreshCurrentState(this.state.currentDate);
 	},
 	render: function(){
