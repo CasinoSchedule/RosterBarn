@@ -1,7 +1,7 @@
 import React from 'react';
 import Options from 'ui/options';
 
-require("assets/styles/adminHeader.scss");
+require("assets/styles/calendarHeader.scss");
 
 export default React.createClass({
 	render: function(){
@@ -12,7 +12,7 @@ export default React.createClass({
 				</div>
 				<div className="adminHeaderContainer">
 					<div className="departmentTitleTag">{localStorage.getItem("departmentTitle")}</div>
-					<div className="headerOptions">
+					<div className="calendarOptions">
 						<div className="logout" onClick={this.props.logout} ><i className="fa fa-sign-out" aria-hidden="true"></i>Logout</div>
 					</div>
 				</div>

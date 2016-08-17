@@ -1,7 +1,10 @@
 import React from 'react';
+import LogoText from 'ui/logoText';
 import { browserHistory } from 'react-router';
 
 require('assets/styles/landingPage.scss');
+var image = require('assets/images/iphoneWBorder.png');
+
 
 export default React.createClass({
 	login: function(e){
@@ -11,16 +14,21 @@ export default React.createClass({
 	render: function(){
 		return (
 			<div className="landingPageContainer">
-				<div className="adminHeader">
-					<div>
-					 <span className="roster"><span className="letter">R</span>oster</span><span className="barn"><span className="">B</span>arn</span>
+			<div className='landingPageHeader'>
+				
+			</div>
+				<div className='homeImageContainer'>
+					{/* <div className='logoPosition'>
+						<LogoText />
 					</div>
-					<div className="landingPageHeaderOptions">
-						<div className="logout" onClick={this.login} ><i className="fa fa-sign-in" aria-hidden="true"></i>Login</div>
-					</div>
-				</div> 
-				<div className="workImageContainer">
 					
+					<div className='pitchText'>
+						<div>When what you have</div>
+						<div className='indentText'>Needs more than a little Polish</div>
+					</div> */}
+				</div>
+				<div className='iphoneBox'>
+				<div className='iphoneContainer'><img src={image}/></div>
 				</div>
 			</div>
 		)

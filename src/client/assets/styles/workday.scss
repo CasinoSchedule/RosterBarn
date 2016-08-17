@@ -1,0 +1,11 @@
+@import './variables';
+
+
+
+.mapContainer {
+	display: flex;
+	width: 100%;
+	min-width: 840px; 
+				// border: 10px solid black;
+	box-sizing: border-box;
+}

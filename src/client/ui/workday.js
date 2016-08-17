@@ -5,12 +5,12 @@ import Workshift from 'ui/workshift';
 import MenuItem from 'material-ui/MenuItem';
 import SelectField from 'material-ui/SelectField';
 
-require('assets/styles/workshift.scss');
+require('assets/styles/workday.scss');
 
 export default React.createClass({
 	render: function(){
 		return (
-			<div style={{display: 'flex', width: '100%'}}>
+			<div className='mapContainer'>
 				
 				{this.props.weeklyCalendar.map(function(eachday, i){
 					let idToCheck = 'date_' + eachday.calendar_date + '_employee_id_' + this.props.employee.id;

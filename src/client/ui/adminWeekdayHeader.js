@@ -1,5 +1,6 @@
 import React from 'react';
 import {v4} from 'uuid';
+import LogoText from 'ui/logoText';
 
 require('assets/styles/adminWeekdayHeader.scss');
 

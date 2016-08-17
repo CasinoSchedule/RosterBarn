@@ -5,17 +5,19 @@
 	min-width: 100px;
 	width: 14.3%;
 	height: 84px;
+	// flex-grow: 1;
 	// line-height: 30px;
 	border: 1px solid #f4f4f4;
 	overflow: hidden;
 	padding-left: 10px;
-							// border: 2px solid green;
+							// border: 2px solid red;
+	box-sizing: border-box;
 }
 
 .employeeFlex {
 	display: flex;
 	flex-wrap: nowrap;
-			border: 1px solid red;
+			border: 10px solid black;
 	width: 1000px;
 	height: 50px;
 	margin: 50px auto;
@@ -27,7 +29,7 @@
     // white-space: nowrap;
 	padding-left: 10px;
 	margin-top: 5px;
-	// border: 1px solid yellow;
+										// border: 10px solid yellow;
 }
 .idNum {
 	font-size: 12px;
@@ -45,12 +47,14 @@
 
 .nameImageBox {
 	display: flex;
-	min-width: 100px;
-	width: 100%;
+	// flex-grow: 1;
+	min-width: 140px;
+	width: 12.5%;
 	overflow: hidden;
 	padding-top: 5px;
 	font-family: 'Roboto', Arial;
-							// border: 1px solid red;
+							// border: 5px solid lightBlue;
+	box-sizing: border-box;
 
 }
 .nameImageBox:first-child img {

@@ -59,8 +59,6 @@ export default React.createClass({
 		this.refreshCurrentState(new Date());
 	},
 	componentDidMount: function(){
-		console.log('selected', this.state.selected);
-		console.log('today', this.state.today);
 		getTodaysSchedule(d, function(time, area, message, bool, epoch){
 			this.setState({
 				time: time,
@@ -91,7 +89,7 @@ export default React.createClass({
 		this.handleDateChange(-30);
 	},
 	updateDayContainer: function(day, shifttime, area, epoch){
-		console.log('Update', day, shifttime, area);
+		// console.log('Update', day, shifttime, area);
 		this.checkDate(day, shifttime, epoch);
 		this.setState({
 			day: day.day,
@@ -133,9 +131,9 @@ export default React.createClass({
 			})
 		}
 	},
-	callin: function(){
-		
-	},
+	// earlyOut: function(epoch){
+	// 	if(epoch > d.getTime() && (epoch - d.getTIme()) > (4 * 60 * 60 * 1000))
+	// },
 	logout: function(){
 		logout();
 		Cookie.remove('token');
@@ -148,7 +146,10 @@ export default React.createClass({
 	render: function(){
 		return (
 			<div className='mobileCalendar'>
-				<CalendarHeader />
+
+				<CalendarHeader 
+					logout={this.logout}/>
+					
 					<div className='calendarFrame'>
 						<div className='calendarFrameContainer'>
 							

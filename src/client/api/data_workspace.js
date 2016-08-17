@@ -18,7 +18,7 @@ export function getEmployeeMonthlySchedule(date){
 			employeeMonthlySchedule: allShifts
 		})
 		console.log('allShifts', allShifts)
-		// getTodaysSchedule(date);
+
 	});
 }
 
@@ -32,8 +32,6 @@ export function getTodaysSchedule(date, cb){
 	return api.get('/schedules/employeemonth/?month=' + month + '&year=' + year).then(function(resp){
 		resp.data.forEach(function(shift){
 			if(calendar_date === shift.calendar_date){
-				console.log('Todays Shift', shift);
-				console.log('Todays Shift', shift.area.title);
 				time = shift
 			}
 

@@ -22,7 +22,7 @@ export default React.createClass({
 							shiftArea={((areaTitle) ? areaTitle.title : '')} 
 							updateDayContainer={this.props.updateDayContainer}
 							selected={this.props.selected}
-							highlight={((this.props.selected === each.calendar_date) ? 'highlight' : 'none')}
+							highlight={((this.props.selected === each.calendar_date) ? 'highlight' : 'none')} 
 							/>
 					)
 				}.bind(this))}

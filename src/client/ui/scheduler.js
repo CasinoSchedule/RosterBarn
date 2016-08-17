@@ -272,15 +272,15 @@ export default React.createClass({
 								return (
 										<div key={v4()} className='eachRowNew'>
 											
-											<div className='eachDay'>
-											<div className="nameImageBox">
-												<div><img src={employee.photo_url} onClick={this.handleClick.bind(this, employee)} /></div>
-												<div className="nameIdBox">
-													<div className='nameField'>{employee.first_name} {employee.last_name}</div> 
-													<div className="idNum">{employee.employee_id}</div>
+											
+												<div className="nameImageBox">
+													<div><img src={employee.photo_url} onClick={this.handleClick.bind(this, employee)} /></div>
+													<div className="nameIdBox">
+														<div className='nameField'>{employee.first_name} {employee.last_name}</div> 
+														<div className="idNum">{employee.employee_id}</div>
+													</div>
 												</div>
-											</div>
-										</div>
+											
 										
 										<Workday
 											key={index}

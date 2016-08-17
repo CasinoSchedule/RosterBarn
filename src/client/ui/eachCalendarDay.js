@@ -5,6 +5,9 @@ require('assets/styles/eachCalendarDay.scss');
 
 
 export default React.createClass({
+	// componentDidMount: function(){
+	// 	console.log('days off', this.props.daysOff)
+	// },
 	handleClick: function(){
 		var day = this.props;
 		this.props.updateDayContainer(day.each, day.shiftTimeString, day.shiftArea, day.epoch);

@@ -88,8 +88,9 @@ export default React.createClass({
 						fullWidth={true} 
 						value={this.state.starting_time} 
 						onChange={this.handleTimeChange} 
-						style={{height: '42px', top: '-3px', fontSize: '12px', fontWeight: '600', whiteSpace: 'nowrap', paddingLeft: '10px'}}
-						labelStyle={{lineHeight: '25px', top: '10px'}}>
+						style={{height: '42px', top: '-3px', fontSize: '12px', fontWeight: '600', whiteSpace: 'nowrap', paddingLeft: '10px', width: '120px'}}
+						labelStyle={{lineHeight: '25px', top: '10px'}}
+						menuStyle={{width: '180px'}}>
 						
 
 						{this.props.shiftStrings.map(function(item, i){
@@ -111,8 +112,9 @@ export default React.createClass({
 					 	fullWidth={true}
 						value={this.state.area} 
 						onChange={this.handleAreaChange} 
-						style={{height: '42px', top: '-15px', fontSize: '12px', fontWeight: '600', whiteSpace: 'nowrap', paddingLeft: '10px'}}
-						labelStyle={{lineHeight: '25px', top: '10px'}}>
+						style={{height: '42px', top: '-15px', fontSize: '12px', fontWeight: '600', whiteSpace: 'nowrap', paddingLeft: '10px', width: '120px'}}
+						labelStyle={{lineHeight: '25px', top: '10px'}}
+						menuStyle={{width: '180px'}}>
 
 
 						{this.props.areas.map(function(item, i){

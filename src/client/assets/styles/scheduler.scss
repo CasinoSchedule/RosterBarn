@@ -2,7 +2,6 @@
 
 
 .adminBg {
-	// background-size: cover;
 	min-height: 700px;
 	height: 100%;
 	min-width: 1000px;
@@ -11,7 +10,9 @@
 	top: 0;
 	left: 0;
 	// size: landscape; 
-	// border: 2px solid red;
+									// border: 15px solid red;
+	// position: relative;
+	overflow: hidden;
 }
 
 
@@ -34,8 +35,10 @@
 }
 
 .eachRowNew {
+	// width: 100% !important;
 	display: flex;
 	border: 1px solid #999;
+									// border: 3px solid green;
 }
 .eachRowNew:nth-child(odd) {           
 	background: #eee;
@@ -49,7 +52,8 @@
 
 .schedule {
 	width: 100%;
-	// border: 3px solid yellow;
+	min-width: 800px;
+									// border: 3px solid yellow;
 }
 
 .grave {
@@ -122,140 +126,3 @@
 	}
 
 }
-
-
-
-
-// body {
-// 	font-family: 'Andale Mono';
-// }
-
-
-// .printClearButtons > button {
-// 	width: 100px;
-// 	height: 30px;
-// 	line-height: 20px;
-// 	font-size: 12px;
-// 	background: #b2b2b2;
-// 	color: white;
-// 	text-shadow: 1px 1px 1px #000;
-// }
-// .printClearButtons > button:hover {
-// 	background: $gradientfrom2;
-// }
-// .adminPublish {
-// 	width: 18%;
-// }
-
-// .adminPublish button {
-// 	width: 100%;
-// 	height: 45px;
-// 	line-height: 45px;
-//     background-color: #1ED660;
-// 	text-shadow: 1px 1px black;
-// 	color: #fff;
-// 	letter-spacing: 1px;
-// 	border: none;
-// 	border-bottom: 4px solid black;
-// 	// border-right: 1px solid #90EEA0;
-// 	outline: none;
-// 	font-size: 18px;
-// 	font-weight: 700;
-// 	font-family: 'Avenir Book';
-// 	-webkit-box-shadow: 3px 2px 5px 0px rgba(64,64,64,0.5);
-// 	-moz-box-shadow: 3px 2px 5px 0px rgba(64,64,64,0.5);
-// 	box-shadow: 3px 2px 5px 0px rgba(64,64,64,0.5);
-// 	// border-radius: 5px;
-// }
-// .adminPublish button:active {
-// 	border: none;
-// 	height: 42px;
-// 	margin-top: 2px;
-// }
-
-
-
-
-// .nextButtons {
-// 	width: 100%;
-// 	display: flex;
-// 	justify-content: space-between;
-// 	border: 1px solid blue;
-// 	// margin: 90px 0 0 220px;
-// }
-// .backForward > div > button {
-// 	font-size: 12px;
-// 	margin-left: 5px;
-// 	background: $gradientto; 
-//     background: -moz-linear-gradient(top, $gradientfrom, $gradientto); 
-//     background: -webkit-gradient(linear, left top, left bottom, from($gradientfrom), to($gradientto));
-//     outline: none;
-// }
-// .backForward {
-// 	display: flex;
-// 	flex-wrap: nowrap;
-// 	align-items: flex-end;
-// }
-// .publish button{
-// 	width: 220px;
-// 	background: #1ED660;
-// 	color: $darkgrey;
-// 	text-shadow:0px 1px 0 #textshadow;
-// 	outline: none;
-// }
-// .hiddenDiv {
-// 	width: 10%;
-// 	height: 100%;
-// 	display: inline;
-// 	border: 1px solid green;
-// }
-
-// .employee {
-// 	width: 15%;
-// }
-
-
-
-// .scheduledays {
-// 	display: flex;
-// 	flex-wrap: nowrap;
-// 	// flex-direction: row;
-// 	// border: 1px solid red;
-// 	width: 100%;
-// 	justify-content: space-between;
-// 	font-size: 14px;
-// }
-// .scheduledays > *, .blankEmployeeBox {
-// 	width: 14.3%;
-// 	text-align: center;
-// 	height: 20px;
-// 	line-height: 20px;
-// 	border-right: 1px solid $darkgrey;
-// 	border-top: 1px solid $darkgrey;
-// 	// color: white;
-// }
-// .blankEmployeeBox {	
-// 	background: $darkgrey;
-// 	color: white;
-// 	text-shadow:0px -1px 0 black;
-// 	font-family: Arial;
-// 	padding-left: 5px;
-// 	text-align: left;
-// 	font-size: 14px;
-// 	border-right: none;
-// }
-// .blankDayBox {
-// 	background: $darkgrey;
-// }
-// .blankBox {
-// 	border: none;
-// }
-
-
-
-// .addUser {
-// 	width: 200px;
-// 	height: 200px;
-// 	background: red;
-// 				border: 3px solid yellow;
-// }

@@ -95,6 +95,17 @@ export function getEmployeesByShift(shiftId, departmentId){
 		})
 	})
 }
+
+export function getDaysOff(id){
+	return api.delete('/profiles/employee/' + id + "/").then(function(){
+		store.dispatch({
+			type: 'GET_DAYSOFF',
+			employees: resp.data
+		})
+	});
+
+}
+
 // 		*****************************************
 
 
@@ -173,7 +184,7 @@ export function getShifts(date, departmentId){
 			  o['date_' + v.calendar_date + '_employee_id_' + v.employee.id] = v;
 			  return o;
 			}, {});
-		console.log('All Shifts Object', allShifts)
+
 		store.dispatch({
 			type: 'GET_WEEKSHIFTS',
 			weekShifts: allShifts
@@ -297,7 +308,7 @@ export function createMonthlyCalendar(date){
 		let type = ((i < 0 || i > startDate.addDays(i).getDate()) ? 'inactiveMonth' : 'activeMonth');
 		calendarDays.push(createCalendarDay(startDate, i, type));
 	}
-
+		console.log('calendarDays', calendarDays)
 		store.dispatch({
 			type: 'GET_MONTHLYCALENDAR',
 			monthlyCalendar: calendarDays
