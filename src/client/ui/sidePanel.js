@@ -26,7 +26,7 @@ export default React.createClass({
 			collection: [],
 			month: months[new Date().getMonth()],
 			year: year,
-			publishButton: "noChanges"
+			publishButton: ""
 		})
 	},
 	componentWillMount: function(){
@@ -92,10 +92,10 @@ export default React.createClass({
 	publish: function(){
 		if(this.state.publishButton  === "publish"){
 			publish({date: this.props.dateString});
-			store.dispatch({
-				type: 'CHANGE_PUBLISHBUTTON',
-				publishButton: "noChanges"
-			})
+			// store.dispatch({
+			// 	type: 'CHANGE_PUBLISHBUTTON',
+			// 	publishButton: "noChanges"
+			// })
 			console.log('reset button');
 		}
 	},

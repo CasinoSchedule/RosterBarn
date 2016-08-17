@@ -51,16 +51,10 @@ export default React.createClass({
 				area: this.state.area || ''
 			
 			}])
-
-			console.log([{
-				day: this.props.eachday.calendar_date,
-				employee: this.props.employee.id,
-				starting_time: value,
-				area: this.state.area || ''
 			
-			}])
 		}
 	},
+	
 	handleAreaChange: function(e, index, value){
 		if(value !== 1001) {
 			this.setState({

@@ -1,0 +1,199 @@
+@import './variables';
+
+
+.daySelectedContainer {
+	width: 30%;
+	height: 702px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	background: #e7e7e7;
+	border-top: 2px solid $darkgrey;
+	border-bottom: 2px solid $darkgrey;
+	border-right: 2px solid $darkgrey;
+					// border: 5px solid pink;
+}
+
+.headerDay {
+					// border: 3px solid black;
+	height: 60px;
+	line-height: 60px;
+	text-align: center;
+	background: $bluetheme; 
+    color: white;
+    text-shadow: 1px 1px 1px #000;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.selectedDayInfo {
+	width: 100%;
+	height: 200px;
+	padding-top: 20px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	font-weight: bold;
+    text-shadow: 0px -1px 0 #e7e7e7;
+					// border: 2px solid red;
+}
+.selectedDay {
+	font-size: 64px;
+	color: #336eb5;
+	text-align: center;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-weight: bold;
+    text-shadow: 0px -1px 0 #e7e7e7;
+					// border: 5px solid blue;
+
+}
+.selectedDayString {
+	font-size: 34px;
+	line-height: 50px;
+	color: #336eb5;
+	text-align: center;
+	font-weight: bold;
+    text-shadow: 0px -1px 0 #e7e7e7;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+					// border: 5px solid green;
+}
+.selectedFullDateString {
+	font-size: 16px;
+	line-height: 24px;
+	color: $darkgrey;
+	text-align: center;
+	font-weight: bold;
+    text-shadow: 0px -1px 0 #e7e7e7;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+					// border: 5px solid yellow;
+}
+.messageAndShift {
+	height: 80px;
+					// border: 1px solid green;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+}
+.divider {
+	width: 80%;
+	border: 1px solid $gradientto;
+	margin: auto;
+}
+.messageContainer {
+	// height: 30px;
+	// line-height: 30px;
+	text-align: center;
+					// border: 5px solid brown;
+}
+.messageContainer > div {
+	font-weight: bold;
+    text-shadow: 0px -1px 0 #e7e7e7;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: 14px;
+					// border: 2px solid orange;
+}				
+
+.shiftInfo {
+	font-size: 18px;
+	text-align: center;
+	font-weight: bold;
+    text-shadow: 0px -1px 0 #e7e7e7;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+					// border: 5px solid brown;
+}
+// .shiftInfo > div {
+// 	text-transform: lowercase;
+// 	font-family: 'Roboto';
+// }
+.timeInfo {
+	text-transform: lowercase;
+}
+.areaInfo {
+	text-transform: uppercase;
+	line-height: 24px;
+}
+.shiftOptions {
+	height: 220px;
+					// border: 2px solid orange;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+}
+
+.shiftOptions > div {
+	font-family: 'Roboto';
+	cursor: pointer;
+	color: $bluetheme;
+	font-size: 16px;
+	padding-left: 20px;
+					// border: 2px solid orange;
+}
+.shiftOptions > div:hover {
+	color: $purpletheme;
+}
+// .shiftOptions > div:before {
+// 	content: '> ';
+// }
+
+@media screen and (max-width: 1000px) {   				//screen and (max-height: 635px), 
+	.daySelectedContainer {
+		width: 100%;
+		height: 280px;
+	}
+	.headerDay {
+		height: 30px;
+		line-height: 30px;
+	}
+	.selectedDayInfo {
+		height: 120px;
+	}
+	.selectedDay {
+		font-size: 24px;
+		// border: 1px solid yellow;
+	}
+	.selectedDayString {
+		font-size: 24px;
+		line-height: 28px;
+		// border: 1px solid yellow;
+	}
+	.selectedFullDateString {
+		// border: 1px solid yellow;
+	}
+	.shiftOptions {
+		height: 50px;
+		flex-direction: row;
+		justify-content: space-around;
+		padding-top: 10px;
+		padding-left: 0;
+	}
+	.messageContainer > div {
+		font-size: 12px;
+	}
+	.shiftInfo > div {
+		font-size: 12px;
+	}
+	.shiftOptions > div {
+		font-size: 12px;
+		display: flex;
+	}
+	.messageAndShift {
+		height: 50px;
+	}
+	.areaInfo, .timeInfo, .shiftInfo {
+		font-family: 12px;
+		line-height: 16px;
+	}
+}
+@media screen and (max-width: 420px) { 
+	.daySelectedContainer {
+		display: block;
+		height: 360px;
+		background: #e7e7e7;
+		// border: 3px solid red;
+	}
+	.shiftOptions {
+		height: auto;
+	}
+	.shiftOptions > div {
+		flex-direction: column;
+	}
+}

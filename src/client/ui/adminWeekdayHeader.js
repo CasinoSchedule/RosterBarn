@@ -15,7 +15,7 @@ export default React.createClass({
 				{this.props.weeklyCalendar.map(function(item, i){
 					return (
 							<div key ={v4()} className="weekOfDay">
-								<p>{item.dayString}<span>&#160;</span> {item.day}</p>
+								<p>{item.abbreviatedDayString}<span>&#160;</span> {item.day}</p>
 							</div>
 					)
 				}.bind(this))}  

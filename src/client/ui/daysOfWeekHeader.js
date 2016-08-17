@@ -1,10 +1,12 @@
 import React from 'react';
 import store from 'store';
 
+require('assets/styles/daysOfWeekHeader.scss');
+
 export default React.createClass({
 	render: function(){
 		return (
-			<div className="days">
+			<div className="weekDays">
 				<div>SUN</div>
 				<div>MON</div>
 				<div>TUE</div>

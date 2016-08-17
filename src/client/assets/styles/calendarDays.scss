@@ -1,0 +1,17 @@
+@import './variables';
+
+.calendarContainer {
+	width: 100%;
+	height: 600px;
+	// max-height: 80%;
+							// border: 10px solid black;
+	display: flex;
+	flex-wrap: wrap;
+	// margin: 0 auto 20px;
+}
+
+@media screen and (max-width: 1000px) {   				//screen and (max-height: 635px), 
+	.calendarContainer {
+		height: 360px;
+	}
+}

@@ -7,7 +7,7 @@ import Confirm from 'ui/confirm';
 import Settings from 'ui/settings';
 import { addNewEmployee, deleteEmployee, getEmployeeSchedule, updateEmployee, 
 		clearAllSchedule, logout, getAreas, getShiftStrings, autoPopulateSchedule, 
-		createWeeklyCalendar, getShifts, getEmployeesByShift } from 'api/data';
+		createWeeklyCalendar, getShifts, getEmployeesByShift, checkPublish } from 'api/data';
 import { browserHistory } from 'react-router';
 import {v4} from 'uuid';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -77,11 +77,14 @@ export default React.createClass({
 			})
 		}.bind(this));
 		this.refreshCurrentState(new Date());
+		checkPublish(this.state.currentDate, this.state.departmentId);
+	},
+	componentDidMount: function(){
+
 	},
 	refreshCurrentState: function(date, shiftId){
 		var departmentId = localStorage.getItem("departmentId");
 		var shiftId = ((shiftId) ? shiftId : this.state.shiftNum);
-		// getEmployeeSchedule(date, shiftId, departmentId, clearAll);
 		createWeeklyCalendar(date);
 		getEmployeesByShift(shiftId, departmentId)
 		getShifts(date, departmentId);
@@ -217,11 +220,6 @@ export default React.createClass({
 		 	localStorage.getItem("departmentId"),
 		 	method
 		 	);
-
-			store.dispatch({
-				type: 'CHANGE_PUBLISHBUTTON',
-				publishButton: "publish"
-			})
 		// this.refreshCurrentState(this.state.currentDate);
 	},
 	render: function(){
@@ -290,7 +288,8 @@ export default React.createClass({
 											weeklyCalendar={this.state.weeklyCalendar} 
 											weekShifts={this.state.weekShifts} 
 											areas={this.state.areas} 
-											shiftStrings={this.state.shiftStrings}/>
+											shiftStrings={this.state.shiftStrings}
+											currentDate={this.state.currentDate} />
 
 										</div>
 								)

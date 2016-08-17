@@ -260,15 +260,7 @@ $peach: #EB7260;
     // background: -webkit-gradient(linear, left top, left bottom, from($gradientfrom2), to($gradientto2));
     color: black;
 }
-.inactiveMonth {
-	background: rgb(195, 195, 195);
-	color: #000;
-	// text-shadow:1px 1px 0 #000;
-	font-size: 10px;
-}
-.activeMonth {
-	background: #f9f9f9;
-}
+
 #startTime {
 	color: $purpletheme;
 }

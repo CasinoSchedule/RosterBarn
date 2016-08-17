@@ -7,6 +7,11 @@ import { v4 } from 'uuid';
 api.new('https://sheltered-springs-57964.herokuapp.com/');
 // api.new('http://10.68.0.45:8000/');
 
+const abbreviatedDayString = ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"];
+const dayString = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+		
+
 
 Date.prototype.addDays = function(days){
     var dat = new Date(this.valueOf());
@@ -20,9 +25,6 @@ Date.prototype.subtractDays = function(days){
     return dat;
 }
 
-const abbreviatedDayString = ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"];
-const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-		
 
 export function login(user, pass) {
   return api.login(user, pass);
@@ -43,7 +45,7 @@ export function checkAdmin(){
 			localStorage.setItem("departmentTitle", resp.data.department_title);
 			browserHistory.push('/scheduler')
 		} else {
-			browserHistory.push('/calendar')
+			browserHistory.push('/mobile_calendar')
 		}
 	})
 }
@@ -130,9 +132,34 @@ export function addArea(obj){
 
 
 
+export function publish(obj){
+	return api.post('/schedules/shift/publish/', obj);
+}
+
+
+
+
 // 			***********     Shifts   ************
 
-// get weeks shifts for all employees
+export function checkPublish(date, departmentId){
+	var weekShiftParams = {};
+	weekShiftParams['date'] = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+	weekShiftParams['department'] = departmentId;
+	var shiftQuery = queryStringFromDict(weekShiftParams);
+
+	return api.get('/schedules/weekshift/' + shiftQuery).then(function(resp){
+		resp.data.forEach(function(shift, i){
+			if (shift.visible === false) {
+				store.dispatch({
+					type: 'CHANGE_PUBLISHBUTTON',
+					publishButton: 'publish'
+				})
+			} 
+		})
+	})
+}
+
+// get week's shifts for all employees
 export function getShifts(date, departmentId){
 	var weekShiftParams = {};
 	weekShiftParams['date'] = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
@@ -140,12 +167,13 @@ export function getShifts(date, departmentId){
 	var shiftQuery = queryStringFromDict(weekShiftParams);
 
 	return api.get('/schedules/weekshift/' + shiftQuery).then(function(resp){
-		// console.log('Shifts', resp.data)  
+		console.log('Shifts', resp.data)  
+
 		var allShifts = resp.data.reduce(function(o, v, i) {
 			  o['date_' + v.calendar_date + '_employee_id_' + v.employee.id] = v;
 			  return o;
 			}, {});
-		// console.log('All Shifts Object', allShifts)
+		console.log('All Shifts Object', allShifts)
 		store.dispatch({
 			type: 'GET_WEEKSHIFTS',
 			weekShifts: allShifts
@@ -215,9 +243,27 @@ export function addShiftString(obj){
 
 // 			**********     Build Calendars     **********
 
+export function createCalendarDay(start, i, type){
+	var newItem = {
+		uniqueId: v4(),
+		dayString: dayString[start.addDays(i).getDay()],
+		abbreviatedDayString: abbreviatedDayString[start.addDays(i).getDay()],
+		monthString: months[start.addDays(i).getMonth()],
+		fullDateString: months[start.addDays(i).getMonth()] + ' ' + start.addDays(i).getDate() + ', ' + start.addDays(i).getFullYear(),
+		javascriptMonthNum: start.addDays(i).getMonth(),
+		year: start.addDays(i).getFullYear(),
+		month: start.addDays(i).getMonth(), 
+		day: start.addDays(i).getDate(),
+		calendar_date: start.addDays(i).getFullYear() + "-" + (start.addDays(i).getMonth() + 1) + "-" + start.addDays(i).getDate(),
+		currentClass: ((type) ? type : ''),
+		dayIndex: start.addDays(i).getDay() + 1		// Python Index
+
+	}
+
+	return newItem
+}
+
 export function createWeeklyCalendar(date){
-		var abbreviatedDayString = ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"];
-		var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 		var dayIndex = date.getDay();
 		var dumbWay = [-6, 0, -1, -2, -3, -4, -5];
 		var smartWay = (dayIndex + 6) % 7;
@@ -225,27 +271,14 @@ export function createWeeklyCalendar(date){
 		var weekStartDate = date.addDays(daysToNearestMonday);
 		var weekDays = [];
 		
-
 		for(let i = 0; i < 7; i++){
-			weekDays[i] = {
-				uniqueId: v4(),
-				year: weekStartDate.addDays(i).getFullYear(),
-				monthString: months[weekStartDate.addDays(i).getMonth()],
-				dayString: abbreviatedDayString[weekStartDate.addDays(i).getDay()],
-				javascriptMonthNum: weekStartDate.addDays(i).getMonth(),
-				day: weekStartDate.addDays(i).getDate(),
-				dayIndex: weekStartDate.addDays(i).getDay() + 1,   // Python Index
-				calendar_date: weekStartDate.addDays(i).getFullYear() + "-" + (weekStartDate.addDays(i).getMonth() + 1) + "-" + weekStartDate.addDays(i).getDate(),
-				currentClass: ""
-			}
+			weekDays.push(createCalendarDay(weekStartDate, i));
 		}
 
 		store.dispatch({
 			type: 'GET_WEEKLYCALENDAR',
 			weeklyCalendar: weekDays
 		})
-		// console.log('weeklyCalendar', weekDays)
-
 }
 
 export function createMonthlyCalendar(date){
@@ -261,23 +294,14 @@ export function createMonthlyCalendar(date){
 	let calendarDays = [];
 
 	for(let i = calendarStartDay, n = 0; n < totalCalendarDays; i++, n++){
-		calendarDays[n] = {
-			calendar_date: startDate.addDays(i).getFullYear() + "-" + (startDate.addDays(i).getMonth() + 1) + "-" + startDate.addDays(i).getDate(),
-			days: startDate.addDays(i),
-			year: startDate.addDays(i).getFullYear(),
-			month: startDate.addDays(i).getMonth(),
-			day: startDate.addDays(i).getDate(),
-			currentClass: ((i < 0 || i >= daysInMonth) ? 'inactiveMonth' : 'activeMonth'),
-			fullDateString: months[startDate.addDays(i).getMonth()] + ' ' + startDate.addDays(i).getDate() + ', ' + startDate.addDays(i).getFullYear()
-		}
+		let type = ((i < 0 || i > startDate.addDays(i).getDate()) ? 'inactiveMonth' : 'activeMonth');
+		calendarDays.push(createCalendarDay(startDate, i, type));
 	}
 
-	store.dispatch({
-		type: 'GET_MONTHLYCALENDAR',
-		monthlyCalendar: calendarDays
-	})
-
-	console.log(calendarDays);
+		store.dispatch({
+			type: 'GET_MONTHLYCALENDAR',
+			monthlyCalendar: calendarDays
+		})
 }
 
 
@@ -334,10 +358,6 @@ export function getWorkWeekSchedule(month, year){
 	})
 }
 
-export function publish(obj){
-	return api.post('/schedules/shift/publish/', obj);
-}
-
 
 
 export function stringDate(date) {
@@ -354,102 +374,7 @@ export function working_today(scheduleInfo){
 	return start_time || ""
 }
 
-export function calendar(month, year, monthdate, employee){
-	// console.log('Init', month, year, monthdate);
-	
-		var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-		var month = monthdate - 1;
-		var preceding_days = new Date(year, month, 1).getDay();
-		var	month_count = new Date(year, month+1, 0).getDate();
-		var	trailing_days = 42 - month_count - preceding_days;
-		var start_day = new Date(year, month, 1).subtractDays(preceding_days);
-		var collection = [];
 
-		function collectionDate(date, type) {
-			var newItem = {
-				calendar_date: stringDate(date),
-				currentClass: type,
-				day: date.getDate(),
-				month: months[date.getMonth()],
-				year: date.getFullYear(),
-				javascriptMonthNum: date.getMonth()
-			};
-			return newItem;
-		}
-
-		for(var i=0; i < 42; i++) {
-			if(i < preceding_days || i >= 42 - trailing_days){
-				collection.push(collectionDate(start_day.addDays(i), 'inactiveMonth'));
-			}
-			else{
-				collection.push(collectionDate(start_day.addDays(i), "activeMonth"));
-			}
-		}
-
-		// console.log('collection', collection);
-
-		if (employee){
-
-		 return api.get('/schedules/employeemonth/?month=' + monthdate + '&year=' + year).then(function(resp){
-
-		 	var data = resp.data;
-
-			var scheduleInfo = collection.map(function(item, i){
-					return ({
-						year: item.year,
-						month: item.month,
-						day: item.day,
-						calendar_date: item.calendar_date,
-						currentClass: item.currentClass,
-						javascriptMonthNum: item.javascriptMonthNum,
-						starting_time: checkSchedule(item.calendar_date)
-					})
-				})
-
-			var working = working_today(scheduleInfo);
-
-				store.dispatch({
-					type: 'GET_DATEOBJECTS',
-					collection: scheduleInfo,
-					working_today: working
-				})
-
-				// console.log('scheduleInfo', scheduleInfo);
-
-				console.log("Working Today From Calendar Function:", working);
-
-
-				// ampm function can be used here. Try out when employee side is refactored. 
-
-				function checkSchedule(check){
-					var hour_time_check = 0;
-					for(var i = 0; i < data.length; i++){
-						if(data[i].calendar_date === check) {
-							if(data[i].starting_time){
-								hour_time_check = parseInt(data[i].starting_time.slice(0, 2));
-								if(hour_time_check === 12){
-									return data[i].starting_time.slice(0, 5) + "pm";
-								} else if(hour_time_check < 12) {
-									return data[i].starting_time.slice(0, 5) + "am"
-								} else {
-									hour_time_check = hour_time_check - 12
-									return hour_time_check + ":" + data[i].starting_time.slice(3, 5) + "pm"
-								}
-							}
-							else {
-								return ""
-							}
-						}
-					}
-				}
-		
-		})} else { 
-
-			store.dispatch({
-				type: 'GET_DATEOBJECTS',
-				collection: collection
-			})}
-}
 
 export function addNewEmployeeUser(username, password, profile_id, cb){
 
@@ -496,6 +421,14 @@ export function autoPopulateSchedule(date, departmentId, method) {
 		getShifts(date, departmentId);
 	});
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -675,4 +608,97 @@ export function autoPopulateSchedule(date, departmentId, method) {
 // 	return newItem
 // }
 
+export function calendar(month, year, monthdate, employee){
+	// console.log('Init', month, year, monthdate);
+		var month = monthdate - 1;
+		var preceding_days = new Date(year, month, 1).getDay();
+		var	month_count = new Date(year, month+1, 0).getDate();
+		var	trailing_days = 42 - month_count - preceding_days;
+		var start_day = new Date(year, month, 1).subtractDays(preceding_days);
+		var collection = [];
 
+		function collectionDate(date, type) {
+			var newItem = {
+				calendar_date: stringDate(date),
+				currentClass: type,
+				day: date.getDate(),
+				month: months[date.getMonth()],
+				year: date.getFullYear(),
+				javascriptMonthNum: date.getMonth()
+			};
+			return newItem;
+		}
+
+		for(var i=0; i < 42; i++) {
+			if(i < preceding_days || i >= 42 - trailing_days){
+				collection.push(collectionDate(start_day.addDays(i), 'inactiveMonth'));
+			}
+			else{
+				collection.push(collectionDate(start_day.addDays(i), "activeMonth"));
+			}
+		}
+
+		// console.log('collection', collection);
+
+		if (employee){
+
+		 return api.get('/schedules/employeemonth/?month=' + monthdate + '&year=' + year).then(function(resp){
+
+		 	var data = resp.data;
+
+			var scheduleInfo = collection.map(function(item, i){
+					return ({
+						year: item.year,
+						month: item.month,
+						day: item.day,
+						calendar_date: item.calendar_date,
+						currentClass: item.currentClass,
+						javascriptMonthNum: item.javascriptMonthNum,
+						starting_time: checkSchedule(item.calendar_date)
+					})
+				})
+
+			var working = working_today(scheduleInfo);
+
+				store.dispatch({
+					type: 'GET_DATEOBJECTS',
+					collection: scheduleInfo,
+					working_today: working
+				})
+
+				// console.log('scheduleInfo', scheduleInfo);
+
+				console.log("Working Today From Calendar Function:", working);
+
+
+				// ampm function can be used here. Try out when employee side is refactored. 
+
+				function checkSchedule(check){
+					var hour_time_check = 0;
+					for(var i = 0; i < data.length; i++){
+						if(data[i].calendar_date === check) {
+							if(data[i].starting_time){
+								hour_time_check = parseInt(data[i].starting_time.slice(0, 2));
+								if(hour_time_check === 12){
+									return data[i].starting_time.slice(0, 5) + "pm";
+								} else if(hour_time_check < 12) {
+									return data[i].starting_time.slice(0, 5) + "am"
+								} else {
+									hour_time_check = hour_time_check - 12
+									return hour_time_check + ":" + data[i].starting_time.slice(3, 5) + "pm"
+								}
+							}
+							else {
+								return ""
+							}
+						}
+					}
+				}
+		
+		})} else { 
+
+			store.dispatch({
+				type: 'GET_DATEOBJECTS',
+				collection: collection
+			})}
+}

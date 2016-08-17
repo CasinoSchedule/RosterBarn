@@ -1,0 +1,22 @@
+@import './variables';
+
+.weekDays {
+	display: flex;
+	flex-wrap: nowrap;
+	width: 100%;
+	// border: 1px solid pink;
+	text-align: center;
+	height: 40px;
+	line-height: 40px;
+	justify-content: space-around;
+	background: #e6e6e6;
+}
+
+.weekDays > div {
+	font-family: 'Helvetica Neue', Helvetica, Arial;
+	width: 14.3%;
+	text-align: center;
+	font-weight: 700px;
+	font-weight: bold;
+    text-shadow: 0px -1px 0 #e7e7e7;
+}

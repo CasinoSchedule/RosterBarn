@@ -11,9 +11,8 @@ export default function(state = cssInitialState, action){
 
 		case 'CHANGE_PUBLISHBUTTON':
 			return {
-				publishButton: action.publishButton,
-				shiftColor: state.shiftColor,
-				shiftNum: state.shiftNum
+				...state,
+				publishButton: action.publishButton
 			}
 
 		case 'CHANGE_SHIFTBOX':

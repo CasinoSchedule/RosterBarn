@@ -1,66 +1,28 @@
 import React from 'react';
 import store from 'store';
 
+require('assets/styles/eachCalendarDay.scss');
+
 
 export default React.createClass({
-	
-	
 	handleClick: function(){
 		var day = this.props;
-		this.props.updateDayContainer(day.each, day.shiftTime, day.shiftArea);
-		console.log('day', this.props.each.fullDateString)
-		
+		this.props.updateDayContainer(day.each, day.shiftTimeString, day.shiftArea, day.epoch);
 
 		store.dispatch({
 			type: 'SELECTED',
 			selected: this.props.each.calendar_date
 		})
-
-		// if(this.state.highlight){
-		// 	this.setState({
-		// 		highlight: ''
-		// 	})
-		// } else {
-		// 	this.setState({
-		// 		highlight: 'highlight'
-		// 	})
-		// }
-
-
-
-		// var today = new Date();
-		// var dayToCompare = new Date();
-		// dayToCompare.setFullYear(day.year, day.month, day.day);
-		// if(dayToCompare < today){
-		// 	store.dispatch({
-		// 		type: 'CHANGE_MESSAGE',
-		// 		message: 'Before Today'
-		// 	})
-
-		// 	console.log('before today')
-		// } else {
-		// 	store.dispatch({
-		// 		type: 'CHANGE_MESSAGE',
-		// 		message: 'After Today'
-		// 	})
-			
-		// 	console.log('not before')
-		// }
-		// 	setTimeout(function(){
-		// 		store.dispatch({
-		// 			type: 'CHANGE_MESSAGE',
-		// 			message: ''
-		// 		})
-		// 	}, 3000)
-
 	},
 	render: function(){
 		return (
-			<div className={'calendarDay ' + this.props.highlight} onClick={this.handleClick}>
-				<div>{this.props.each.day}</div>
-				<div>{this.props.shiftTime}</div>	
-				<div>{this.props.shiftArea}</div>							
-			</div>		
+			<div id={this.props.highlight} className={'calendarDay ' + this.props.each.currentClass} onClick={this.handleClick}>
+				<div className='dayNumeral'>{this.props.each.day}</div>
+				<div className='detailDayInfo'>
+					<div className='shiftTime'>{this.props.shiftTimeString}</div>	
+					<div id={this.props.highlight} className='shiftArea'>{this.props.shiftArea}</div>	
+				</div>						
+			</div>			
 		)
 	}
 })

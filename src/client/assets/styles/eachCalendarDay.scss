@@ -1,0 +1,73 @@
+@import './variables';
+
+
+// currentClass is activeMonth or inactiveMonth
+
+.inactiveMonth {
+	background: rgb(195, 195, 195);
+	color: #000;
+	// text-shadow:1px 1px 0 #000;
+	font-size: 12px;
+}
+.activeMonth {
+	background: #f9f9f9;
+}
+
+
+#highlight {
+	background: $bluetheme;
+	color: white;
+	text-shadow: 1px 1px 1px #000;
+	letter-spacing: 1px;
+}
+
+.calendarDay {
+	width: 14%;
+	min-height: 40px;
+							// border: 1px solid orange;
+	flex-grow: 1;
+	border: 1px solid $darkgrey;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-weight: bold;
+	text-shadow: 0px -1px 0 #e7e7e7;
+	color: $bluetheme;
+	padding-left: 5px;
+	padding-top: 5px;
+	cursor: pointer;
+}
+
+.dayNumeral {
+
+}
+.detailDayInfo {
+	height: 80%;
+}
+.shiftTime {
+	text-align: center;
+	font-family: 'Roboto';
+	font-size: 14px;
+	text-transform: lowercase;
+}
+.shiftArea {
+	text-align: center;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	padding-top: 5px;
+	font-size: 12px;
+	color: $darkgrey;	
+	// font-weight: 700;
+	// text-shadow: 1px 1px 1px #444;
+}
+@media screen and (max-width: 1000px) {   				//screen and (max-height: 635px), 
+	.calendarDay {
+		// min-height: 20px; 
+	}
+	.shiftTime {
+		font-size: 10px;
+	}
+	.shiftArea {
+		font-size: 10px;
+	}
+}

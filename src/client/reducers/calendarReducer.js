@@ -17,8 +17,6 @@ export default function(state = calendarInitialState, action){
 
 	switch (action.type) {
 
-		
-
 		case 'GET_MONTHLYCALENDAR':
 			return {
 				...state,

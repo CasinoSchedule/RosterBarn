@@ -2,44 +2,52 @@
 
 .mobileCalendar {
 
+	background: url('../images/bluebg.jpg') no-repeat center center fixed;
+	background-size: cover;
+	height: 100%;
+	width: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	// border: 3px solid yellow;
+								// border: 10px solid black;
 }
 
 .calendarFrame {
 	width: 80%;
-	margin: 50px auto;
+	margin: 70px auto;
 	display: flex;
-	border: 2px solid red;
+									// border: 5px solid red;
 }
-.mobileHeader {
-	width: 100%;
-	// margin: 60px auto 0;
-	display: flex;
-	justify-content: space-between;
-	border: 1px solid orange;
+.calendarFrameContainer {
+	border: 1px solid $darkgrey;
+	width: 75%;
 }
-.daysOfWeek {
-	display: flex;
-	justify-content: space-around;
-	width: 100%;
-	// margin: 0 auto;
-	border: 1px solid green;
+// .mobileHeader {
+// 	width: 100%;
+// 	// margin: 60px auto 0;
+// 	display: flex;
+// 	justify-content: space-between;
+// 									// border: 1px solid orange;
+// }
+// .daysOfWeek {
+// 	display: flex;
+// 	justify-content: space-around;
+// 	width: 100%;
+// 	// margin: 0 auto;
+// 	border: 1px solid green;
+// }
+.month-year {
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	text-shadow: 1px 1px 1px #e7e7e7;
 }
-.calendarContainer {
-	width: 100%;
-	height: 600px;
-	border: 1px solid red;
-	display: flex;
-	flex-wrap: wrap;
-	// margin: 0 auto 20px;
-}
-.calendarDay {
-	width: 14%;
-	min-height: 40px;
-	border: 1px solid blue;
-	flex-grow: 1;
-}
-.daySelectedContainer {
-	width: 30%;
-	height: auto;
-	border: 3px solid pink;
+
+@media screen and (max-width: 1000px) {   				//screen and (max-height: 635px), 
+	.calendarFrame {
+		display: block;
+		width: 95%;
+	}
+	.calendarFrameContainer {
+		width: 100%;
+	}
 }

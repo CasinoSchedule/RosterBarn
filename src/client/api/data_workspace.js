@@ -4,34 +4,6 @@ import { v4 } from 'uuid';
 
 
 
-export function createMonthlyCalendar(date){
-	let month = date.getMonth();
-	let year = date.getFullYear();
-	let daysInMonth = new Date(year, month, 0).getDate();
-	let firstDayOfMonth = new Date(year, month, 1).getDay();
-	let lastDayOfMonth = new Date(year, month, daysInMonth).getDay();
-	let calendarStartDay = ((firstDayOfMonth) ? -(firstDayOfMonth) : 0);
-	let endDay = 6 - lastDayOfMonth;
-	let totalCalendarDays = Math.abs(calendarStartDay) + daysInMonth + endDay;
-	let startDate = new Date(year, month, 1);
-	let calendarDays = [];
-
-	for(let i = calendarStartDay, n = 0; n < totalCalendarDays; i++, n++){
-		calendarDays[n] = {
-			calendar_date: startDate.addDays(i).getFullYear() + "-" + (startDate.addDays(i).getMonth() + 1) + "-" + startDate.addDays(i).getDate(),
-			days: startDate.addDays(i),
-			day: startDate.addDays(i).getDate(),
-			currentClass: ((i < 0 || i >= daysInMonth) ? 'inactiveMonth' : 'activeMonth')
-		}
-	}
-
-	store.dispatch({
-		type: 'GET_MONTHLYCALENDAR',
-		monthlyCalendar: calendarDays
-	})
-
-	console.log(calendarDays);
-}
 
 export function getEmployeeMonthlySchedule(date){
 	let month = date.getMonth() + 1;
@@ -46,6 +18,27 @@ export function getEmployeeMonthlySchedule(date){
 			employeeMonthlySchedule: allShifts
 		})
 		console.log('allShifts', allShifts)
+		// getTodaysSchedule(date);
 	});
 }
 
+export function getTodaysSchedule(date, cb){
+	let eligible = date.getTime();				// check epoch if shift has already started to determine call in options
+	let month = date.getMonth() + 1;
+	let year = date.getFullYear();
+	let calendar_date = year + '-' + month + '-' + date.getDate();
+	let time = {};
+
+	return api.get('/schedules/employeemonth/?month=' + month + '&year=' + year).then(function(resp){
+		resp.data.forEach(function(shift){
+			if(calendar_date === shift.calendar_date){
+				console.log('Todays Shift', shift);
+				console.log('Todays Shift', shift.area.title);
+				time = shift
+			}
+
+		})
+		// 3rd paramater determines whether or not call in options will be displayed
+		cb(time.string_rep, time.area.title, 'Scheduled Today', ((eligible < time.epoch_milliseconds) ? true : false), time.epoch_milliseconds)
+	})	
+}
