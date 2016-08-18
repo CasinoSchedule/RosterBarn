@@ -1,5 +1,6 @@
 import React from 'react';
 import store from 'store';
+import LogoText from 'ui/logoText'
 import { login, checkAdmin } from 'api/data';
 import { Link, browserHistory } from 'react-router';
 import Cookie from 'js-cookie';
@@ -52,7 +53,7 @@ export default React.createClass({
 		return (
 			<div id="homepage">
 				<div id="imageContainer" className="homePageLogo">
-					<img src={image}/>
+					
 				</div>
 
 				<div id="divLine"></div>
@@ -60,11 +61,9 @@ export default React.createClass({
 				<div id="form">
 
 					<form action="" method="post" onSubmit={this.handleSubmit}>
-						<div id="schedule">
-					<div className="rosterLogo">
-					 	<span className="roster"><span className="letter">R</span>oster</span><span className="barn"><span className="">B</span>arn</span>
-					</div>
-						</div>
+					
+							<LogoText />
+					
 						<div className="centerLogin">
 						<input type="text" placeholder="Username" onChange={this.handleChange} value={this.state.username} name="username" />
 						<input type="password" placeholder="Password" onChange={this.handleChange} value={this.state.password} name="password" />
