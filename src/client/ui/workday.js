@@ -8,6 +8,7 @@ import SelectField from 'material-ui/SelectField';
 require('assets/styles/workday.scss');
 
 export default React.createClass({
+	
 	render: function(){
 		return (
 			<div className='mapContainer'>

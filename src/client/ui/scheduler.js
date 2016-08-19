@@ -7,7 +7,7 @@ import Confirm from 'ui/confirm';
 import Settings from 'ui/settings';
 import { addNewEmployee, deleteEmployee, getEmployeeSchedule, updateEmployee, 
 		clearAllSchedule, logout, getAreas, getShiftStrings, autoPopulateSchedule, 
-		createWeeklyCalendar, getShifts, getEmployeesByShift, checkPublish } from 'api/data';
+		createWeeklyCalendar, getShifts, getEmployeesByShift, checkPublish, getEmployeeInfo } from 'api/data';
 import { browserHistory } from 'react-router';
 import {v4} from 'uuid';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -16,6 +16,7 @@ import Cookie from 'js-cookie';
 import AdminHeader from 'ui/adminHeader';
 import AdminWeekdayHeader from 'ui/adminWeekdayHeader';
 import AdminWeekHeader from 'ui/adminWeekHeader';
+import NameImageBox from 'ui/nameImageBox';
 // import { getWeekByWeek, getShifts, getEmployeesByShift } from 'api/data_workspace';
 import Workday from 'ui/workday';
 
@@ -86,7 +87,7 @@ export default React.createClass({
 		var departmentId = localStorage.getItem("departmentId");
 		var shiftId = ((shiftId) ? shiftId : this.state.shiftNum);
 		createWeeklyCalendar(date);
-		getEmployeesByShift(shiftId, departmentId)
+		getEmployeesByShift(shiftId, departmentId);
 		getShifts(date, departmentId);
 		getShiftStrings();
 		getAreas();
@@ -204,15 +205,21 @@ export default React.createClass({
 		browserHistory.push('/')
 	},
 	handleClick: function(item){
+		this.refreshCurrentState(this.state.currentDate);
+		store.dispatch({
+			type: 'THROW_EMPLOYEEINFO',
+			employeeInfo: item
+		})
+
 		store.dispatch({
 			type: 'CHANGE_SHOWFORM',
 			showForm: true
 		})
 
-		store.dispatch({
-			type: 'THROW_EMPLOYEEINFO',
-			employeeInfo: item
-		})
+	},
+	getEmployeeInfo: function(id){
+		
+		getEmployeeInfo(id);
 	},
 	autoPopulate: function(method){
 		autoPopulateSchedule(

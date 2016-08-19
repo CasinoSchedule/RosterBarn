@@ -60,6 +60,23 @@ export function registerNewEmail(obj){
 
 // 			*********     Employee Info     *********
 
+export function getEmployeeInfo(id, cb){
+	return api.get('/profiles/employee/'+ id + "/").then(function(resp){
+		console.log('employee', resp.data)
+		store.dispatch({
+			type: 'THROW_EMPLOYEEINFO',
+			employeeInfo: resp.data
+		})
+		cb(); 
+
+		// store.dispatch({
+		// 	type: 'CHANGE_SHOWFORM',
+		// 	showForm: true
+		// })
+	});
+
+}
+
 // promise (.then) refreshes state
 export function addNewEmployee(obj, shiftId, departmentId){
 	return api.post('/profiles/employee/', obj).then(function(){

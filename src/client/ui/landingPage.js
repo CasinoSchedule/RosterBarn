@@ -44,7 +44,7 @@ export default React.createClass({
 						Scheduling Made Easy. Customize your workplace in minutes.  
 					</div>
 					<div className='iphoneBox'>
-					<div className='adminPic'><img src={image2}/></div>
+						<div className='adminPic'><img src={image2}/></div>
 					</div>
 					
 					<div className='iphoneBox'>
