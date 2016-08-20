@@ -3,7 +3,7 @@
 
 .daySelectedContainer {
 	width: 30%;
-	height: 702px;
+	height: auto;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
@@ -14,7 +14,7 @@
 					// border: 5px solid pink;
 }
 
-.headerDay {
+.headerDay, {
 					// border: 3px solid black;
 	height: 60px;
 	line-height: 60px;

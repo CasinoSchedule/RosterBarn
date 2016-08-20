@@ -4,32 +4,37 @@ import LogoText from 'ui/logoText'
 import { login, checkAdmin } from 'api/data';
 import { Link, browserHistory } from 'react-router';
 import Cookie from 'js-cookie';
+import { cyan500, cyan700, darkBlack, fullBlack, indigo500 } from 'material-ui/styles/colors';
+import TextField from 'material-ui/TextField';
+import RaisedButton from 'material-ui/RaisedButton';
+import Checkbox from 'material-ui/Checkbox';
 
-require("assets/styles/home.scss");
-var image = require("assets/images/ariawhite.png");
+require('assets/styles/home.scss');
 
 export default React.createClass({
 	getInitialState: function(){
-		//Cookie.remove('token');
-		console.log("homepage", Cookie.get('token'));
 		return {
 			username: "",
 			password: "",
-			error: false
+			error: false,
+			remember: localStorage.getItem('username') || '',
+			message: ''
 		}
 	},
-	handleChange: function(e){
-		if (e.target.type === 'text') {
-			this.setState({
-				username: e.target.value,
-				password: this.state.password
-			})
-		} else {
-			this.setState({
-				username: this.state.username,
-				password: e.target.value
-			})
+	handleChange: function(e, index, value){
+		this.setState({
+			username: this.refs.username.getValue(),
+			password: this.refs.password.getValue()
+		})
+	},
+	handleCheck: function(){
+		localStorage.setItem('username', this.state.username);
+	},
+	onEnterPress: function(e){
+		if(e.keyCode === 13) {
+			this.handleSubmit(e);
 		}
+		
 	},
 	handleSubmit: function(e){
 		e.preventDefault();
@@ -41,40 +46,72 @@ export default React.createClass({
 			checkAdmin();
 		}.bind(this)).catch(function(err){
 			console.log('handle catch');
+			
 			this.setState({
 				error: true,
 				username: "",
-				password: ""
+				password: "",
+				message: 'Password and/or Username Do Not Match'
 			});
+			
 		}.bind(this));
 
+		setTimeout(function(){
+			this.setState({
+				message: '',
+				error: false
+			})
+			}.bind(this), 5000);
 	},
 	render: function(){
 		return (
-			<div id="homepage">
-				<div id="imageContainer" className="homePageLogo">
+			<div className="homePageWrapper">
+				{(this.state.error) ? <div className='inputError'>{this.state.message}</div> : ''}
+				<div className='homePageContainer'> 
+					<div className='logoContainer'><LogoText /></div>
+					<TextField 
+						id='username'  
+						ref="username" 
+						type='text'
+						multiLine={true}
+						textareaStyle={{background: 'white'}}
+						style={{marginLeft: '20px', background: 'white'}}
+						floatingLabelText="Username"
+						onChange={this.handleChange} 
+						value={this.state.username}/>
+
+					<TextField 
+						id='password'  
+						ref="password" 
+						type='password'
+						floatingLabelText="Password"
+						style={{marginLeft: '20px', background: 'white'}}
+						textareaStyle={{background: 'white'}}
+						onChange={this.handleChange} 
+						onKeyDown={this.onEnterPress} 
+						value={this.state.password}/>
+
+					<RaisedButton 
+						label='Submit' 
+						fullWidth={true} 
+						style={{marginTop: '40px'}}
+						backgroundColor={indigo500}
+						labelColor={'white'}
+						labelStyle={{textShadow: '1px 1px 0px #000', letterSpacing: '1px'}}
+						onClick={this.handleSubmit} />
+
+					<Checkbox 
+						id='remember' 
+						onCheck={this.handleCheck}
+						label={'Remember me'} 
+						labelStyle={{color: '#b2b2b2'}}
+						style={{marginTop: '20px', marginLeft: '10px'}} 
+						defaultChecked={((this.state.remember) ? true : false)}/>
+
+					<div className='forgot'>Forgot Password?</div>
 					
 				</div>
 
-				<div id="divLine"></div>
-				<div id="login"></div>
-				<div id="form">
-
-					<form action="" method="post" onSubmit={this.handleSubmit}>
-					
-							<LogoText />
-					
-						<div className="centerLogin">
-						<input type="text" placeholder="Username" onChange={this.handleChange} value={this.state.username} name="username" />
-						<input type="password" placeholder="Password" onChange={this.handleChange} value={this.state.password} name="password" />
-						<button type="submit">Log In</button>
-						<div className="rememberMeBox"><input type="checkbox" /> <span  id="rememberMe">Remember me</span></div>
-						</div>
-					</form>
-
-					{this.state.error ? <div className='error'>Password and Username do not match</div> : ''}
-
-				</div>
 			</div>
 		)
 	}

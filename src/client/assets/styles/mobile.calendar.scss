@@ -9,19 +9,23 @@
 	position: absolute;
 	top: 0;
 	left: 0;
-	// border: 3px solid yellow;
-								// border: 10px solid black;
+								// border: 10px solid yellow;
 }
 
 .calendarFrame {
-	width: 80%;
-	margin: 70px auto;
+	width: 85%;
+	height: auto;
+	margin: 70px auto 20px;
 	display: flex;
 									// border: 5px solid red;
 }
 .calendarFrameContainer {
 	border: 1px solid $darkgrey;
 	width: 75%;
+	height: auto;
+	display: flex;
+	flex-direction: column;
+									// border: 6px solid orange;
 }
 // .mobileHeader {
 // 	width: 100%;
@@ -49,5 +53,8 @@
 	}
 	.calendarFrameContainer {
 		width: 100%;
+	}
+	.mobileCalendar {
+		height: auto;
 	}
 }

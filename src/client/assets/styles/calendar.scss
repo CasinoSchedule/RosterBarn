@@ -91,7 +91,7 @@ $peach: #EB7260;
 	display: flex;
 	flex-wrap: nowrap;
 	width: 100%;
-	// border: 1px solid pink;
+	border: 5px solid pink;
 	text-align: center;
 }
 
@@ -99,8 +99,8 @@ $peach: #EB7260;
 	text-transform: uppercase;
 }
 .header {
-	height: 60px;
-	line-height: 60px;
+	height: 40px;
+	line-height: 40px;
 	font-size: 22px;
 	font-weight: bold;
 	background: $gradientto; 
