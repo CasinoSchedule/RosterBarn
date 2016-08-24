@@ -37,15 +37,17 @@ export default React.createClass({
 						?	<div>
 								<Dialog 
 									fullDateString={this.props.fullDateString}
+									updateMessage={this.props.updateMessage}
 									callinLabel={'EARLY OUT'}
 									title={'CONFIRM EARLY OUT REQUEST'} 
 									dialog={'You are requesting an Early Out for your shift on ' + this.props.fullDateString + '.  Please confirm.'}/>
 									
 								<Dialog 
 									fullDateString={this.props.fullDateString}
+									updateMessage={this.props.updateMessage}
 									callinLabel={'CALL IN'}
 									title={'CONFIRM CALL IN'} 
-									dialog={'You are calling out for your shift on ' + this.props.fullDateString + '.  Please confirm.'}
+									dialog={(this.props.moduleMessage) ? this.props.moduleMessage : 'You are calling out for your shift on ' + this.props.fullDateString + '.  Please confirm.'}
 									callin={this.props.callin} />
 								
 								<Dialog 

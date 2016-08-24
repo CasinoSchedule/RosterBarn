@@ -20,7 +20,6 @@ export default React.createClass({
 		// console.log(this.props.starting_time)
 	}, 
 	handleTimeChange: function(component, index, value){
-
 		if(value === 1001){
 			store.dispatch({
 				type: 'SHOW_SETTINGS',
@@ -33,7 +32,7 @@ export default React.createClass({
 				starting_time: '',
 				area: ''
 				
-			}])
+			}], this.props.currentDate, localStorage.getItem("departmentId"), this.props.shiftId)
 
 			this.setState({
 				starting_time: '',
@@ -50,8 +49,7 @@ export default React.createClass({
 				starting_time: value,
 				area: this.state.area || ''
 			
-			}])
-			
+			}], this.props.currentDate, localStorage.getItem("departmentId"), this.props.shiftId)	
 		}
 	},
 	
@@ -75,10 +73,9 @@ export default React.createClass({
 				starting_time: this.state.starting_time,
 				area: value
 				
-			}])
+			}], this.props.currentDate, localStorage.getItem("departmentId"), this.props.shiftId)
 		}
 	},
-	
 	render: function(){
 		return (
 			<div>

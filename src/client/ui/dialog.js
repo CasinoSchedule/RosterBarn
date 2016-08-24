@@ -19,6 +19,7 @@ export default class DialogExampleModal extends React.Component {
   };
 
   handleClose = () => {
+    this.props.updateMessage(undefined);
     this.setState({open: false});
   };
 
@@ -27,12 +28,12 @@ export default class DialogExampleModal extends React.Component {
       <FlatButton
         label="Cancel"
         primary={true}
+
         onTouchTap={this.handleClose}
       />,
       <FlatButton
         label="Submit"
         primary={true}
-        disabled={true}
         onTouchTap={this.props.callin}
       />,
     ];

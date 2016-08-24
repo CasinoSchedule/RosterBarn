@@ -5,13 +5,10 @@ require('assets/styles/eachCalendarDay.scss');
 
 
 export default React.createClass({
-	// componentDidMount: function(){
-	// 	console.log('days off', this.props.daysOff)
-	// },
 	handleClick: function(){
 		var day = this.props;
-		this.props.updateDayContainer(day.each, day.shiftTimeString, day.shiftArea, day.epoch);
-
+		this.props.updateDayContainer(day.each, day.shiftTimeString, day.shiftArea, day.epoch, day.shift);
+		console.log('passed', day.shift);
 		store.dispatch({
 			type: 'SELECTED',
 			selected: this.props.each.calendar_date
@@ -23,7 +20,8 @@ export default React.createClass({
 				<div className='dayNumeral'>{this.props.each.day}</div>
 				<div className='detailDayInfo'>
 					<div className='shiftTime'>{this.props.shiftTimeString}</div>	
-					<div id={this.props.highlight} className='shiftArea'>{this.props.shiftArea}</div>	
+					<div id={this.props.highlight} className='shiftArea'>{this.props.shiftArea}</div>
+					{(this.props.callin) ? <div id={this.props.highlight} className='shiftArea'>Call In</div> : ''}	
 				</div>						
 			</div>			
 		)

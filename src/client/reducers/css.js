@@ -18,7 +18,7 @@ export default function(state = cssInitialState, action){
 		case 'CHANGE_SHIFTBOX':
 		// console.log('It hits');
 			return {
-				publishButton: state.publishButton,
+				...state,
 				shiftColor: action.shiftColor,
 				shiftNum: action.shiftNum
 			}

@@ -36,13 +36,15 @@ export default React.createClass({
 							<Workshift 
 								key={i}
 								area={location}
+								handlePublish={this.props.handlePublish}
 								areas={this.props.areas}
 								location={this.props.weekShifts[idToCheck]}
 								employee={this.props.employee}
 								eachday={eachday}
 								weekShifts={this.props.weekShifts} 
 								shiftStrings={this.props.shiftStrings} 
-								shift={available} 
+								shift={available}
+								shiftId={this.props.shiftId} 
 								currentDate={this.props.currentDate} />
 
 						</div>

@@ -4,8 +4,8 @@ import CalendarHeader from 'ui/calendarHeader';
 import CalendarDays from 'ui/calendarDays';
 import DaysOfWeekHeader from 'ui/daysOfWeekHeader';
 import CalendarTitleBar from 'ui/calendarTitleBar';
-import CalendarDayContainer from 'ui/calendarDayContainer';
-import { getEmployeeMonthlySchedule, getTodaysSchedule } from 'api/data_workspace';
+import SingleDayContainer from 'ui/calendarDayContainer';
+import { getEmployeeMonthlySchedule, getTodaysSchedule, employeeCallIn } from 'api/data_workspace';
 import { createMonthlyCalendar, createWeeklyCalendar, logout } from 'api/data';
 import {Link, browserHistory} from 'react-router';
 import Cookie from 'js-cookie';
@@ -41,7 +41,10 @@ export default React.createClass({
 			selected: '',
 			today: d.getFullYear() + '-' + (d.getMonth() + 1) + "-" + d.getDate(),
 			eligible: false,
-			epoch: 0
+			epoch: 0,
+			employeeId: 0,
+			shift: null,
+			moduleMessage: ''
 		}
 	},
 	componentWillMount: function(){
@@ -59,8 +62,10 @@ export default React.createClass({
 		this.refreshCurrentState(new Date());
 	},
 	componentDidMount: function(){
-		getTodaysSchedule(d, function(time, area, message, bool, epoch){
+		getTodaysSchedule(d, function(obj, time, area, message, bool, epoch){
+			console.log('The whole thing', obj);
 			this.setState({
+				employeeId: obj.id,
 				time: time,
 				area: area,
 				message: message,
@@ -88,26 +93,33 @@ export default React.createClass({
 	previousMonth: function(){
 		this.handleDateChange(-30);
 	},
-	updateDayContainer: function(day, shifttime, area, epoch){
-		// console.log('Update', day, shifttime, area);
+	updateDayContainer: function(day, shifttime, area, epoch, shift){
+		// console.log('Shift', shift, shift.employee, shift.employee.shift_title[0]);
 		this.checkDate(day, shifttime, epoch);
 		this.setState({
 			day: day.day,
 			dayString: day.dayString,
 			fullDateString: day.fullDateString,
 			time: shifttime,
-			area: area
+			area: area,
+			shift: shift
 		})
 	
 	},
 	updateMessage: function(message, bool){
-		this.setState({
+		if(!message){
+			this.setState({
+				moduleMessage: ''
+			})
+		} else {
+			this.setState({
 				eligible: bool
-		})
-		store.dispatch({
-			type: 'CHANGE_MESSAGE',
-			message: message
-		})
+			})
+			store.dispatch({
+				type: 'CHANGE_MESSAGE',
+				message: message
+			})
+		}
 	},
 	checkDate: function(day, shifttime, epoch){
 		
@@ -116,8 +128,8 @@ export default React.createClass({
 		var dayToCompare = new Date();
 		dayToCompare.setFullYear(day.year, day.month, day.day);
 
-		console.log('epoch', epoch, 'timeOfDay', timeOfDay);
-		console.log(today, ' vs ', dayToCompare);
+		// console.log('epoch', epoch, 'timeOfDay', timeOfDay);
+		// console.log(today, ' vs ', dayToCompare);
 		if (today.toDateString() === dayToCompare.toDateString() && timeOfDay > epoch && (shifttime)){
 			this.updateMessage('Scheduled Today', false);
 		} else if(dayToCompare < today && (shifttime)){
@@ -134,6 +146,31 @@ export default React.createClass({
 	// earlyOut: function(epoch){
 	// 	if(epoch > d.getTime() && (epoch - d.getTIme()) > (4 * 60 * 60 * 1000))
 	// },
+	checkEpoch: function(epoch, hour){
+		var timeOfDay = new Date().getTime(); //current epoch
+		var hours = hour * (60 * 60 * 1000);
+		var message = ''
+
+	    if(timeOfDay < (epoch - hours)){
+	    	message = 'Request must be made within ' + hour + ' hours of start time.'
+	    } else if(timeOfDay > epoch){
+	    	message = 'Too late to make this request.'
+	    } else {
+	    	message = "Your request has been submitted."
+	    }
+	    this.setState({
+			moduleMessage: message
+		})
+	},
+	callin: function(){
+		this.checkEpoch(this.state.shift.epoch_milliseconds, 48);
+		console.log({shift: this.state.shift.id, status: '2'}, this.state.shift.epoch_milliseconds);
+		// employeeCallIn({shift: this.state.shift.id, status: '2'}, this.state.currentDate);
+		// this.setState({
+		// 	moduleMessage: 'Request must be within 12 hours of start time.'
+		// })
+
+	},
 	logout: function(){
 		logout();
 		Cookie.remove('token');
@@ -168,7 +205,7 @@ export default React.createClass({
 								/>
 						</div>
 
-						<CalendarDayContainer 
+						<SingleDayContainer 
 							day={this.state.day}
 							dayString={this.state.dayString}
 							fullDateString={this.state.fullDateString} 
@@ -179,6 +216,8 @@ export default React.createClass({
 							selected={this.state.selected}
 							eligible={this.state.eligible}
 							callin={this.callin}
+							moduleMessage={this.state.moduleMessage}
+							updateMessage={this.updateMessage}
 							/>
 
 					</div>

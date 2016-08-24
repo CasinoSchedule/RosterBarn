@@ -78,10 +78,18 @@ export default React.createClass({
 			})
 		}.bind(this));
 		this.refreshCurrentState(new Date());
-		checkPublish(this.state.currentDate, this.state.departmentId);
 	},
 	componentDidMount: function(){
 
+	},
+	handlePublish: function(){
+		console.log('hit on Blur');
+		
+			store.dispatch({
+				type: 'CHANGE_PUBLISHBUTTON',
+				publishButton: 'publish'
+			})
+		
 	},
 	refreshCurrentState: function(date, shiftId){
 		var departmentId = localStorage.getItem("departmentId");
@@ -91,6 +99,7 @@ export default React.createClass({
 		getShifts(date, departmentId);
 		getShiftStrings();
 		getAreas();
+		checkPublish(date, departmentId);
 
 	},
 	handleDateChange: function(next){
@@ -205,7 +214,8 @@ export default React.createClass({
 		browserHistory.push('/')
 	},
 	handleClick: function(item){
-		this.refreshCurrentState(this.state.currentDate);
+		// this.refreshCurrentState(this.state.currentDate);
+		getShifts(this.state.currentDate, this.state.departmentId);
 		store.dispatch({
 			type: 'THROW_EMPLOYEEINFO',
 			employeeInfo: item
@@ -218,7 +228,6 @@ export default React.createClass({
 
 	},
 	getEmployeeInfo: function(id){
-		
 		getEmployeeInfo(id);
 	},
 	autoPopulate: function(method){
@@ -296,6 +305,8 @@ export default React.createClass({
 											weekShifts={this.state.weekShifts} 
 											areas={this.state.areas} 
 											shiftStrings={this.state.shiftStrings}
+											handlePublish={this.handlePublish}
+											shiftId={this.state.shiftNum}
 											currentDate={this.state.currentDate} />
 
 										</div>

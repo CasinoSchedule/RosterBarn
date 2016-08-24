@@ -36,7 +36,13 @@ export function getTodaysSchedule(date, cb){
 			}
 
 		})
-		// 3rd paramater determines whether or not call in options will be displayed
-		cb(time.string_rep, time.area.title, 'Scheduled Today', ((eligible < time.epoch_milliseconds) ? true : false), time.epoch_milliseconds)
+		// 4th paramater determines whether or not call in options will be displayed
+		cb(time, time.string_rep, time.area.title, ((!time.called_out) ? 'Scheduled Today' : 'Call In'), ((eligible < time.epoch_milliseconds) ? true : false), time.epoch_milliseconds)
 	})	
+}
+
+export function employeeCallIn(obj, date){
+	return api.post('/schedules/callout/', obj).then(function(){
+		getEmployeeMonthlySchedule(date);
+	});
 }

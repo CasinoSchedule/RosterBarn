@@ -35,11 +35,11 @@ export function logout() {
 }
 
 export function checkAdmin(){
-	// console.log("api", api);
-	// console.log("check_admin", Cookie.get('token'));
+	console.log("api", api);
+	console.log("check_admin", Cookie.get('token'));
 	return api.get('/profiles/check/').then(function(resp){
-		// console.log("After api.get", Cookie.get('token'));
-		// console.log('checkAdmin function', resp.data.type, resp.data.department, resp.data.department_title);
+		console.log("After api.get", Cookie.get('token'));
+		console.log('checkAdmin function', resp.data, resp.data.type, resp.data.department, resp.data.department_title);
 		if(resp.data.type === "manager"){
 			localStorage.setItem("departmentId", resp.data.department);
 			localStorage.setItem("departmentTitle", resp.data.department_title);
@@ -161,7 +161,13 @@ export function addArea(obj){
 
 
 export function publish(obj){
-	return api.post('/schedules/shift/publish/', obj);
+	return api.post('/schedules/shift/publish/', obj).then(function(){
+		store.dispatch({
+			type: 'CHANGE_PUBLISHBUTTON',
+			publishButton: "noChanges"
+		})
+		// getShifts();
+	});
 }
 
 
@@ -176,6 +182,10 @@ export function checkPublish(date, departmentId){
 	var shiftQuery = queryStringFromDict(weekShiftParams);
 
 	return api.get('/schedules/weekshift/' + shiftQuery).then(function(resp){
+				store.dispatch({
+					type: 'CHANGE_PUBLISHBUTTON',
+					publishButton: 'noChanges'
+				})
 		resp.data.forEach(function(shift, i){
 			if (shift.visible === false) {
 				store.dispatch({
@@ -210,8 +220,14 @@ export function getShifts(date, departmentId){
 }
 
 
-export function sendSingleEmployeeShiftObj(obj){
-	return api.post('/schedules/shift/many/', obj);
+export function sendSingleEmployeeShiftObj(obj, date, departmentId, shiftId){
+	return api.post('/schedules/shift/many/', obj)
+	.then(function(){
+		checkPublish(date, departmentId);
+		// createWeeklyCalendar(date);
+		// getEmployeesByShift(shiftId, departmentId);
+		getShifts(date, departmentId);
+	});
 }
 
 
