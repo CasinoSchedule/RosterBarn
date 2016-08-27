@@ -10,8 +10,8 @@
 	border: 1px solid #f4f4f4;
 	overflow: hidden;
 	padding-left: 10px;
-							// border: 2px solid red;
 	box-sizing: border-box;
+									// @include borderthick(red);
 }
 
 .employeeFlex {
@@ -39,10 +39,10 @@
 	color: $darkgrey;
 	padding-left: 10px;
 	margin-top: 5px;
-}
 
-.idNum:before {
-	content: "#"
+	&:before {
+		content: '#';
+	}
 }
 
 .nameImageBox {
@@ -55,19 +55,22 @@
 	font-family: 'Roboto', Arial;
 							// border: 5px solid lightBlue;
 	box-sizing: border-box;
+	@include borderthin($gradientfrom2);
 
 }
 .nameImageBox:first-child img {
 	width: 60px;
 	height: 50px;
 	border-radius: 5px;
-	// border-right: 1px solid $darkgrey;
+	@include bordernormal($darkgrey);
+	
+	&:hover {
+		width: 70px;
+		height: 60px;
+		box-shadow: 2px 2px 2px $darkgrey;
+	}
 }
-.nameImageBox:first-child img:hover {
-	width: 70px;
-	height: 60px;
-	box-shadow: 2px 2px 2px $darkgrey;
-}
+
 // .timeLocationBox {
 // 	width: 95%;
 // 	height: 100%;

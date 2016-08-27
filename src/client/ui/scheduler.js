@@ -156,11 +156,15 @@ export default React.createClass({
 		const shiftId = this.state.shiftNum;
 		const week = this.state.weekShifts;
 		const clearAll = [];
+		var keys = Object.keys(week);
 
-		for(var key in week){
+
+		// console.log('weekshifts to clear', week, 'keys', keys);
+
+		for(let i = 0; i < keys.length; i++){
 			clearAll.push(
-				{day: week[key].calendar_date, 
-				 employee: week[key].employee.id, 
+				{day: week[keys[i]].calendar_date, 
+				 employee: week[keys[i]].employee.id, 
 				 starting_time: '',
 				 area: null}
 				 )

@@ -221,13 +221,13 @@ export function getShifts(date, departmentId){
 
 
 export function sendSingleEmployeeShiftObj(obj, date, departmentId, shiftId){
-	return api.post('/schedules/shift/many/', obj)
-	.then(function(){
-		checkPublish(date, departmentId);
+	return api.post('/schedules/shift/many/', obj);
+	// .then(function(){
+	// 	checkPublish(date, departmentId);
 		// createWeeklyCalendar(date);
 		// getEmployeesByShift(shiftId, departmentId);
-		getShifts(date, departmentId);
-	});
+		// getShifts(date, departmentId);
+	// });
 }
 
 

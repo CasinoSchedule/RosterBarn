@@ -14,10 +14,10 @@
 
 .calendarFrame {
 	width: 85%;
-	height: auto;
+	height: 80%;
 	margin: 70px auto 20px;
 	display: flex;
-									// border: 5px solid red;
+									@include borderthick(red);
 }
 .calendarFrameContainer {
 	border: 1px solid $darkgrey;
@@ -32,7 +32,7 @@
 // 	// margin: 60px auto 0;
 // 	display: flex;
 // 	justify-content: space-between;
-// 									// border: 1px solid orange;
+// 									// @include borderthin(orange);
 // }
 // .daysOfWeek {
 // 	display: flex;

@@ -28,7 +28,7 @@ export default React.createClass({
 	shiftFilter: function(e){
 		var val = e.target.id[1];
 		var type = e.target.innerHTML;
-		console.log(type);
+		console.log('filter', val, type);
 		this.props.filterByShift(val, type);
 	},
 	changeColor: function(e){

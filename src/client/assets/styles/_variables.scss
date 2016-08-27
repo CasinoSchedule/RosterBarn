@@ -29,3 +29,20 @@ $lightBlue: #3A9AD9;
 $teal: #29ABA4;
 $khaki: #E9E0D6;
 $peach: #EB7260;
+
+
+
+
+// mixins 
+
+@mixin borderthick($color) {
+	border: 5px solid $color;
+}
+
+@mixin bordernormal($color) {
+	border: 3px solid $color;
+}
+
+@mixin borderthin($color) {
+	border: 1px solid $color;
+}

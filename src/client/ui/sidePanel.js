@@ -105,9 +105,9 @@ export default React.createClass({
 		createWeeklyCalendar(date);
 	},
 	shiftFilter: function(e){
-		var val = e.target.id[1];
+		var val = ((e.target.id[1]) ? e.target.id[1] : null);
 		var type = e.target.innerHTML;
-		console.log(type);
+		console.log('filter', val, type);
 		this.props.filterByShift(val, type);
 	},
 	changeColor: function(e){
