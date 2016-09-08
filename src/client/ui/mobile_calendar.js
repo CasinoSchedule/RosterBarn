@@ -87,11 +87,11 @@ export default React.createClass({
 			currentDate: newWeekDate
 		})
 	},
-	nextMonth: function(){
-		this.handleDateChange(30);
+	nextMonth: function(days){
+		this.handleDateChange(days);
 	},
-	previousMonth: function(){
-		this.handleDateChange(-30);
+	previousMonth: function(days){
+		this.handleDateChange(days);
 	},
 	updateDayContainer: function(day, shifttime, area, epoch, shift){
 		// console.log('Shift', shift, shift.employee, shift.employee.shift_title[0]);
@@ -193,9 +193,11 @@ export default React.createClass({
 							<CalendarTitleBar 
 								previousMonth={this.previousMonth}
 								nextMonth={this.nextMonth} 
-								currentDate={this.state.currentDate} />
+								currentDate={this.state.currentDate} 
+								calendarHeader={'calendarHeader'} />
 							
-							<DaysOfWeekHeader />
+							<DaysOfWeekHeader 
+								weekdays={'weekdays'}/>
 
 							<CalendarDays 
 								monthlyCalendar={this.state.monthlyCalendar}

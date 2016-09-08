@@ -4,7 +4,7 @@
 
 
 .adminHeader {
-	position: absolute;
+	position: fixed;
 	top: 0;
 	left: 0;
 	width: 100%;
@@ -13,6 +13,7 @@
 	background: $greyScheme;
 	display: flex;
 	flex-wrap: nowrap;
+	z-index: 1020;
 								// border: 2px solid orange;
 }
 

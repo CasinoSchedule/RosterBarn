@@ -1,0 +1,26 @@
+@import './variables';
+
+.publish, .noChanges {
+	width: 100%;
+	height: 50px;
+	line-height: 50px;
+	text-align: center;
+	color: white;
+	letter-spacing: 1px;
+	text-shadow: 1px 1px 1px #000;
+	font-family: 'Roboto';
+	// @include borderthin(yellow);
+}
+.publish {
+	background: $activeblue;
+	&:hover {
+		background: $altactivegreen;
+	}
+	&:active {
+		margin-top: 5px;
+		height: 45px;
+	}
+}
+.noChanges {
+	background: $darkgrey;
+}

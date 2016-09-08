@@ -4,10 +4,16 @@
 .weekOf {
 	display: flex;
 	flex-wrap: nowrap;
-						// border: 5px solid yellow;
-	min-width: 980px; 
-	// width: 100%;
+						// @include borderthick(yellow);
+	// min-width: 980px; 
+	// width: 86%;
 	padding-left: 3px;
+	position: fixed;
+	left: 200px;
+	top: 90px;
+	right: 0;
+	z-index: 1020;
+	@include borderthin($darkgrey);
 }
 .weekOf:first-child {
 	background: $greyScheme;

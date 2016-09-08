@@ -6,7 +6,7 @@ require('assets/styles/daysOfWeekHeader.scss');
 export default React.createClass({
 	render: function(){
 		return (
-			<div className="weekDays">
+			<div className={this.props.weekdays}>
 				<div>SUN</div>
 				<div>MON</div>
 				<div>TUE</div>

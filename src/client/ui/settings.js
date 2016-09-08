@@ -162,23 +162,7 @@ export default React.createClass({
 					<div className='shiftAdds'>
 						<div>SHIFT TIMES</div>
 					</div>
-					{this.props.shiftStrings.map(function(item, i){
-						return(
-							<div key={v4()} className='eachLocation'>
-								<div>{item.string_rep}</div>
-								<div>
-									<IconButton
-								      iconClassName="material-icons"
-								      tooltip="Delete Area"
-								      onClick={this.deleteShiftEntry.bind(this, item)}
-								     >
-								      delete
-								    </IconButton>
-
-								</div>
-							</div>
-						)
-					}.bind(this))}
+					
 					<div className='shiftString'>
 						<div className='inputBoxes'>
 							<SelectField 
@@ -312,32 +296,32 @@ export default React.createClass({
 						      add
 						    </IconButton>
 						 </div>
+
 			        	
 		        	</div>
+		        	{this.props.shiftStrings.map(function(item, i){
+						return(
+							<div key={v4()} className='eachLocation'>
+								<div>{item.string_rep}</div>
+								<div>
+									<IconButton
+								      iconClassName="material-icons"
+								      tooltip="Delete Area"
+								      onClick={this.deleteShiftEntry.bind(this, item)}
+								     >
+								      delete
+								    </IconButton>
+
+								</div>
+							</div>
+						)
+					}.bind(this))}
 		        	
 			        	<div className='shiftAdds areaAdds'>
 							<div>AREAS</div>
 							<div></div>
 						</div>
-						<div>
-							{this.props.areas.map(function(item, i){
-								return(
-									<div key={v4()} className='eachLocation'>
-										<div>{item.title}</div>
-										<div>
-											<IconButton
-										      iconClassName="material-icons"
-										      tooltip="Delete Area"
-										      onClick={this.deleteAreaEntry.bind(this, item)}
-										     >
-										      delete
-										    </IconButton>
-
-										</div>
-									</div>
-								)
-							}.bind(this))}
-						</div>
+						
 						<div className='shiftString'>
 							<div>
 								<TextField
@@ -358,6 +342,25 @@ export default React.createClass({
 							    </IconButton>
 							 </div>
 				    	</div>
+				    	<div>
+							{this.props.areas.map(function(item, i){
+								return(
+									<div key={v4()} className='eachLocation'>
+										<div>{item.title}</div>
+										<div>
+											<IconButton
+										      iconClassName="material-icons"
+										      tooltip="Delete Area"
+										      onClick={this.deleteAreaEntry.bind(this, item)}
+										     >
+										      delete
+										    </IconButton>
+
+										</div>
+									</div>
+								)
+							}.bind(this))}
+						</div>
 				</div>
 				<RaisedButton label='Close' onClick={this.closeSettings} />
 			</div>

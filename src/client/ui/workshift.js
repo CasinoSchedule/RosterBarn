@@ -38,7 +38,22 @@ export default React.createClass({
 				starting_time: '',
 				area: ''
 			})
-		} else {
+		} else if(value === 1000){
+			this.setState({
+				starting_time: value,
+				area: ''
+			})
+			sendSingleEmployeeShiftObj([{
+				day: this.props.eachday.calendar_date,
+				employee: this.props.employee.id,
+				starting_time: '',
+				area: ''
+				
+			}], this.props.currentDate, localStorage.getItem("departmentId"), this.props.shiftId)
+		}
+
+
+		else {
 			this.setState({
 				starting_time: value	
 			}) 
@@ -79,13 +94,14 @@ export default React.createClass({
 	render: function(){
 		return (
 			<div>
-				<div style={{height: '45px'}}>			
+				<div style={{height: '45px', textAlign: 'center'}}>			
 					<SelectField
 						key={v4()}
 						fullWidth={true} 
 						value={this.state.starting_time} 
 						onChange={this.handleTimeChange} 
-						style={{height: '42px', top: '-3px', fontSize: '12px', fontWeight: '600', whiteSpace: 'nowrap', paddingLeft: '10px', width: '120px'}}
+						fullWidth={true}
+						style={{height: '42px', top: '-3px', fontSize: '12px', fontWeight: '600', whiteSpace: 'nowrap'}}
 						labelStyle={{lineHeight: '25px', top: '10px'}}
 						menuStyle={{width: '180px'}}>
 						
@@ -96,20 +112,23 @@ export default React.createClass({
 							)
 						}.bind(this))}
 
-						<MenuItem key={v4()} value={1000} primaryText="Day Off" />
+						<MenuItem key={v4()} value={1000} primaryText="OFF" />
+						<MenuItem key={v4()} value={1003} primaryText="PTO" />
+						<MenuItem key={v4()} value={1004} primaryText="VAC" />
 						<MenuItem key={v4()} value={1001} primaryText="Add Shift" />
 						<MenuItem key={v4()} value={1002} primaryText="Clear Shift" />
 
 					</SelectField>  
 				</div>
 
-				<div style={{height: '45px'}}>
+				<div style={{height: '45px', textAlign: 'center'}}>
 					<SelectField 
 						key={v4()}
 					 	fullWidth={true}
+					 	disabled={((this.state.starting_time === 1000) ? true : false)}
 						value={this.state.area} 
 						onChange={this.handleAreaChange} 
-						style={{height: '42px', top: '-15px', fontSize: '12px', fontWeight: '600', whiteSpace: 'nowrap', paddingLeft: '10px', width: '120px'}}
+						style={{height: '42px', top: '-15px', fontSize: '12px', fontWeight: '600', whiteSpace: 'nowrap'}}
 						labelStyle={{lineHeight: '25px', top: '10px'}}
 						menuStyle={{width: '180px'}}>
 

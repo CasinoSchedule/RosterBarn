@@ -4,7 +4,7 @@ import { Link, browserHistory } from 'react-router';
 import { createMonthlyCalendar } from 'api/data';
 import CalendarTitleBar from 'ui/calendarTitleBar';
 import DaysOfWeekHeader from 'ui/daysOfWeekHeader';
-
+import PublishButton from 'ui/publishButton'
 
 require("assets/styles/sidePanel.scss");
 require('font-awesome-webpack');
@@ -12,6 +12,7 @@ require('font-awesome-webpack');
 export default React.createClass({
 	getInitialState: function(){
 		return {
+			currentDate: new Date(),
 			monthlyCalendar: []
 		}
 	},
@@ -31,6 +32,18 @@ export default React.createClass({
 		console.log('filter', val, type);
 		this.props.filterByShift(val, type);
 	},
+	scheduleJump: function(date){
+		console.log('arguments', date);
+		this.props.dateChangefromCalendar(new Date(date.year, date.month, date.day));
+	},
+	nextMonth: function(days){
+		var newDate = this.state.currentDate.addDays(days);
+		this.setState({
+			currentDate: newDate
+		})
+		createMonthlyCalendar(newDate);
+		// console.log(this.state.currentDate.addDays(days))
+	},
 	changeColor: function(e){
 		var val = e.target.id;
 		console.log(val);
@@ -49,29 +62,30 @@ export default React.createClass({
 			
 					<details>
 						<summary className="locations"><i className="fa fa-calendar" aria-hidden="true"></i>Calendar</summary>
-
 						<div className="adminCal">
 
-						<CalendarTitleBar 
-								previousMonth={this.props.previousMonth}
-								nextMonth={this.props.nextMonth} 
-								currentDate={this.props.currentDate} />
+							<CalendarTitleBar 
+								previousMonth={this.nextMonth}
+								nextMonth={this.nextMonth} 
+								currentDate={this.state.currentDate}
+								calendarHeader={'adminCalendarHeader'} />
 
-						<DaysOfWeekHeader />
+							<DaysOfWeekHeader 
+								weekdays={'adminWeekdays'}/>
 
 
-						<div className="adminCalDate">
-							{this.state.monthlyCalendar.map(function(item, i){
-								return (
-									<div key ={i} className={"adminCalBox " + item.currentClass} id={"box" + i} onClick={this.scheduleJump.bind(this, item)}>
-										<p>{item.day}</p>
-									</div>
-								)
-							}.bind(this))} 	
-								
-						</div>
+							<div className="adminCalDate">
+								{this.state.monthlyCalendar.map(function(item, i){
+									return (
+										<div key ={i} className={"adminCalBox " + item.currentClass} id={"box" + i} onClick={this.scheduleJump.bind(this, item)}>
+											<p>{item.day}</p>
+										</div>
+									)
+								}.bind(this))} 	
+									
+							</div>
 							
-				</div>
+						</div>
 					</details>
 
 					
@@ -100,9 +114,9 @@ export default React.createClass({
 				</div>
 				
 				
-				<div className={this.state.publishButton} onClick={this.publish}>
-					<button>Publish & Notify</button>
-				</div> 
+				<PublishButton 
+					publishButton={this.props.publishButton}
+					publish={this.props.publish} />
 			</div>
 		)
 	}

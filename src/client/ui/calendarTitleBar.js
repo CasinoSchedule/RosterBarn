@@ -8,12 +8,15 @@ var months = ["January", "February", "March", "April", "May",
 					"November", "December"];
 
 export default React.createClass({
+	next: function(days){
+		this.props.nextMonth(days);
+	},
 	render: function(){
 		return (
-			<div className="calendarHeader">
-				<div className="previousButton" onClick={this.props.previousMonth}>&lang;</div>
+			<div className={this.props.calendarHeader}>
+				<div className="previousButton" onClick={this.next.bind(this, -30)}>&lang;</div>
 				<div className="month-year">{months[new Date(this.props.currentDate).getMonth()]} {new Date(this.props.currentDate).getFullYear()}</div>
-				<div className="nextButton" onClick={this.props.nextMonth} style={{textAlign: 'right'}}>&rang;</div>
+				<div className="nextButton" onClick={this.next.bind(this, 30)} style={{textAlign: 'right'}}>&rang;</div>
 			</div>
 		)
 	}

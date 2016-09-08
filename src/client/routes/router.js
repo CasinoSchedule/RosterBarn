@@ -47,6 +47,7 @@ import MobileCalendar from 'ui/mobile_calendar';
 import Scheduler from 'ui/scheduler';
 import LandingPage from 'ui/landingPage';
 import employeeSignUp from 'ui/employeeSignUp';
+import Settings from 'ui/settings_new';
 
 
 
@@ -57,7 +58,7 @@ export default (
       <Route component={App}>
       	<Route path='/landingPage' component={LandingPage} />
       	<Route path='/' component={Home} />
-      	<Route path='/calendar' component={Calendar} />
+      	<Route path='/settings_new' component={Settings} />
         <Route path='/mobile_calendar' component={MobileCalendar} />
       	<Route path='/scheduler' component={Scheduler} />
         <Route path='/employee/*' component={employeeSignUp} />	

@@ -133,7 +133,7 @@ export function getDaysOff(id){
 
 export function getAreas(){
 	return api.get('/schedules/area/').then(function(resp){
-		console.log('areas', resp.data)
+		// console.log('areas', resp.data)
 		store.dispatch({
 			type: 'GET_AREAS',
 			areas: resp.data
@@ -170,7 +170,24 @@ export function publish(obj){
 	});
 }
 
-
+export function checkPublish2(keys){
+	
+	// var keys = Object.keys(shifts);
+	// console.log('Hit', keys);
+	store.dispatch({
+		type: 'CHANGE_PUBLISHBUTTON',
+		publishButton: 'noChanges'
+	})
+	for(let i = 0; i < keys.length; i++){
+		if(keys[i].visible === false){
+			console.log('Yup');
+			store.dispatch({
+				type: 'CHANGE_PUBLISHBUTTON',
+				publishButton: 'publish'
+			})
+		}
+	}
+}
 
 
 // 			***********     Shifts   ************
@@ -187,7 +204,7 @@ export function checkPublish(date, departmentId){
 					publishButton: 'noChanges'
 				})
 		resp.data.forEach(function(shift, i){
-			if (shift.visible === false) {
+			if (shift.visible === false){
 				store.dispatch({
 					type: 'CHANGE_PUBLISHBUTTON',
 					publishButton: 'publish'
@@ -205,8 +222,8 @@ export function getShifts(date, departmentId){
 	var shiftQuery = queryStringFromDict(weekShiftParams);
 
 	return api.get('/schedules/weekshift/' + shiftQuery).then(function(resp){
-		console.log('Shifts', resp.data)  
-
+		// console.log('Shifts', resp.data)  
+		// checkPublish2(resp.data);
 		var allShifts = resp.data.reduce(function(o, v, i) {
 			  o['date_' + v.calendar_date + '_employee_id_' + v.employee.id] = v;
 			  return o;
@@ -221,13 +238,15 @@ export function getShifts(date, departmentId){
 
 
 export function sendSingleEmployeeShiftObj(obj, date, departmentId, shiftId){
-	return api.post('/schedules/shift/many/', obj);
-	// .then(function(){
+	return api.post('/schedules/shift/many/', obj)
+	.then(function(){
+		console.log('hello from sendSingleEmployeeShiftObj Function')
+
 	// 	checkPublish(date, departmentId);
 		// createWeeklyCalendar(date);
 		// getEmployeesByShift(shiftId, departmentId);
 		// getShifts(date, departmentId);
-	// });
+	});
 }
 
 
@@ -341,7 +360,7 @@ export function createMonthlyCalendar(date){
 		let type = ((i < 0 || i > startDate.addDays(i).getDate()) ? 'inactiveMonth' : 'activeMonth');
 		calendarDays.push(createCalendarDay(startDate, i, type));
 	}
-		console.log('calendarDays', calendarDays)
+		// console.log('calendarDays', calendarDays)
 		store.dispatch({
 			type: 'GET_MONTHLYCALENDAR',
 			monthlyCalendar: calendarDays
@@ -466,283 +485,3 @@ export function autoPopulateSchedule(date, departmentId, method) {
 	});
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// export function getShifts(date, departmentId){
-// 	var weekShiftParams = {};
-// 	weekShiftParams['date'] = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
-// 	weekShiftParams['department'] = departmentId;
-// 	var shiftQuery = queryStringFromDict(weekShiftParams);
-
-// 	return api.get('/schedules/weekshift/' + shiftQuery).then(function(resp){
-// 		console.log('Shifts', resp.data)
-// 		var allShifts = resp.data.reduce(function(o, v, i) {
-// 			  o['date_' + v.calendar_date + '_employee_id_' + v.employee.id] = v;
-// 			  return o;
-// 			}, {});
-// 		console.log('All Shifts Object', allShifts)
-// 		store.dispatch({
-// 			type: 'GET_WEEKSHIFTS',
-// 			weekShifts: allShifts
-// 		})
-// 	})
-// }
-
-
-// export function setNewSchedule(uniqueId, arr, newScheduleItem) {
-// 	console.log('Set New Schedule ', newScheduleItem);
-// 	var newArr = arr.map(function(indArr){
-// 		return indArr.map(function(item){
-// 			if (item.uniqueId === uniqueId) {
-// 				return newScheduleItem;
-// 				// return new schedule item with date attached
-// 			} else {
-// 				return item;
-// 			}
-// 		});
-// 	});
-// 	// console.log('After function', newArr)
-// 	store.dispatch({
-// 		type: 'GET_EMPLOYEEWEEKLYSCHEDULE',
-// 		employeeWeeklySchedule: newArr
-// 	})
-// }
-
-
-
-// export function getEmployeeSchedule(date, shiftId, departmentId, clearAll){
-// 	var workWeekSchedule = [], employees = [], scheduledEmployees = [], weekdays = [], employeeRow = [];
-
-// 	var weekShiftParams = {};
-// 	weekShiftParams['date'] = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
-// 	weekShiftParams['department'] = departmentId;
-// 	var shiftQuery = queryStringFromDict(weekShiftParams);
-
-// 	var employeeParams = {};
-// 	employeeParams['shift_title'] = shiftId;
-// 	employeeParams['department'] = departmentId;
-// 	var employeeQuery = queryStringFromDict(employeeParams);
-
-// 	return api.get('/schedules/weekshift/' + shiftQuery).then(function(resp){
-// 		workWeekSchedule = ((clearAll) ? [] : resp.data);
-			
-// 		return api.get('/profiles/employee/' + employeeQuery).then(function(resp){
-// 			employees = resp.data;
-	
-// 			getWeekByWeek(date, function(weekdays){
-// 					weekdays = weekdays;
-// 					for(var i = 0, n = 0; i < employees.length; i++, n++){
-// 						scheduledEmployees.push(createEmployeeInfo(employees[i], "nameField"))
-// 						for(var j = 0; j < 7; j++){
-// 							var currentShift = checkIfWorking(weekdays[j].calendar_date, employees[i].id);
-// 							scheduledEmployees.push(createEmployeeShift(employees[i], 'timeField', currentShift, weekdays[j].calendar_date));
-// 						}
-// 					}
-// 			})
-				
-// 				function checkIfWorking(date, id){
-// 					for(var i = 0; i < workWeekSchedule.length; i++){
-// 						if(workWeekSchedule[i].calendar_date === date && workWeekSchedule[i].employee.id === id) {
-// 							return ((workWeekSchedule[i].starting_time) 
-// 								? {
-// 									time: workWeekSchedule[i].starting_time.slice(0, 5),
-// 									shiftString: createShiftString(workWeekSchedule[i].starting_time, workWeekSchedule[i].end_time),
-// 									epoch_milliseconds: workWeekSchedule[i].epoch_milliseconds, 
-// 									station: ((workWeekSchedule[i].station) ? workWeekSchedule[i].station.title : ""),
-// 									visible: workWeekSchedule[i].visible} 
-
-// 								: "")
-// 						}
-// 					}
-// 					return ""
-// 				}
-
-// 				function checkShiftVisibile(shiftData){
-// 					// Check shift objects to see if any have visible=false
-// 					var rows = shiftData;
-// 					for(let i=0; i < rows.length; i++){
-// 						var row = rows[i];
-// 						for (let j=0; j < row.length; j++) {
-// 							if (row[j].visible == false) {
-// 								return 'publish';
-// 							}
-// 						}
-// 					}
-// 					return 'noChanges';}
-
-// 				// Split array of objects by employee 
-// 				for(let i = 0; i < employees.length; i++){
-// 					employeeRow.push(scheduledEmployees.splice(0, 8));
-// 				}
-
-// 				var publishStatus = checkShiftVisibile(employeeRow);
-
-// 				store.dispatch({
-// 				type: 'CHANGE_PUBLISHBUTTON',
-// 				publishButton: publishStatus
-// 				})
-
-// 				store.dispatch({
-// 					type: 'GET_EMPLOYEEWEEKLYSCHEDULE',
-// 					employeeWeeklySchedule: employeeRow
-// 				})
-				
-// 		})	
-
-// 	})
-// }
-
-// export function createEmployeeInfo(employee, type){
-// 	employee.nameString = employee.first_name + " " + employee.last_name
-// 	employee.uniqueId = v4();
-// 	employee.nameFieldCss = type;
-	
-// 	return employee
-// }
-
-// export function createEmployeeShift(employee, type, currentShift, date){
-// 	var newItem = {
-// 		id: employee.id,
-// 		calendar_date: date,
-// 		epoch_milliseconds: currentShift.epoch_milliseconds || null,
-// 		uniqueId: v4(),
-// 		starting_time: currentShift.time || '',
-// 		station: currentShift.station || '',
-// 		classInfoTime: type,
-// 		position_title: employee.position_title,
-// 		visible: currentShift.visible
-// 	}
-	
-// 	return newItem
-// }
-
-export function calendar(month, year, monthdate, employee){
-	// console.log('Init', month, year, monthdate);
-		var month = monthdate - 1;
-		var preceding_days = new Date(year, month, 1).getDay();
-		var	month_count = new Date(year, month+1, 0).getDate();
-		var	trailing_days = 42 - month_count - preceding_days;
-		var start_day = new Date(year, month, 1).subtractDays(preceding_days);
-		var collection = [];
-
-		function collectionDate(date, type) {
-			var newItem = {
-				calendar_date: stringDate(date),
-				currentClass: type,
-				day: date.getDate(),
-				month: months[date.getMonth()],
-				year: date.getFullYear(),
-				javascriptMonthNum: date.getMonth()
-			};
-			return newItem;
-		}
-
-		for(var i=0; i < 42; i++) {
-			if(i < preceding_days || i >= 42 - trailing_days){
-				collection.push(collectionDate(start_day.addDays(i), 'inactiveMonth'));
-			}
-			else{
-				collection.push(collectionDate(start_day.addDays(i), "activeMonth"));
-			}
-		}
-
-		// console.log('collection', collection);
-
-		if (employee){
-
-		 return api.get('/schedules/employeemonth/?month=' + monthdate + '&year=' + year).then(function(resp){
-
-		 	var data = resp.data;
-
-			var scheduleInfo = collection.map(function(item, i){
-					return ({
-						year: item.year,
-						month: item.month,
-						day: item.day,
-						calendar_date: item.calendar_date,
-						currentClass: item.currentClass,
-						javascriptMonthNum: item.javascriptMonthNum,
-						starting_time: checkSchedule(item.calendar_date)
-					})
-				})
-
-			var working = working_today(scheduleInfo);
-
-				store.dispatch({
-					type: 'GET_DATEOBJECTS',
-					collection: scheduleInfo,
-					working_today: working
-				})
-
-				// console.log('scheduleInfo', scheduleInfo);
-
-				console.log("Working Today From Calendar Function:", working);
-
-
-				// ampm function can be used here. Try out when employee side is refactored. 
-
-				function checkSchedule(check){
-					var hour_time_check = 0;
-					for(var i = 0; i < data.length; i++){
-						if(data[i].calendar_date === check) {
-							if(data[i].starting_time){
-								hour_time_check = parseInt(data[i].starting_time.slice(0, 2));
-								if(hour_time_check === 12){
-									return data[i].starting_time.slice(0, 5) + "pm";
-								} else if(hour_time_check < 12) {
-									return data[i].starting_time.slice(0, 5) + "am"
-								} else {
-									hour_time_check = hour_time_check - 12
-									return hour_time_check + ":" + data[i].starting_time.slice(3, 5) + "pm"
-								}
-							}
-							else {
-								return ""
-							}
-						}
-					}
-				}
-		
-		})} else { 
-
-			store.dispatch({
-				type: 'GET_DATEOBJECTS',
-				collection: collection
-			})}
-}

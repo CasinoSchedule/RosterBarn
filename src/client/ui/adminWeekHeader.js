@@ -44,6 +44,12 @@ export default React.createClass({
 	stationPopulate: function(){
 		this.props.autoPopulate('station');
 	},
+	previous: function(){
+		this.props.nextSchedule(-7);
+	},
+	next: function(){
+		this.props.nextSchedule(7);
+	},
 	render: function(){
 		return (
 			<div className="monthLabel">
@@ -52,7 +58,8 @@ export default React.createClass({
 				</div>
 
 				<div className="navigate">
-					<div className="leftButton" onClick={this.props.previousSchedule}><i className="fa fa-angle-left" aria-hidden="true"></i></div>
+
+					<div className="leftButton" onClick={this.previous}><i className="fa fa-angle-left" aria-hidden="true"></i></div>
 
 					<div className="weekLabel"> {this.props.weeklyCalendar[0].monthString} {this.props.weeklyCalendar[0].day}, {this.props.weeklyCalendar[0].year}   
 
@@ -60,9 +67,8 @@ export default React.createClass({
 
 						{this.props.weeklyCalendar[6].monthString} {this.props.weeklyCalendar[6].day}, {this.props.weeklyCalendar[6].year}
 					</div> 
-					<div className="rightButton" onClick={this.props.nextSchedule}><i className="fa fa-angle-right" aria-hidden="true"></i></div>
+					<div className="rightButton" onClick={this.next}><i className="fa fa-angle-right" aria-hidden="true"></i></div>
 				</div>
-
 
 				<div className="printClearContainer">
 

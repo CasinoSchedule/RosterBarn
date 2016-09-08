@@ -1,0 +1,188 @@
+@import './variables';
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,300,500);
+
+.settingsBox {
+	position: fixed;
+	top: 15%;
+	left: 15%;
+	min-width: 600px;
+	width: 70%;
+	height: 70%;
+	z-index: 1040;
+	// margin: auto;
+	// width: 650px;
+	// height: 80%;
+	background: white;
+
+				// border: 1px solid $textshadow;
+									@include borderthick(red);
+	display: flex;
+	flex-direction: column;
+
+	overflow-x: hidden;
+    overflow-y: scroll;
+
+	// justify-content: space-between;
+	// -webkit-box-shadow: -4px 4px 5px 0px rgba(226,226,226,1);
+	// -moz-box-shadow: -4px 4px 5px 0px rgba(226,226,226,1);
+	// box-shadow: -4px 4px 5px 0px rgba(226,226,226,1);
+
+	// box-sizing: border-box;
+}
+
+.settingsHeader {
+	width: 100%;
+	font-size: 1em;
+	font-family: 'Roboto';
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 5px;
+	background: $scheduleHeader;
+	color: white;
+	text-shadow: 1px 1px 0 #000;
+				// border: 1px solid $darkgrey;
+							@include borderthick(blue);
+
+}
+.settingsContainer {
+	display: flex;
+	position: relative;
+	// min-height: auto;
+	height: 100%;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	overflow: hidden;
+
+							@include borderthick(brown);
+}
+.settingsSidePanel {
+	position: relative;
+	height: 100%;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	width: 150px;
+	padding-top: 20px;
+	// height: 100%;
+							@include borderthick(black);
+}
+
+.settingsBody {
+	position: relative;
+	height: 100%;
+	width: 100%;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	background: #eee;
+	// width: 150px;
+	// height: 100%;
+							@include borderthick(orange);
+}
+.shiftBox {
+	// width: 120px;
+	// height: 60px;
+							@include borderthick(red);
+}
+
+.settingsOptions {
+	width: 100%;
+	height: 40px;
+	line-height: 40px;
+	text-align: center;
+	font-family: 'Roboto';
+	cursor: pointer;
+							@include borderthin(red);
+}
+
+.shiftSelection, .addNewArea {
+							@include borderthick(pink);
+	width: 100%;
+	height: auto;
+	padding-left: 20px;
+	background: #fff;
+}
+.shiftChoices {
+	width: 80%;
+	min-height: 50px;
+	max-height: 250px;
+	overflow: scroll;
+	// margin: 0 auto;
+	padding-left: 20px;
+	padding-bottom: 80px;
+	margin: 10px auto;
+	background: #fff;
+							@include borderthick($darkgrey);
+}
+
+.matchLabel {
+	font-family: 'Roboto';
+	font-size: 11px;
+	letter-spacing: .5px;
+	color: $darkgrey;
+}
+
+.addNewArea {
+	display: flex;
+	align-items: center;
+
+}
+.shiftAdds {
+	width: 100%;
+	height: 40px;
+				border: 1px solid $textshadow;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	font-size: 16px;
+	font-family: 'Roboto';
+	padding: 0 10px 0 10px;
+	background: #ccc;
+}
+
+.material-icons.hoverAdd:hover {
+	font-size: 33px;
+	cursor: pointer;
+}
+.shiftString {
+	display: flex;
+}
+.bridgeText {
+	height: 40px;
+	line-height: 40px;
+	font-size: 14px;
+	font-family: 'Roboto';
+				// border: 1px solid red;
+	margin-top: 15px;
+}
+.inputBoxes {
+	width: 80px;
+	// overflow: hidden;
+	// height: 50px; 
+	// line-height: 50px; 
+				// border: 1px solid green;
+}
+.areaAdds {
+	margin-top: 20px;
+}
+.eachLocation {
+	width: 100%;
+	height: 40px;
+	line-height: 40px;
+	font-size: 14px;
+	font-family: 'Roboto';
+	padding-left: 15px;
+	padding-right: 5px;
+	// border: 1px solid red;
+	display: flex;
+	justify-content: space-between;
+	margin: 5px 0 8px 0;
+	-webkit-box-shadow: -4px 7px 5px 0px rgba(226,226,226,1);
+	-moz-box-shadow: -4px 7px 5px 0px rgba(226,226,226,1);
+	box-shadow: -4px 7px 5px 0px rgba(226,226,226,1);
+}
+.settingsCategoryHeader {
+	background: #ccc;
+}

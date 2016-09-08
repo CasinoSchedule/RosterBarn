@@ -47,6 +47,7 @@ export default class Options extends React.Component {
           modal={true}
           open={this.state.open}
         >
+          <div>Hello</div>
           <RadioButtonGroup name="shipSpeed" label="Time Input Options">
             <RadioButton
               value="pick"

@@ -63,6 +63,7 @@
 	font-size: 16px;
 	font-family: 'Roboto';
 	padding: 0 10px 0 10px;
+	background: #ccc;
 }
 
 .material-icons.hoverAdd:hover {
@@ -105,4 +106,7 @@
 	-webkit-box-shadow: -4px 7px 5px 0px rgba(226,226,226,1);
 	-moz-box-shadow: -4px 7px 5px 0px rgba(226,226,226,1);
 	box-shadow: -4px 7px 5px 0px rgba(226,226,226,1);
+}
+.settingsCategoryHeader {
+	background: #ccc;
 }

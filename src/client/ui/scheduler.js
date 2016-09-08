@@ -1,13 +1,13 @@
 import React from 'react';
 import store from 'store';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-import SidePanel from 'ui/sidePanel';
+import SidePanel from 'ui/sidePanel_workspace';
 import EmployeeInfoForm from 'ui/employeeInfoForm';
 import Confirm from 'ui/confirm';
-import Settings from 'ui/settings';
+import Settings from 'ui/settings_new';
 import { addNewEmployee, deleteEmployee, getEmployeeSchedule, updateEmployee, 
 		clearAllSchedule, logout, getAreas, getShiftStrings, autoPopulateSchedule, 
-		createWeeklyCalendar, getShifts, getEmployeesByShift, checkPublish, getEmployeeInfo } from 'api/data';
+		createWeeklyCalendar, getShifts, getEmployeesByShift, checkPublish, checkPublish2, getEmployeeInfo, publish } from 'api/data';
 import { browserHistory } from 'react-router';
 import {v4} from 'uuid';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -55,7 +55,8 @@ export default React.createClass({
 			shiftStrings: [],
 			employees: [],
 			weekShifts: {},
-			departmentId: localStorage.getItem("departmentId")
+			departmentId: localStorage.getItem("departmentId"),
+			publishButton: ''
 		})
 	},
 	componentWillMount: function(){
@@ -74,7 +75,8 @@ export default React.createClass({
 				areas: currentStore.adminReducer.areas,
 				employees: currentStore.adminReducer.employees,
 				weekShifts: currentStore.adminReducer.weekShifts,
-				shiftStrings: currentStore.adminReducer.shiftStrings
+				shiftStrings: currentStore.adminReducer.shiftStrings,
+				publishButton: currentStore.cssReducer.publishButton
 			})
 		}.bind(this));
 		this.refreshCurrentState(new Date());
@@ -91,6 +93,13 @@ export default React.createClass({
 			})
 		
 	},
+	refreshShifts: function(date, shiftId){
+		// var shiftId = ((shiftId) ? shiftId : this.state.shiftNum);
+		createWeeklyCalendar(date);
+		getEmployeesByShift(this.state.shiftNum, this.state.departmentId);
+		getShifts(date, this.state.departmentId);
+		
+	},
 	refreshCurrentState: function(date, shiftId){
 		var departmentId = localStorage.getItem("departmentId");
 		var shiftId = ((shiftId) ? shiftId : this.state.shiftNum);
@@ -103,17 +112,22 @@ export default React.createClass({
 
 	},
 	handleDateChange: function(next){
+		// console.log('handleDateChange', next);
 		var newWeekDate = this.state.currentDate.addDays(next);
-		this.refreshCurrentState(newWeekDate);
+		this.refreshShifts(newWeekDate);
 		this.setState({
 			currentDate: newWeekDate
 		})
 	},
-	nextSchedule: function(){
-		this.handleDateChange(7);
+	nextSchedule: function(days){
+		// console.log('nextSchedule', days);
+		this.handleDateChange(days);
 	},
-	previousSchedule: function(){
-		this.handleDateChange(-7);
+	dateChangefromCalendar: function(date){
+		this.refreshShifts(date);
+		this.setState({
+			currentDate: date
+		})
 	},
 	addEmployee: function(e){
 		addNewEmployee({
@@ -177,35 +191,53 @@ export default React.createClass({
 			showClearConfirm: false
 		})
 	},
+	// setColor: function(val){
+	// 	var fieldToChange = val
+	// 	var test = [];
+	// 	var colors = ['red', 'yellow', 'pink', 'orange'];
+	// 	var cut = this.state.employeeWeeklySchedule;
+	// 	for(let i = 0; i < cut.length; i++){
+	// 		for(let j = 1; j < 8; j++){
+	// 			if(cut[i][j][fieldToChange]) {
+	// 				if(test.indexOf(cut[i][j][fieldToChange]) === -1){ 
+	// 					test.push(cut[i][j][fieldToChange]) 
+	// 				}
+	// 			}
+	// 		}
+	// 	}
+	// 	for(let i = 0; i < cut.length; i++){
+	// 		for(let j = 1; j < 8; j++){
+	// 			if(cut[i][j][fieldToChange]) {
+	// 				if(test.indexOf(cut[i][j][fieldToChange]) !== -1){ 
+	// 					cut[i][j].val =  colors[test.indexOf(cut[i][j][fieldToChange])]
+	// 				}
+	// 			}
+	// 		}
+	// 	}
+	// 	store.dispatch({
+	// 		type: 'GET_EMPLOYEEWEEKLYSCHEDULE',
+	// 		employeeWeeklySchedule: cut
+	// 	})
+	// 	// console.log('test', test);
+	// 	// console.log('cut', cut);
+	// },
 	setColor: function(val){
-		var fieldToChange = val
-		var test = [];
-		var colors = ['red', 'yellow', 'pink', 'orange'];
-		var cut = this.state.employeeWeeklySchedule;
-		for(let i = 0; i < cut.length; i++){
-			for(let j = 1; j < 8; j++){
-				if(cut[i][j][fieldToChange]) {
-					if(test.indexOf(cut[i][j][fieldToChange]) === -1){ 
-						test.push(cut[i][j][fieldToChange]) 
-					}
-				}
-			}
+		let keys = Object.keys(this.state.weekShifts);
+		for(let i = 0; i < keys.length; i++){
+			console.log(this.state.weekShifts[keys[i]]);
 		}
-		for(let i = 0; i < cut.length; i++){
-			for(let j = 1; j < 8; j++){
-				if(cut[i][j][fieldToChange]) {
-					if(test.indexOf(cut[i][j][fieldToChange]) !== -1){ 
-						cut[i][j].val =  colors[test.indexOf(cut[i][j][fieldToChange])]
-					}
-				}
-			}
+	},
+	publish: function(){
+		var year = this.state.currentDate.getFullYear();
+		var month = this.state.currentDate.getMonth() + 1;
+		var day = this.state.currentDate.getDate();
+		var dateString = year + '-' + month + '-' + day;
+		if(this.state.publishButton  === "publish"){
+			publish({date: dateString});
+			
+			console.log('reset button');
 		}
-		store.dispatch({
-			type: 'GET_EMPLOYEEWEEKLYSCHEDULE',
-			employeeWeeklySchedule: cut
-		})
-		// console.log('test', test);
-		// console.log('cut', cut);
+		console.log('Publish button hit', dateString);
 	},
 	logout: function(){
 		localStorage.clear();
@@ -240,7 +272,6 @@ export default React.createClass({
 		 	localStorage.getItem("departmentId"),
 		 	method
 		 	);
-		// this.refreshCurrentState(this.state.currentDate);
 	},
 	render: function(){
 
@@ -248,7 +279,9 @@ export default React.createClass({
 			<div className="adminBg">
 
 				<SidePanel	
-					dateString={this.state.weeklyCalendar[0].calendar_date} 
+					publish={this.publish}
+					publishButton={this.state.publishButton}
+					dateChangefromCalendar={this.dateChangefromCalendar}
 					filterByShift={this.filterByShift} 
 					setColor={this.setColor} />
 
@@ -263,7 +296,6 @@ export default React.createClass({
 					<AdminWeekHeader
 						autoPopulate={this.autoPopulate}
 						shiftColor={this.state.shiftColor}
-						previousSchedule={this.previousSchedule}
 						weeklyCalendar={this.state.weeklyCalendar}
 						nextSchedule={this.nextSchedule}
 						confirmClear={this.confirmClear}
@@ -324,6 +356,12 @@ export default React.createClass({
 						
 				</div>	
 
+					<Settings
+								key={v4()} 
+								areas={this.state.areas} 
+								shiftStrings={this.state.shiftStrings} 
+								shiftNum={this.state.shiftNum} /> 
+
 					<ReactCSSTransitionGroup transitionName="employeeBox" transitionEnterTimeout={500} transitionLeaveTimeout={300}>
 						{(this.state.showForm) 
 							? <EmployeeInfoForm
@@ -358,6 +396,10 @@ export default React.createClass({
 								shiftNum={this.state.shiftNum} /> 
 							: ""}	
 					</ReactCSSTransitionGroup>
+
+					<footer>
+						
+					</footer>
 
 			</div>
 		)
