@@ -22,8 +22,8 @@ footer {
 	bottom: 0;
 	left: 200px;
 	right: 0;
-	height: 60px;
-	background: red;
+	height: 30px;
+	background: #eee;
 }
 .adminContainer {
 	margin: 40px 0 0 0;
@@ -86,7 +86,7 @@ footer {
 
 .employeeBox-enter.employeeBox-enter-active {
   opacity: 1;
-  transition: opacity 400ms ease-in;
+  transition: opacity 200ms ease-in;
 }
 
 .employeeBox-leave {
@@ -95,7 +95,7 @@ footer {
 
 .employeeBox-leave.employeeBox-leave-active {
   opacity: 0.01;
-  transition: opacity 300ms ease-in;
+  transition: opacity 200ms ease-in;
 }
 
 

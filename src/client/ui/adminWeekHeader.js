@@ -12,31 +12,39 @@ require("assets/styles/adminWeekHeader.scss");
 export default React.createClass({
 	getInitialState: function(){
 		return ({
-			open: false,
+			openPop: false,
+			openClear: false,
 			populateMethod: ''
 		})
 	},
-	componentWillMount: function(){
-		this.unsubscribe = store.subscribe(function(){
-			var currentStore = store.getState();
-			this.setState({
-				open: false,
-				populateMethod: ''
-			})
-		}.bind(this));
-	},
-	handleTouchTap: function(event){
+	// componentWillMount: function(){
+	// 	this.unsubscribe = store.subscribe(function(){
+	// 		var currentStore = store.getState();
+	// 		this.setState({
+	// 			openPop: false,
+	// 			openClear: false,
+	// 			populateMethod: ''
+	// 		})
+	// 	}.bind(this));
+	// },
+	handleTouchTap: function(menu, event){
 		event.preventDefault();
-
+		console.log('on open', arguments);
 	    this.setState({
-	      open: true,
+	      [menu]: true,
 	      anchorEl: event.currentTarget,
 	    });
 	},
-	handleRequestClose: function(){
+	handleRequestClose: function(menu){
+		console.log('on close', arguments);
 		this.setState({
-	      open: false,
+	      [menu]: false
 	    });
+	},
+	closeClear: function(){
+		this.setState({
+			openClear: false
+		})
 	},
 	duplicate: function(){
 		this.props.autoPopulate('duplicate');
@@ -73,26 +81,42 @@ export default React.createClass({
 				<div className="printClearContainer">
 
 					<FlatButton
-			          onTouchTap={this.handleTouchTap}
+			          onTouchTap={this.handleTouchTap.bind(this, 'openPop')}
 			          label="Auto-populate"
 			          primary={true}
 			          style={{color: 'white', textShadow: '1px 1px 0px #000'}}
 			        />
 			        <Popover
-			          open={this.state.open}
+			          open={this.state.openPop}
 			          anchorEl={this.state.anchorEl}
 			          anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
 			          targetOrigin={{horizontal: 'left', vertical: 'top'}}
-			          onRequestClose={this.handleRequestClose}
+			          onRequestClose={this.handleRequestClose.bind(this, 'openPop')}
 			        >
-			        <Menu>
-			            <div className="autoPop"> <MenuItem primaryText="Previous Week" onTouchTap={this.duplicate}/> </div>
-			            <div className="autoPop"><MenuItem primaryText="Random Stations" onTouchTap={this.stationPopulate} /> </div>
-			          </Menu>
+				        <Menu>
+				            <div className="autoPop"> <MenuItem primaryText="Previous Week" onTouchTap={this.duplicate}/> </div>
+				            <div className="autoPop"><MenuItem primaryText="Random Stations" onTouchTap={this.stationPopulate} /> </div>
+			          	</Menu>
 			        </Popover>
 			        
 
-					<FlatButton label="Clear" primary={true} onClick={this.props.confirmClear} style={{color: 'white', textShadow: '1px 1px 0px #000'}} />
+					<FlatButton 
+						onTouchTap={this.handleTouchTap.bind(this, 'openClear')} 
+						label="Clear All" 
+						primary={true} 
+						style={{color: 'white', textShadow: '1px 1px 0px #000'}} />
+
+						<Popover
+				          open={this.state.openClear}
+				          anchorEl={this.state.anchorEl}
+				          anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
+				          targetOrigin={{horizontal: 'left', vertical: 'top'}}
+				          onRequestClose={this.closeClear}
+				        >
+					        <Menu>
+					            <div className="autoPop"> <MenuItem primaryText="Confirm Clear" onTouchTap={this.props.clear}/> </div>
+				          	</Menu>
+				        </Popover>
 					<FlatButton label="Print" primary={true} onClick={this.props.printSchedule} style={{color: 'white', textShadow: '1px 1px 0px #000'}} />
 				</div>
 			</div>

@@ -71,10 +71,7 @@ export default React.createClass({
 		console.log('phone_number', this.props.info.phone_number);
 	},
 	close: function(){
-		store.dispatch({
-			type: 'CHANGE_SHOWFORM',
-			showForm: false
-		})
+		this.props.open();
 
 	},
 	handleChange: function(event, index, value){

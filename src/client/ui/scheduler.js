@@ -47,10 +47,7 @@ export default React.createClass({
 			flexbox_size: "",
 			shiftColor: "",
 			shiftNum: 0,
-			showForm: false,
 			employeeInfo: {},
-			showClearConfirm: false,
-			showSettings: false,
 			areas: [],
 			shiftStrings: [],
 			employees: [],
@@ -68,10 +65,7 @@ export default React.createClass({
 				flexbox_size: currentStore.calendarReducer.flexbox_size,
 				shiftColor: currentStore.cssReducer.shiftColor,
 				shiftNum: currentStore.cssReducer.shiftNum,
-				showForm: currentStore.showReducer.showForm,
 				employeeInfo: currentStore.employeeReducer.employeeInfo,
-				showClearConfirm: currentStore.showReducer.showClearConfirm,
-				showSettings: currentStore.showReducer.showSettings,
 				areas: currentStore.adminReducer.areas,
 				employees: currentStore.adminReducer.employees,
 				weekShifts: currentStore.adminReducer.weekShifts,
@@ -152,28 +146,17 @@ export default React.createClass({
 	printSchedule: function(){
 		window.print();
 	},
-	confirmClear: function(){
-		store.dispatch({
-			type: 'CHANGE_SHOWCLEARCONFIRM',
-			showClearConfirm: true
-		})
-	},
-	showSettingsPanel: function(){
-		console.log('hit in scheduler');
-
-		store.dispatch({
-			type: 'SHOW_SETTINGS',
-			showSettings: true
+	
+	showModule: function(key){
+		this.setState({
+			[key]: !this.state[key]
 		})
 	},
 	clearSchedule: function(){
-		const shiftId = this.state.shiftNum;
-		const week = this.state.weekShifts;
-		const clearAll = [];
+		var shiftId = this.state.shiftNum;
+		var week = this.state.weekShifts;
+		var clearAll = [];
 		var keys = Object.keys(week);
-
-
-		// console.log('weekshifts to clear', week, 'keys', keys);
 
 		for(let i = 0; i < keys.length; i++){
 			clearAll.push(
@@ -186,10 +169,6 @@ export default React.createClass({
 
 		clearAllSchedule(clearAll, this.state.currentDate, this.state.departmentId);
 		 
-		 store.dispatch({
-			type: 'CHANGE_SHOWCLEARCONFIRM',
-			showClearConfirm: false
-		})
 	},
 	// setColor: function(val){
 	// 	var fieldToChange = val
@@ -285,9 +264,12 @@ export default React.createClass({
 					filterByShift={this.filterByShift} 
 					setColor={this.setColor} />
 
-				<AdminHeader 
+				<AdminHeader
+					areas={this.state.areas} 
+					shiftStrings={this.state.shiftStrings}
+					shiftNum={this.state.shiftNum} 
 					logout={this.logout} 
-					showSettingsPanel={this.showSettingsPanel} />
+					show={this.showModule} />
 
 				
 				<div className="adminContainer">
@@ -298,7 +280,7 @@ export default React.createClass({
 						shiftColor={this.state.shiftColor}
 						weeklyCalendar={this.state.weeklyCalendar}
 						nextSchedule={this.nextSchedule}
-						confirmClear={this.confirmClear}
+						clear={this.clearSchedule}
 						printSchedule={this.printSchedule} />
 
 					
@@ -307,43 +289,34 @@ export default React.createClass({
 						
 						<div className="schedule">
 							
-							<AdminWeekdayHeader 
-								
+							<AdminWeekdayHeader 			
 								weeklyCalendar={this.state.weeklyCalendar} 
 								addEmployee={this.addEmployee} />
 
-							 {/* <EmployeeRow 
-								employees={this.state.employees} 
-								areas={this.state.areas} 
-								weeklyCalendar={this.state.weeklyCalendar}
-								weekShifts={this.state.weekShifts} 
-								handleClick={this.handleClick} />	*/}	
-
-
+	
 							 {this.state.employees.map(function(employee, index){
 								return (
 										<div key={v4()} className='eachRowNew'>
 											
-											
-												<div className="nameImageBox">
-													<div><img src={employee.photo_url} onClick={this.handleClick.bind(this, employee)} /></div>
-													<div className="nameIdBox">
-														<div className='nameField'>{employee.first_name} {employee.last_name}</div> 
-														<div className="idNum">{employee.employee_id}</div>
-													</div>
-												</div>
-											
-										
-										<Workday
-											key={index}
-											employee={employee} 
-											weeklyCalendar={this.state.weeklyCalendar} 
-											weekShifts={this.state.weekShifts} 
-											areas={this.state.areas} 
-											shiftStrings={this.state.shiftStrings}
-											handlePublish={this.handlePublish}
-											shiftId={this.state.shiftNum}
-											currentDate={this.state.currentDate} />
+											<NameImageBox 
+												key={v4()}
+												employee={employee} 
+												confirmClear={this.confirmClear}
+												shiftNum={this.state.shiftNum}
+												departmentId={this.state.departmentId}
+												deleteEmployee={this.deleteEmployee} />
+
+
+											<Workday
+												key={index}
+												employee={employee} 
+												weeklyCalendar={this.state.weeklyCalendar} 
+												weekShifts={this.state.weekShifts} 
+												areas={this.state.areas} 
+												shiftStrings={this.state.shiftStrings}
+												handlePublish={this.handlePublish}
+												shiftId={this.state.shiftNum}
+												currentDate={this.state.currentDate} />
 
 										</div>
 								)
@@ -356,28 +329,9 @@ export default React.createClass({
 						
 				</div>	
 
-					<Settings
-								key={v4()} 
-								areas={this.state.areas} 
-								shiftStrings={this.state.shiftStrings} 
-								shiftNum={this.state.shiftNum} /> 
+		
 
-					<ReactCSSTransitionGroup transitionName="employeeBox" transitionEnterTimeout={500} transitionLeaveTimeout={300}>
-						{(this.state.showForm) 
-							? <EmployeeInfoForm
-								info={this.state.employeeInfo} 
-								key={v4()} 
-								refreshCurrentState={this.refreshCurrentState} 
-								currentDate={this.state.currentDate}
-								confirmDelete={this.confirmClear} 
-								deleteEmployee={this.deleteEmployee} 
-								shiftNum={this.state.shiftNum}
-								departmentId={this.state.departmentId} /> 
-							: ""}	
-					</ReactCSSTransitionGroup>
-
-
-					<ReactCSSTransitionGroup transitionName="employeeBox" transitionEnterTimeout={500} transitionLeaveTimeout={300}>
+					{/* <ReactCSSTransitionGroup transitionName="employeeBox" transitionEnterTimeout={500} transitionLeaveTimeout={300}>
 						{(this.state.showClearConfirm) 
 							? <Confirm
 								key={v4()} 
@@ -385,17 +339,9 @@ export default React.createClass({
 								message={"Please confirm to clear schedule."} 
 								header={"Clear Schedule"} /> 
 							: ""}	
-					</ReactCSSTransitionGroup>
+					</ReactCSSTransitionGroup>   */}
 
-					<ReactCSSTransitionGroup transitionName="employeeBox" transitionEnterTimeout={500} transitionLeaveTimeout={300}>
-						{(this.state.showSettings) 
-							? <Settings
-								key={v4()} 
-								areas={this.state.areas} 
-								shiftStrings={this.state.shiftStrings} 
-								shiftNum={this.state.shiftNum} /> 
-							: ""}	
-					</ReactCSSTransitionGroup>
+					
 
 					<footer>
 						

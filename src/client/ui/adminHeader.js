@@ -1,8 +1,10 @@
 import React from 'react';
 import Options from 'ui/options';
 import LogoText from 'ui/logoText';
+import Settings from 'ui/settings_new';
 
 require("assets/styles/adminHeader.scss");
+require("assets/styles/settings_new.scss");
 
 export default React.createClass({
 	render: function(){
@@ -15,7 +17,11 @@ export default React.createClass({
 					<div className="departmentTitleTag">{localStorage.getItem("departmentTitle")}</div>
 					<div className="headerOptions">
 						<Options />
-						<div className="settings" onClick={this.props.showSettingsPanel} ><i className="fa fa-cogs" aria-hidden="true" ></i>Settings</div>
+						<Settings 
+							areas={this.props.areas} 
+							shiftStrings={this.props.shiftStrings}
+							shiftNum={this.props.shiftNum} />
+					
 						<div className="logout" onClick={this.props.logout} ><i className="fa fa-sign-out" aria-hidden="true"></i>Logout</div>
 					</div>
 				</div>

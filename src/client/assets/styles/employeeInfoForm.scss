@@ -17,11 +17,12 @@
 
 	margin: auto;
 
-		// border: 4px solid red;
+		border: 4px solid red;
 
 	-moz-box-shadow:3px 3px 3px rgba(0, 0, 0, 0.25); 
     -webkit-box-shadow: 6px 6px 6px rgba(0, 0, 0, 0.25);
     box-shadow: 6px 6px 6px rgba(0, 0, 0, 0.25); 
+    z-index: 1060;
 
 }
 .bigFlexHeader {
