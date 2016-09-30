@@ -55,3 +55,34 @@ $peach: #EB7260;
 	justify-content: $content;
 	align-items: $align;
 }
+
+@mixin emerge($dur){
+	animation-name: emerge;
+	animation-duration: $dur;
+}
+
+@keyframes emerge {
+	from {
+		top: 10%;
+		opacity: .5;
+	}	
+	to {
+		top: 15%;
+		opacity: 1;
+	}
+}
+@mixin appear($dur){
+	animation-name: appear;
+	animation-duration: $dur;
+}
+
+@keyframes appear {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+

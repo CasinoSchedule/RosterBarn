@@ -25,7 +25,9 @@ class ColorPicker extends React.Component {
 
   handleChange = (color) => {
     console.log(color);
+    this.props.colorClick(color);
     this.setState({ color: color.rgb, displayColorPicker: false })
+
   };
 
   render() {

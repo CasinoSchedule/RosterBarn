@@ -13,7 +13,8 @@ export default React.createClass({
 	getInitialState: function(){
 		return {
 			currentDate: new Date(),
-			monthlyCalendar: []
+			monthlyCalendar: [],
+			colorArea: false
 		}
 	},
 	componentWillMount: function(){
@@ -26,11 +27,9 @@ export default React.createClass({
 		
 		createMonthlyCalendar(new Date());
 	},
-	shiftFilter: function(e){
-		var val = e.target.id[1];
-		var type = e.target.innerHTML;
-		console.log('filter', val, type);
-		this.props.filterByShift(val, type);
+	shiftFilter: function(num, str){
+		console.log('filter', num, str);
+		this.props.filterByShift(num, str);
 	},
 	scheduleJump: function(date){
 		console.log('arguments', date);
@@ -44,10 +43,12 @@ export default React.createClass({
 		createMonthlyCalendar(newDate);
 		// console.log(this.state.currentDate.addDays(days))
 	},
-	changeColor: function(e){
-		var val = e.target.id;
-		console.log(val);
-		this.props.setColor(val);
+	changeColor: function(key, bool){
+		// console.log(arguments);
+		this.props.setColor(key, bool);
+		this.setState({
+			colorArea: bool
+		})
 	},
 	render: function(){
 		return (
@@ -93,7 +94,7 @@ export default React.createClass({
 					<details>
 						<summary className="locations"><i className="fa fa-tint" aria-hidden="true"></i>Color Code</summary>
 							<div className="colorBox">
-								<div className="colors" id="station" onClick={this.changeColor}>By Area</div>
+								<div className="colors" id="colorArea" onClick={this.changeColor.bind(this, 'colorArea', !this.state.colorArea)}>By Area</div>
 								<div className="colors" id="positionClass" onClick={this.changeColor}>By Position</div>
 								<div className="colors" id="starting_time" onClick={this.changeColor}>By Start-Time</div>
 							</div>
@@ -102,10 +103,10 @@ export default React.createClass({
 					<details>
 						<summary className="locations"><i className="fa fa-clock-o" aria-hidden="true"></i>Shifts</summary>
 							<div className="shiftBox">
-								<div className="shifts" id="a1" onClick={this.shiftFilter}>grave</div>
-								<div className="shifts" id="a2" onClick={this.shiftFilter}>day</div>
-								<div className="shifts" id="a3" onClick={this.shiftFilter}>swing</div>
-								<div className="shifts" id="a" onClick={this.shiftFilter}>all</div>
+								<div className="shifts" onClick={this.shiftFilter.bind(this, 1, 'grave')}>grave</div>
+								<div className="shifts" onClick={this.shiftFilter.bind(this, 2, 'day')}>day</div>
+								<div className="shifts" onClick={this.shiftFilter.bind(this, 3, 'swing')}>swing</div>
+								<div className="shifts" onClick={this.shiftFilter.bind(this, 0, '')}>all</div>
 							</div>
 					</details>
 				</div>

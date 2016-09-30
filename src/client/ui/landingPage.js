@@ -3,6 +3,7 @@ import LogoText from 'ui/logoText';
 import FlatButton from 'material-ui/FlatButton';
 import { browserHistory } from 'react-router';
 import Drawer from 'ui/drawer';
+import Footer from 'ui/footer';
 
 
 require('assets/styles/landingPage.scss');
@@ -63,6 +64,8 @@ export default React.createClass({
 						</div>
 					</div>
 				</div>
+				<Footer 
+					position={'relative'} />
 			</div>
 		)
 	}

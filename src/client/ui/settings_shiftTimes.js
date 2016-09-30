@@ -33,6 +33,7 @@ const styles = {
   },
 };
 
+require("assets/styles/settings_new.scss");
 
 export default React.createClass({
 	getInitialState: function(){
@@ -58,18 +59,20 @@ export default React.createClass({
 	addNewShift: function(){
 		var starthour = this.state.startHour.toString();
 		var startminute = this.state.startMinute.toString();
-		var ampm = this.state.ampm;
+		var ampmStart = this.state.ampmStart;
 		var endhour = this.state.endHour.toString();
 		var endminute = this.state.endMinute.toString();
-		var pmam = this.state.pmam;
-		var fullStartTime = twelveToTwentyFour(starthour, startminute, ampm);
-		var fullEndTime = twelveToTwentyFour(endhour, endminute, pmam)
+		var ampmEnd = this.state.ampmEnd;
+		var fullStartTime = twelveToTwentyFour(starthour, startminute, ampmStart);
+		var fullEndTime = twelveToTwentyFour(endhour, endminute, ampmEnd)
 		var shift = this.state.shift;
+
 		// function here to error check length
 
 		addShiftString(
 			{starting_time: fullStartTime, 
-			 shift_category: ((this.state.shift) ? this.state.shift : 1)}
+			 shift_category: ((this.state.shift) ? this.state.shift : 1),
+			 color_description: this.state.color_description || ''}
 			 );	
 		this.setState({
 			startHour: '',
@@ -82,8 +85,12 @@ export default React.createClass({
 		})
 	},
 
-	colorClick: function(e){
-		console.log('Hit', e.hex); 
+	colorClick: function(hex){
+		console.log('From shiftTimes', hex.hex); 
+		this.setState({
+			color_description: hex.hex
+		})
+
 	},
 	
 	deleteShiftEntry: function(item){
@@ -112,7 +119,7 @@ export default React.createClass({
 			        	<div className='selectColor'>
 							<div className='matchLabel'>Color Code</div>
 							<ColorPicker 
-								onChange={this.colorClick}/>
+								colorClick={this.colorClick}/>
 						</div>
 					</div>
 				</div>
@@ -242,7 +249,7 @@ export default React.createClass({
 				<div className='shiftChoices'>				
 					{this.props.shiftStrings.map(function(item, i){
 						return(
-							<div key={v4()} className='eachLocation'>
+							<div key={v4()} className='eachLocation' style={{background: 'linear-gradient(to left, white, ' + item.color_description + ')'}}>
 								<div>{item.string_rep}</div>
 								<div>
 									<IconButton

@@ -45,6 +45,7 @@ export default React.createClass({
 								shiftStrings={this.props.shiftStrings} 
 								shift={available}
 								shiftId={this.props.shiftId} 
+								color_description={(this.props.weekShifts[idToCheck] && this.props.colorArea) ? this.props.weekShifts[idToCheck].area.color_description : ''}
 								currentDate={this.props.currentDate} />
 
 						</div>

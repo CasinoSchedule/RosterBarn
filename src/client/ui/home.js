@@ -8,6 +8,7 @@ import { cyan500, cyan700, darkBlack, fullBlack, indigo500 } from 'material-ui/s
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import Checkbox from 'material-ui/Checkbox';
+import Footer from 'ui/footer';
 
 require('assets/styles/home.scss');
 
@@ -20,6 +21,14 @@ export default React.createClass({
 			remember: localStorage.getItem('username') || '',
 			message: ''
 		}
+	},
+	componentWillMount: function(){
+		this.state = {};
+		console.log('Current State', this);
+	},
+	componentDidMount: function(){
+		document.querySelector('#username').focus();
+
 	},
 	handleChange: function(e, index, value){
 		this.setState({
@@ -46,7 +55,7 @@ export default React.createClass({
 			checkAdmin();
 		}.bind(this)).catch(function(err){
 			console.log('handle catch');
-			
+			document.querySelector('#username').focus();
 			this.setState({
 				error: true,
 				username: "",
@@ -62,6 +71,8 @@ export default React.createClass({
 				error: false
 			})
 			}.bind(this), 5000);
+
+		
 	},
 	render: function(){
 		return (
@@ -111,7 +122,8 @@ export default React.createClass({
 					<div className='forgot'>Forgot Password?</div>
 					
 				</div>
-
+				<Footer 
+					position={'fixed'}/>
 			</div>
 		)
 	}

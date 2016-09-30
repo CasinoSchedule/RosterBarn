@@ -53,7 +53,8 @@ export default React.createClass({
 			employees: [],
 			weekShifts: {},
 			departmentId: localStorage.getItem("departmentId"),
-			publishButton: ''
+			publishButton: '',
+			colorArea: false
 		})
 	},
 	componentWillMount: function(){
@@ -75,9 +76,11 @@ export default React.createClass({
 		}.bind(this));
 		this.refreshCurrentState(new Date());
 	},
-	componentDidMount: function(){
-
-	},
+	// componentDidMount: function(){
+	// 	getShiftStrings();
+	// 	getAreas();
+	// 	checkPublish(this.state.currentDate, this.state.departmentId);
+	// },
 	handlePublish: function(){
 		console.log('hit on Blur');
 		
@@ -139,7 +142,7 @@ export default React.createClass({
 		
 		store.dispatch({
 			type: 'CHANGE_SHIFTBOX',
-			shiftColor: type,
+			shiftColor: type || '',
 			shiftNum: ((shiftId) ? shiftId : "")
 		})
 	},
@@ -170,41 +173,11 @@ export default React.createClass({
 		clearAllSchedule(clearAll, this.state.currentDate, this.state.departmentId);
 		 
 	},
-	// setColor: function(val){
-	// 	var fieldToChange = val
-	// 	var test = [];
-	// 	var colors = ['red', 'yellow', 'pink', 'orange'];
-	// 	var cut = this.state.employeeWeeklySchedule;
-	// 	for(let i = 0; i < cut.length; i++){
-	// 		for(let j = 1; j < 8; j++){
-	// 			if(cut[i][j][fieldToChange]) {
-	// 				if(test.indexOf(cut[i][j][fieldToChange]) === -1){ 
-	// 					test.push(cut[i][j][fieldToChange]) 
-	// 				}
-	// 			}
-	// 		}
-	// 	}
-	// 	for(let i = 0; i < cut.length; i++){
-	// 		for(let j = 1; j < 8; j++){
-	// 			if(cut[i][j][fieldToChange]) {
-	// 				if(test.indexOf(cut[i][j][fieldToChange]) !== -1){ 
-	// 					cut[i][j].val =  colors[test.indexOf(cut[i][j][fieldToChange])]
-	// 				}
-	// 			}
-	// 		}
-	// 	}
-	// 	store.dispatch({
-	// 		type: 'GET_EMPLOYEEWEEKLYSCHEDULE',
-	// 		employeeWeeklySchedule: cut
-	// 	})
-	// 	// console.log('test', test);
-	// 	// console.log('cut', cut);
-	// },
-	setColor: function(val){
-		let keys = Object.keys(this.state.weekShifts);
-		for(let i = 0; i < keys.length; i++){
-			console.log(this.state.weekShifts[keys[i]]);
-		}
+	
+	setColor: function(key, bool){
+		this.setState({
+			[key]: bool
+		})
 	},
 	publish: function(){
 		var year = this.state.currentDate.getFullYear();
@@ -222,11 +195,8 @@ export default React.createClass({
 		localStorage.clear();
 		logout();
 		Cookie.remove('token');
-		store.dispatch({
-			type: 'USER_LOGOUT'
-		})
-	
-		browserHistory.push('/')
+		browserHistory.push('/');
+		this.state={};
 	},
 	handleClick: function(item){
 		// this.refreshCurrentState(this.state.currentDate);
@@ -261,6 +231,7 @@ export default React.createClass({
 					publish={this.publish}
 					publishButton={this.state.publishButton}
 					dateChangefromCalendar={this.dateChangefromCalendar}
+					refreshCurrentState={this.refreshCurrentState}
 					filterByShift={this.filterByShift} 
 					setColor={this.setColor} />
 
@@ -271,29 +242,23 @@ export default React.createClass({
 					logout={this.logout} 
 					show={this.showModule} />
 
+				<AdminWeekHeader
+					autoPopulate={this.autoPopulate}
+					shiftColor={this.state.shiftColor}
+					weeklyCalendar={this.state.weeklyCalendar}
+					nextSchedule={this.nextSchedule}
+					clear={this.clearSchedule}
+					printSchedule={this.printSchedule} />
+
+				<AdminWeekdayHeader 			
+					weeklyCalendar={this.state.weeklyCalendar} 
+					addEmployee={this.addEmployee} />	
+
+
 				
 				<div className="adminContainer">
 
 
-					<AdminWeekHeader
-						autoPopulate={this.autoPopulate}
-						shiftColor={this.state.shiftColor}
-						weeklyCalendar={this.state.weeklyCalendar}
-						nextSchedule={this.nextSchedule}
-						clear={this.clearSchedule}
-						printSchedule={this.printSchedule} />
-
-					
-
-					<div className={"scheduleFlex " + this.state.flexbox_size}>
-						
-						<div className="schedule">
-							
-							<AdminWeekdayHeader 			
-								weeklyCalendar={this.state.weeklyCalendar} 
-								addEmployee={this.addEmployee} />
-
-	
 							 {this.state.employees.map(function(employee, index){
 								return (
 										<div key={v4()} className='eachRowNew'>
@@ -316,36 +281,18 @@ export default React.createClass({
 												shiftStrings={this.state.shiftStrings}
 												handlePublish={this.handlePublish}
 												shiftId={this.state.shiftNum}
+												colorArea={this.state.colorArea}
 												currentDate={this.state.currentDate} />
 
 										</div>
 								)
 							}.bind(this))} 
 
-								
-						</div>
-
-					</div>
 						
 				</div>	
-
-		
-
-					{/* <ReactCSSTransitionGroup transitionName="employeeBox" transitionEnterTimeout={500} transitionLeaveTimeout={300}>
-						{(this.state.showClearConfirm) 
-							? <Confirm
-								key={v4()} 
-								confirm={this.clearSchedule} 
-								message={"Please confirm to clear schedule."} 
-								header={"Clear Schedule"} /> 
-							: ""}	
-					</ReactCSSTransitionGroup>   */}
-
 					
 
-					<footer>
-						
-					</footer>
+					<footer className='adminFooter'>This is the footer where statistics will go.</footer>
 
 			</div>
 		)

@@ -19,12 +19,6 @@ Date.prototype.addDays = function(days){
     return dat;
 }
 
-Date.prototype.subtractDays = function(days){
-    var dat = new Date(this.valueOf());
-    dat.setDate(dat.getDate() - days);
-    return dat;
-}
-
 
 export function login(user, pass) {
   return api.login(user, pass);
@@ -133,7 +127,7 @@ export function getDaysOff(id){
 
 export function getAreas(){
 	return api.get('/schedules/area/').then(function(resp){
-		// console.log('areas', resp.data)
+		console.log('areas:', resp.data)
 		store.dispatch({
 			type: 'GET_AREAS',
 			areas: resp.data
@@ -222,13 +216,13 @@ export function getShifts(date, departmentId){
 	var shiftQuery = queryStringFromDict(weekShiftParams);
 
 	return api.get('/schedules/weekshift/' + shiftQuery).then(function(resp){
-		// console.log('Shifts', resp.data)  
+		 
 		// checkPublish2(resp.data);
 		var allShifts = resp.data.reduce(function(o, v, i) {
 			  o['date_' + v.calendar_date + '_employee_id_' + v.employee.id] = v;
 			  return o;
 			}, {});
-
+		console.log('weekShifts:', allShifts); 
 		store.dispatch({
 			type: 'GET_WEEKSHIFTS',
 			weekShifts: allShifts
@@ -278,6 +272,7 @@ export function getShiftStrings(){
 			  // a must be equal to b
 			  return 0;
 		});
+		console.log('shiftStrings:', sortedStrings)
 		store.dispatch({
 			type: 'GET_SHIFTSTRINGS',
 			shiftStrings: sortedStrings

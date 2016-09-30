@@ -11,28 +11,36 @@
 	left: 0;
 	padding: 5px;
 	padding-bottom: 90px;
+	// z-index: 4;
 	// size: landscape; 
 									// @include borderthick(red);
 	// position: relative;
 	// overflow: hidden;
 }
 
-footer {
+.adminFooter {
 	position: fixed;
 	bottom: 0;
 	left: 200px;
 	right: 0;
 	height: 30px;
+	line-height: 30px;
 	background: #eee;
+	text-align: center;
+	font-family: 'Helvetica Neue';
 }
 .adminContainer {
 	margin: 40px 0 0 0;
 	width: 100%;
 	height: auto;
 	padding-left: 200px;
-			// border: 2px solid red;
+	// position: relative;
+	// z-index: 10;	
+			border: 10px solid red;
 }
 .scheduleFlex {
+	position: relative;
+	z-index: 0;
 	display: flex;
 	flex-wrap: nowrap;
 	width: 100%;
@@ -49,6 +57,7 @@ footer {
 	// width: 100% !important;
 	display: flex;
 	border: 1px solid #999;
+	background: #bbb;
 									// border: 3px solid green;
 }
 .eachRowNew:nth-child(odd) {           

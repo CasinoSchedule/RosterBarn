@@ -176,6 +176,7 @@ export default React.createClass({
 		Cookie.remove('token');
 		localStorage.clear();
 		browserHistory.push('/');
+		this.state={};
 	},
 	componentWillUnmount: function () {
 		this.unsubscribe();

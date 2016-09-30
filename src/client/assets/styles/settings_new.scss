@@ -1,34 +1,41 @@
 @import './variables';
 @import url(https://fonts.googleapis.com/css?family=Roboto:400,300,500);
 
+
+.shade {
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+
+	background: rgba(21, 21, 21, .6);
+	
+}
+
 .settingsBox {
 	position: fixed;
 	top: 15%;
 	left: 15%;
+
+
 	min-width: 600px;
 	width: 70%;
 	height: 70%;
-	z-index: 1040;
-	// margin: auto;
-	// width: 650px;
-	// height: 80%;
 	background: white;
-
-				// border: 1px solid $textshadow;
-									// @include borderthick(red);
+	color: #454545;
 	display: flex;
 	flex-direction: column;
 
 	overflow-x: hidden;
     overflow-y: scroll;
 
-	// justify-content: space-between;
-	// -webkit-box-shadow: -4px 4px 5px 0px rgba(226,226,226,1);
-	// -moz-box-shadow: -4px 4px 5px 0px rgba(226,226,226,1);
-	// box-shadow: -4px 4px 5px 0px rgba(226,226,226,1);
+   @include emerge(.5s);
 
-	// box-sizing: border-box;
+   // @include borderthick(brown);
 }
+
+
 
 .settingsHeader {
 	width: 100%;
@@ -54,6 +61,7 @@
 	left: 0;
 	bottom: 0;
 	overflow: hidden;
+	background: white;
 
 							// @include borderthick(brown);
 }
@@ -78,6 +86,7 @@
 	left: 0;
 	bottom: 0;
 	background: #eee;
+	@include appear(.5s);
 	// width: 150px;
 	// height: 100%;
 							// @include borderthick(orange);
@@ -95,6 +104,7 @@
 	font-family: 'Roboto';
 	cursor: pointer;
 	margin-top: 10px;
+	color: #eee;
 	// @include borderthin($darkgrey);
 	// border-bottom: 1px solid $darkgrey;
 	@include flex(column, space-between, center);
@@ -143,6 +153,7 @@
 	font-size: 11px;
 	letter-spacing: .5px;
 	color: $darkgrey;
+					// @include borderthin(green);
 }
 
 .settingsFooter {
@@ -172,7 +183,7 @@
 	height: 80px;
 	@include flex(column, space-around, center);
 
-						// @include borderthin(green);
+						// @include borderthin(red);
 }
 .shiftAdds {
 	width: 100%;

@@ -17,12 +17,12 @@
 	width: 300px;
 	height: 360px;
 	position: absolute;
-	top: 0;
+	top: 20%;
 	bottom: 0;
 	right: 0;
 	left: 0;
 
-	margin: auto;
+	margin: 0 auto;
 	background: white;
 	border: 4px solid $textshadow;
 	-moz-box-shadow:3px 3px 3px rgba(0, 0, 0, 0.25); 
@@ -95,3 +95,4 @@
 		top: -200px;
 	}
 }
+

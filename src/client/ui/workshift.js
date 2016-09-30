@@ -93,17 +93,17 @@ export default React.createClass({
 	},
 	render: function(){
 		return (
-			<div>
+			<div style={{background: this.props.color_description}}>
 				<div style={{height: '45px', textAlign: 'center'}}>			
 					<SelectField
 						key={v4()}
-						fullWidth={true} 
+						
 						value={this.state.starting_time} 
 						onChange={this.handleTimeChange} 
 						fullWidth={true}
-						style={{height: '42px', top: '-3px', fontSize: '12px', fontWeight: '600', whiteSpace: 'nowrap'}}
-						labelStyle={{lineHeight: '25px', top: '10px'}}
-						menuStyle={{width: '180px'}}>
+						style={{height: '42px', top: '-3px', fontSize: '.8em', fontWeight: '600', whiteSpace: 'nowrap', width: '80%'}}
+						labelStyle={{lineHeight: '25px', top: '10px', width: '100%'}}
+						menuStyle={{width: '180px', width: '100%'}}>
 						
 
 						{this.props.shiftStrings.map(function(item, i){
@@ -128,9 +128,9 @@ export default React.createClass({
 					 	disabled={((this.state.starting_time === 1000) ? true : false)}
 						value={this.state.area} 
 						onChange={this.handleAreaChange} 
-						style={{height: '42px', top: '-15px', fontSize: '12px', fontWeight: '600', whiteSpace: 'nowrap'}}
-						labelStyle={{lineHeight: '25px', top: '10px'}}
-						menuStyle={{width: '180px'}}>
+						style={{height: '42px', top: '-15px', fontSize: '.8em', fontWeight: '600', whiteSpace: 'nowrap', width: '80%'}}
+						labelStyle={{lineHeight: '25px', top: '10px', width: '100%'}}
+						menuStyle={{width: '180px', width: '100%'}}>
 
 
 						{this.props.areas.map(function(item, i){

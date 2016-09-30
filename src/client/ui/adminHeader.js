@@ -4,7 +4,7 @@ import LogoText from 'ui/logoText';
 import Settings from 'ui/settings_new';
 
 require("assets/styles/adminHeader.scss");
-require("assets/styles/settings_new.scss");
+// require("assets/styles/settings_new.scss");
 
 export default React.createClass({
 	render: function(){

@@ -21,7 +21,8 @@ export default React.createClass({
 			areas: [],
 			newArea: '',
 			shift: this.props.shiftNum || 0,
-			showSettings: false
+			showSettings: false,
+			color_description: ''
 		}
 	},
 	onEnterPress: function(e){
@@ -39,7 +40,8 @@ export default React.createClass({
 		var newAreaTitle = this.refs.newAreaToAdd.getValue();
 		console.log('newAreaTitle', newAreaTitle);
 		// component updates in function
-		addArea({title: newAreaTitle, department: localStorage.getItem("departmentId")}); 
+		console.log({title: newAreaTitle, department: localStorage.getItem("departmentId"), color_description: this.state.color_description || ''});
+		addArea({title: newAreaTitle, department: localStorage.getItem("departmentId"), color_description: this.state.color_description || ''}); 
 
 		this.setState({
 			newArea: ''
@@ -56,48 +58,43 @@ export default React.createClass({
 			showSettings: false
 		})
 	},
-	colorClick: function(e){
-		console.log(e.hex); 
+	colorClick: function(hex){
+		console.log('From settings_area', hex.hex); 
+		this.setState({
+			color_description: hex.hex
+		})
+
 	},
 	render: function(){
 		return (
 			<div className='settingsBody'>
 				<div className='addNewArea'>		
 					<div className='shiftColorContainer'>
-					<div>
-						<TextField
-							id='newAreaToAdd'
-							onKeyDown={this.onEnterPress} 
-							ref='newAreaToAdd'
-							floatingLabelText='New Area'
-							floatingLabelFixed={true}
-							style={{width: '543px', paddingLeft: '15px', marginTop: '15px'}}
-							onChange={this.handleAreaChange} 
-							value={this.state.newArea} />
-					</div>
+						<div>
+							<TextField
+								id='newAreaToAdd'
+								onKeyDown={this.onEnterPress} 
+								ref='newAreaToAdd'
+								floatingLabelText='New Area'
+								floatingLabelFixed={true}
+								style={{width: '100%', paddingLeft: '15px', marginTop: '15px'}}
+								onChange={this.handleAreaChange} 
+								value={this.state.newArea} />
+						</div>
 
-					<div className='selectColor'>
-						<div className='matchLabel'>Color Code</div>
-						<ColorPicker 
-							onChange={this.colorClick}/>
-					</div>
+						<div className='selectColor'>
+							<div className='matchLabel'>Color Code</div>
+							<ColorPicker 
+								colorClick={this.colorClick}/>
+						</div>
 
-					{/* <div>
-		        		<IconButton
-					      iconClassName="material-icons"
-					      tooltip="Add Area"
-					      onClick={this.addNewArea}
-					     >
-					      add
-					    </IconButton>
-					</div> */}
 					</div>
 				</div>
 							
 				<div className='shiftChoices'>
 					{this.props.areas.map(function(item, i){
 						return(
-							<div key={v4()} className='eachLocation'>
+							<div key={v4()} className='eachLocation' style={{background: 'linear-gradient(to left, white, ' + item.color_description + ')'}}>
 								<div>{item.title}</div>
 								<div>
 									<IconButton

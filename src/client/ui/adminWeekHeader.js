@@ -17,16 +17,7 @@ export default React.createClass({
 			populateMethod: ''
 		})
 	},
-	// componentWillMount: function(){
-	// 	this.unsubscribe = store.subscribe(function(){
-	// 		var currentStore = store.getState();
-	// 		this.setState({
-	// 			openPop: false,
-	// 			openClear: false,
-	// 			populateMethod: ''
-	// 		})
-	// 	}.bind(this));
-	// },
+	
 	handleTouchTap: function(menu, event){
 		event.preventDefault();
 		console.log('on open', arguments);
@@ -46,11 +37,9 @@ export default React.createClass({
 			openClear: false
 		})
 	},
-	duplicate: function(){
-		this.props.autoPopulate('duplicate');
-	},
-	stationPopulate: function(){
-		this.props.autoPopulate('station');
+	
+	autoFill: function(type){
+		this.props.autoPopulate(type);
 	},
 	previous: function(){
 		this.props.nextSchedule(-7);
@@ -94,8 +83,8 @@ export default React.createClass({
 			          onRequestClose={this.handleRequestClose.bind(this, 'openPop')}
 			        >
 				        <Menu>
-				            <div className="autoPop"> <MenuItem primaryText="Previous Week" onTouchTap={this.duplicate}/> </div>
-				            <div className="autoPop"><MenuItem primaryText="Random Stations" onTouchTap={this.stationPopulate} /> </div>
+				            <div className="autoPop"> <MenuItem primaryText="Previous Week" onTouchTap={this.autoFill.bind(this, 'duplicate')}/> </div>
+				            <div className="autoPop"><MenuItem primaryText="Random Stations" onTouchTap={this.autoFill.bind(this, 'station')} /> </div>
 			          	</Menu>
 			        </Popover>
 			        
